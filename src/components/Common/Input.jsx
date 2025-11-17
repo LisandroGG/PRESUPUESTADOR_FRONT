@@ -20,10 +20,18 @@ const Input = ({
 
 	const inputType = type === "password" && showPassword ? "text" : type;
 
+	const autoCompleteValue =
+		autocomplete ||
+		(type === "password"
+			? "current-password"
+			: type === "email"
+				? "email"
+				: "off");
+
 	return (
-		<div className={` ${className}`}>
+		<div className="relative">
 			{label && (
-				<label htmlFor={name} className="">
+				<label htmlFor={name} className="block text-md font-semibold text-gray-500 my-2">
 					{label}
 				</label>
 			)}
@@ -34,17 +42,18 @@ const Input = ({
 				placeholder={placeholder}
 				value={value}
 				onChange={onChange}
-				className={``}
+				autoComplete={autoCompleteValue}
+				className={`text-lg focus:outline-none focus:border-gray-300 font-semibold border-gray-200 border-2 rounded-md p-2 ${type === "password" ? "pr-11" : ""} w-full text-gray-500 ${className}`}
 				{...props}
 			/>
 			{type === "password" && (
 				<button
 					type="button"
 					onClick={togglePasswordVisibility}
-					className=""
+					className="absolute top-1/3.5 right-3 transform translate-y-1/2 text-gray-400"
 					aria-label="Toggle Password Visibility"
 				>
-					{showPassword ? <EyeOffIcon /> : <EyeIcon />}
+					{showPassword ? <EyeOffIcon className="w-6 h-6 cursor-pointer"/> : <EyeIcon className="w-6 h-6 cursor-pointer"/>}
 				</button>
 			)}
 		</div>

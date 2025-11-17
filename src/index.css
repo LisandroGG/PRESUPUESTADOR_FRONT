@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+    /* COLORS */
+
+    /* TYPOGRAPHY */
+
+    /* SIZING */
+}
+
+@layer utilities {
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px white inset;
+        -webkit-text-fill-color: #6a7282;
+    }
+}

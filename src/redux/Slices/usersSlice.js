@@ -6,6 +6,7 @@ const initialState = {
 	loading: false,
 	error: null,
 	isAuthenticated: false,
+	message: null,
 };
 
 // LOGIN
@@ -71,6 +72,7 @@ const usersSlice = createSlice({
 				state.loading = false;
 				state.user = action.payload.user;
 				state.isAuthenticated = true;
+				state.message = action.payload.message;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.loading = false;
@@ -81,6 +83,7 @@ const usersSlice = createSlice({
 				state.loading = false;
 				state.user = null;
 				state.isAuthenticated = false;
+				state.message = action.payload.message;
 			})
 
 			// REFRESH TOKEN
