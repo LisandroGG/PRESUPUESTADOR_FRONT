@@ -31,7 +31,10 @@ const Input = ({
 	return (
 		<div className="relative">
 			{label && (
-				<label htmlFor={name} className="block text-md font-semibold text-gray-500 my-2">
+				<label
+					htmlFor={name}
+					className="block text-md font-semibold text-gray-500 my-2"
+				>
 					{label}
 				</label>
 			)}
@@ -53,7 +56,11 @@ const Input = ({
 					className="absolute top-1/3.5 right-3 transform translate-y-1/2 text-gray-400"
 					aria-label="Toggle Password Visibility"
 				>
-					{showPassword ? <EyeOffIcon className="w-6 h-6 cursor-pointer"/> : <EyeIcon className="w-6 h-6 cursor-pointer"/>}
+					{showPassword ? (
+						<EyeOffIcon className="w-6 h-6 cursor-pointer" />
+					) : (
+						<EyeIcon className="w-6 h-6 cursor-pointer" />
+					)}
 				</button>
 			)}
 		</div>
