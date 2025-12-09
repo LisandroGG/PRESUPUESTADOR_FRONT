@@ -2,120 +2,118 @@ import axios from "@api/axiosInstance.js";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    payments: [],
-    loading: false,
-    error: null,
-    message: null,
-}
+	payments: [],
+	loading: false,
+	error: null,
+	message: null,
+};
 
 // GET ALL PAYMENTS FROM BUDGET
 
 export const getAllPaymentsFromBudget = createAsyncThunk(
-    "payments/getAllPayments",
-    async (budgetId, { rejectedWithValue }) => {
-        try {
-            const response = await axios.get("/payments", {
-                params: { id: budgetId }
-            });
-            return response.data;
-        } catch (error) {
-            return rejectedWithValue(
-                error.response?.data?.message || "Error al obtener pagos",
-            )
-        }
-    }
-)
+	"payments/getAllPayments",
+	async (budgetId, { rejectedWithValue }) => {
+		try {
+			const response = await axios.get(`/payments/${budgetId}`);
+			return response.data;
+		} catch (error) {
+			return rejectedWithValue(
+				error.response?.data?.message || "Error al obtener pagos",
+			);
+		}
+	},
+);
 
-// CREATE PAYMENT 
+// CREATE PAYMENT
 
 export const createPayment = createAsyncThunk(
-    "payments/createPayment",
-    async (paymentData, { rejectedWithValue }) => {
-        try {
-            const response = await axios.post("/payments", paymentData);
-            return response.data;
-        } catch (error) {
-            return rejectedWithValue(
-                error.response?.data?.message || "Error al crear pago",
-            )
-        }
-    }
-)
+	"payments/createPayment",
+	async (paymentData, { rejectedWithValue }) => {
+		try {
+			const response = await axios.post("/payments", paymentData);
+			return response.data;
+		} catch (error) {
+			return rejectedWithValue(
+				error.response?.data?.message || "Error al crear pago",
+			);
+		}
+	},
+);
 
 // DELETE PAYMENT
 
 export const deletePayment = createAsyncThunk(
-    "payments/deletePayment",
-    async (paymentId, { rejectedWithValue }) => {
-        try {
-            const response = await axios.delete(`/payments/${paymentId}`)
-            return { paymentId, message: response.data.message }
-        } catch (error) {
-            return rejectedWithValue(
-                error.response?.data?.message || "Error al eliminar pago",
-            )
-        }
-    }
-)
+	"payments/deletePayment",
+	async (paymentId, { rejectedWithValue }) => {
+		try {
+			const response = await axios.delete(`/payments/${paymentId}`);
+			return { paymentId, message: response.data.message };
+		} catch (error) {
+			return rejectedWithValue(
+				error.response?.data?.message || "Error al eliminar pago",
+			);
+		}
+	},
+);
 
 export const paymentsSlice = createSlice({
-    name: "payments",
-    initialState,
-    reducers: {
-        clearError: (state) => {
-            state.error = null;
-        }
-    },
-    extraReducers: (builder) => {
-        builder
-            // GET ALL PAYMENTS FROM BUDGET
-            .addCase(getAllPayments.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getAllPayments.fulfilled, (state, action) => {
-                state.loading = false;
-                state.payments = action.payload;
-                state.message = null;
-            })
-            .addCase(getAllPayments.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Error al obtener pagos";
-            })
+	name: "payments",
+	initialState,
+	reducers: {
+		clearError: (state) => {
+			state.error = null;
+		},
+	},
+	extraReducers: (builder) => {
+		builder
+			// GET ALL PAYMENTS FROM BUDGET
+			.addCase(getAllPayments.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getAllPayments.fulfilled, (state, action) => {
+				state.loading = false;
+				state.payments = action.payload;
+				state.message = null;
+			})
+			.addCase(getAllPayments.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al obtener pagos";
+			})
 
-            // CREATE PAYMENT
-            .addCase(createPayment.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(createPayment.fulfilled, (state, action) => {
-                state.loading = false;
-                state.payments.push(action.payload.payment);
-                state.message = action.payload.message
-            })
-            .addCase(createPayment.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Error al crear pago";
-            })
+			// CREATE PAYMENT
+			.addCase(createPayment.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(createPayment.fulfilled, (state, action) => {
+				state.loading = false;
+				state.payments.push(action.payload.payment);
+				state.message = action.payload.message;
+			})
+			.addCase(createPayment.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al crear pago";
+			})
 
-            // DELETE PAYMENT
-            .addCase(deletePayment.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(deletePayment.fulfilled, (state, action) => {
-                state.loading = false;
-                state.payments = state.payments.filter(
-                    (p) => p.id !== action.payload.paymentId
-                );
-                state.message = action.payload.message;
-            })
-            .addCase(deletePayment.rejected, (state, action) => {
-                state.loading = false;
-                state.message = action.payload || "Error al eliminar pago";
-            });
-    },
-})
+			// DELETE PAYMENT
+			.addCase(deletePayment.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(deletePayment.fulfilled, (state, action) => {
+				state.loading = false;
+				state.payments = state.payments.filter(
+					(p) => p.id !== action.payload.paymentId,
+				);
+				state.message = action.payload.message;
+			})
+			.addCase(deletePayment.rejected, (state, action) => {
+				state.loading = false;
+				state.message = action.payload || "Error al eliminar pago";
+			});
+	},
+});
 
 export const { clearError } = paymentsSlice.actions;
 export default paymentsSlice.reducer;
