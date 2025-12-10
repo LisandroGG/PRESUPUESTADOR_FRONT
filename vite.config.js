@@ -9,6 +9,8 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@components": path.resolve(__dirname, "src/components"),
+			"@pages": path.resolve(__dirname, "src/pages"),
+			"@routes": path.resolve(__dirname, "src/routes"),
 			"@redux": path.resolve(__dirname, "src/redux"),
 			"@api": path.resolve(__dirname, "src/api"),
 		},

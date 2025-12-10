@@ -151,16 +151,16 @@ export const budgetsSlice = createSlice({
 			})
 
 			// GET BUDGET BY ID
-			.addCase(getBudgetById, (state) => {
+			.addCase(getBudgetById.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(getBudgetById, (state, action) => {
+			.addCase(getBudgetById.fulfilled, (state, action) => {
 				state.loading = false;
 				state.budget = action.payload;
 				state.message = null;
 			})
-			.addCase(getBudgetById, (state, action) => {
+			.addCase(getBudgetById.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener presupuesto";
 			})

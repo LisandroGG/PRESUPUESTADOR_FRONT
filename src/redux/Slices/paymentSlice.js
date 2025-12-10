@@ -67,16 +67,16 @@ export const paymentsSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			// GET ALL PAYMENTS FROM BUDGET
-			.addCase(getAllPayments.pending, (state) => {
+			.addCase(getAllPaymentsFromBudget.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(getAllPayments.fulfilled, (state, action) => {
+			.addCase(getAllPaymentsFromBudget.fulfilled, (state, action) => {
 				state.loading = false;
 				state.payments = action.payload;
 				state.message = null;
 			})
-			.addCase(getAllPayments.rejected, (state, action) => {
+			.addCase(getAllPaymentsFromBudget.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener pagos";
 			})
