@@ -6,6 +6,12 @@ const initialState = {
 	loading: false,
 	error: null,
 	message: null,
+	page: 1,
+	totalPages: 1,
+	totalItems: 0,
+	limit: 9,
+	hasNext: false,
+	hasPrev: false,
 };
 
 // GET ALL PAYMENTS FROM BUDGET
@@ -73,7 +79,13 @@ export const paymentsSlice = createSlice({
 			})
 			.addCase(getAllPaymentsFromBudget.fulfilled, (state, action) => {
 				state.loading = false;
-				state.payments = action.payload;
+				state.payments = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
 				state.message = null;
 			})
 			.addCase(getAllPaymentsFromBudget.rejected, (state, action) => {

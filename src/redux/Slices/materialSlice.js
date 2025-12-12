@@ -6,6 +6,12 @@ const initialState = {
 	loading: false,
 	error: null,
 	message: null,
+	page: 1,
+	totalPages: 1,
+	totalItems: 0,
+	limit: 9,
+	hasNext: false,
+	hasPrev: false,
 };
 
 // GET ALL MATERIALS
@@ -110,7 +116,13 @@ export const materialsSlice = createSlice({
 			})
 			.addCase(getAllMaterials.fulfilled, (state, action) => {
 				state.loading = false;
-				state.materials = action.payload;
+				state.materials = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
 				state.message = null;
 			})
 			.addCase(getAllMaterials.rejected, (state, action) => {
@@ -125,8 +137,14 @@ export const materialsSlice = createSlice({
 			})
 			.addCase(searchMaterials.fulfilled, (state, action) => {
 				state.loading = false;
-				state.materials = action.payload.materials;
-				state.message = action.payload.message;
+				state.materials = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
+				state.message = null;
 			})
 			.addCase(searchMaterials.rejected, (state, action) => {
 				state.loading = false;
