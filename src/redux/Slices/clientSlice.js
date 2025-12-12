@@ -6,6 +6,12 @@ const initialState = {
 	loading: false,
 	error: null,
 	message: null,
+	page: 1,
+	totalPages: 1,
+	totalItems: 0,
+	limit: 9,
+	hasNext: false,
+	hasPrev: false,
 };
 
 // GET ALL CLIENTS
@@ -107,7 +113,13 @@ export const clientsSlice = createSlice({
 			})
 			.addCase(getAllClients.fulfilled, (state, action) => {
 				state.loading = false;
-				state.clients = action.payload;
+				state.clients = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
 				state.message = null;
 			})
 			.addCase(getAllClients.rejected, (state, action) => {
@@ -122,8 +134,14 @@ export const clientsSlice = createSlice({
 			})
 			.addCase(searchClient.fulfilled, (state, action) => {
 				state.loading = false;
-				state.clients = action.payload.clients;
-				state.message = action.payload.message;
+				state.clients = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
+				state.message = null;
 			})
 			.addCase(searchClient.rejected, (state, action) => {
 				state.loading = false;

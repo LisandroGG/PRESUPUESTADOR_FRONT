@@ -1,20 +1,17 @@
-import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-//ROUTES
-import PrivateRoute from "../src/Routes/PrivateRoute.jsx";
-
 //COMPONENTS
 import MainLayout from "@components/Layout/MainLayout.jsx";
-
+import BudgetDetail from "@pages/Budgets/BudgetDetail.jsx";
 //PAGES
-import BudgetsList from "@pages/Budgets/BudgetsList.jsx"
-import BudgetDetail from "@pages/Budgets/BudgetDetail.jsx"
-import ClientList from "@pages/Clients/ClientsList.jsx"
-import MaterialsList from "@pages/Materials/MaterialsList.jsx"
-import ProductsList from "@pages/Products/ProductsList.jsx"
+import BudgetsList from "@pages/Budgets/BudgetsList.jsx";
+import ClientList from "@pages/Clients/ClientsList.jsx";
+import Home from "@pages/Home/Home.jsx";
 import Login from "@pages/Login/Login.jsx";
-import Home from "@pages/Home/Home.jsx"
+import MaterialsList from "@pages/Materials/MaterialsList.jsx";
+import ProductsList from "@pages/Products/ProductsList.jsx";
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+//ROUTES
+import PrivateRoute from "../src/Routes/PrivateRoute.jsx";
 
 function App() {
 	return (
@@ -23,13 +20,10 @@ function App() {
 
 			<BrowserRouter>
 				<Routes>
-
 					<Route path="/login" element={<Login />} />
 
 					<Route element={<PrivateRoute />}>
-
 						<Route element={<MainLayout />}>
-
 							<Route index element={<Home />} />
 
 							<Route path="budgets" element={<BudgetsList />} />
@@ -40,13 +34,11 @@ function App() {
 							<Route path="products" element={<ProductsList />} />
 
 							<Route path="materials" element={<MaterialsList />} />
-
 						</Route>
 					</Route>
 
 					{/* 404 */}
 					<Route path="*" element={<h1>Página no encontrada</h1>} />
-
 				</Routes>
 			</BrowserRouter>
 		</div>
