@@ -12,6 +12,7 @@ export default defineConfig({
 			"@pages": path.resolve(__dirname, "src/pages"),
 			"@routes": path.resolve(__dirname, "src/routes"),
 			"@redux": path.resolve(__dirname, "src/redux"),
+			"@hooks": path.resolve(__dirname, "src/hooks"),
 			"@api": path.resolve(__dirname, "src/api"),
 		},
 	},

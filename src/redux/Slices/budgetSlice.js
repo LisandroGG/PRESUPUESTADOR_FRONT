@@ -19,9 +19,11 @@ const initialState = {
 
 export const getAllBudgets = createAsyncThunk(
 	"budgets/getAllBudgets",
-	async (_, { rejectedWithValue }) => {
+	async (page, { rejectedWithValue }) => {
 		try {
-			const response = await axios.get("/budgets");
+			const response = await axios.get("/budgets", {
+				params: page,
+			});
 			return response.data;
 		} catch (error) {
 			return rejectedWithValue(

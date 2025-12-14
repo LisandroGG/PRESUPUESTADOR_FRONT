@@ -18,9 +18,11 @@ const initialState = {
 
 export const getAllProducts = createAsyncThunk(
 	"products/getAllProducts",
-	async (_, { rejectedWithValue }) => {
+	async (page, { rejectedWithValue }) => {
 		try {
-			const response = await axios.get("/products");
+			const response = await axios.get("/products", {
+				params: page,
+			});
 			return response.data;
 		} catch (error) {
 			return rejectedWithValue(

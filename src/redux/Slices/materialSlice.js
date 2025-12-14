@@ -18,9 +18,11 @@ const initialState = {
 
 export const getAllMaterials = createAsyncThunk(
 	"materials/getAllMaterials",
-	async (_, { rejectedWithValue }) => {
+	async (page, { rejectedWithValue }) => {
 		try {
-			const response = await axios.get("/materials");
+			const response = await axios.get("/materials", {
+				params: page,
+			});
 			return response.data;
 		} catch (error) {
 			return rejectedWithValue(

@@ -18,9 +18,11 @@ const initialState = {
 
 export const getAllClients = createAsyncThunk(
 	"clients/getAllClients",
-	async (_, { rejectWithValue }) => {
+	async (page, { rejectWithValue }) => {
 		try {
-			const response = await axios.get("/clients");
+			const response = await axios.get("/clients", {
+				params: page,
+			});
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(
