@@ -14,6 +14,7 @@ export default defineConfig({
 			"@redux": path.resolve(__dirname, "src/redux"),
 			"@hooks": path.resolve(__dirname, "src/hooks"),
 			"@api": path.resolve(__dirname, "src/api"),
+			"@utils": path.resolve(__dirname, "src/utils"),
 		},
 	},
 
