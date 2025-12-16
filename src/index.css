@@ -1,16 +1,70 @@
 @import "tailwindcss";
 
-/* @theme {
-    //COLORS
+@theme {
+	/* PRIMARY */
+	--color-primary-50: #e6f3ee;
+	--color-primary-100: #c3e1d5;
+	--color-primary-200: #9ccfbc;
+	--color-primary-300: #74bda3;
+	--color-primary-400: #4faa8a;
+	--color-primary-500: #20815b;
+	--color-primary-600: #1c7351;
+	--color-primary-700: #175f44;
+	--color-primary-800: #134c36;
+	--color-primary-900: #0e3828;
 
-    //TYPOGRAPHY
+	/* NEUTRAL */
+	--color-neutral-50: #f8fafc;
+	--color-neutral-100: #f1f5f9;
+	--color-neutral-200: #e5eaf0;
+	--color-neutral-300: #d1d9e0;
+	--color-neutral-400: #9aa4b2;
+	--color-neutral-500: #6a7282;
+	--color-neutral-600: #4b5563;
+	--color-neutral-700: #374151;
+	--color-neutral-800: #1f2937;
+	--color-neutral-900: #111827;
+}
 
-    //SIZING
-} */
+@font-face {
+	font-family: "Chivo";
+	src: url("/assets/fonts/Chivo-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Chivo";
+	src: url("/assets/fonts/Chivo-Medium.woff2") format("woff2");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Chivo";
+	src: url("/assets/fonts/Chivo-SemiBold.woff2") format("woff2");
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Chivo";
+	src: url("/assets/fonts/Chivo-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
 
 @layer utilities {
 	input:-webkit-autofill {
 		box-shadow: 0 0 0px 1000px white inset;
 		-webkit-text-fill-color: #6a7282;
+	}
+
+	.font-chivo {
+		font-family: "Chivo", system-ui, sans-serif;
 	}
 }

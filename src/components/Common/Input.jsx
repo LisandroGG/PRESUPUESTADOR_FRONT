@@ -33,7 +33,7 @@ const Input = ({
 			{label && (
 				<label
 					htmlFor={name}
-					className="block text-md font-semibold text-gray-500 my-2"
+					className="block text-sm font-medium text-neutral-600 mb-1"
 				>
 					{label}
 				</label>
@@ -46,14 +46,14 @@ const Input = ({
 				value={value}
 				onChange={onChange}
 				autoComplete={autoCompleteValue}
-				className={`text-lg focus:outline-none focus:border-gray-300 font-semibold border-gray-200 border-2 rounded-md p-2 ${type === "password" ? "pr-11" : ""} w-full text-gray-500 ${className}`}
+				className={`text-md focus:outline-none focus:border-neutral-300 font-semibold border-neutral-200 border-2 rounded-md px-3 py-2 ${type === "password" ? "pr-11" : ""} w-full text-neutral-500 ${className}`}
 				{...props}
 			/>
 			{type === "password" && (
 				<button
 					type="button"
 					onClick={togglePasswordVisibility}
-					className="absolute top-1/3.5 right-3 transform translate-y-1/2 text-gray-400"
+					className="absolute top-1/3 right-3 transform translate-y-1/2 text-neutral-400"
 					aria-label="Toggle Password Visibility"
 				>
 					{showPassword ? (
