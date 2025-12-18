@@ -7,6 +7,7 @@ import ClientList from "@pages/Clients/ClientsList.jsx";
 import Home from "@pages/Home/Home.jsx";
 import Login from "@pages/Login/Login.jsx";
 import MaterialsList from "@pages/Materials/MaterialsList.jsx";
+import ProductDetail from "@pages/Products/ProductDetail.jsx";
 import ProductsList from "@pages/Products/ProductsList.jsx";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -32,6 +33,7 @@ function App() {
 							<Route path="clients" element={<ClientList />} />
 
 							<Route path="products" element={<ProductsList />} />
+							<Route path="products/:id" element={<ProductDetail />} />
 
 							<Route path="materials" element={<MaterialsList />} />
 						</Route>

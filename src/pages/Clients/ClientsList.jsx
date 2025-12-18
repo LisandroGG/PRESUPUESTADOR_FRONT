@@ -1,17 +1,48 @@
 import Button from "@components/Common/Button.jsx";
+import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
-import { getAllClients } from "@redux/Slices/clientSlice";
+import {
+	createClient,
+	deleteClient,
+	getAllClients,
+	searchClient,
+	updateClient,
+} from "@redux/Slices/clientSlice";
 import { formatCuit } from "@utils/formatCuit.js";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const ClientsList = () => {
 	const { clients } = useSelector((state) => state.clients);
+	const { run } = useCrudDispatch();
+
+	const [clientToDelete, setClientToDelete] = useState(null);
+	const [deleting, setDeleting] = useState(false);
+
+	const handleConfirmDelete = async () => {
+		if (!clientToDelete) return;
+
+		setDeleting(true);
+		try {
+			await run(deleteClient, clientToDelete.id);
+			setClientToDelete(null);
+		} finally {
+			setDeleting(false);
+		}
+	};
+
+	const handleCancelDelete = () => {
+		if (deleting) return;
+		setClientToDelete(null);
+	};
 
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
 		usePagination((state) => state.clients, getAllClients);
+
 	if (loading) {
 		return (
 			<div className="min-h-screen grid place-content-center">
@@ -20,15 +51,15 @@ const ClientsList = () => {
 		);
 	}
 	return (
-		<section className="max-w-7xl mx-auto p-4">
-			<div className="flex justify-between mb-4">
+		<section className="max-w-7xl mx-auto">
+			<div className="flex justify-between my-6 items-center">
 				<h2 className="text-lg font-semibold">Clientes:</h2>
 				<Button variant="primary" className="flex items-center gap-2">
 					<UserPlus size={16} />
 					Nuevo cliente
 				</Button>
 			</div>
-			<div className="overflow-x-auto min-h-120">
+			<div className="overflow-x-auto min-h-156">
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-50">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
@@ -79,7 +110,11 @@ const ClientsList = () => {
 										<Button variant="ghost" title="Editar">
 											<Pencil size={16} />
 										</Button>
-										<Button variant="danger" title="Eliminar">
+										<Button
+											variant="danger"
+											title="Eliminar"
+											onClick={() => setClientToDelete(client)}
+										>
 											<Trash2 size={16} />
 										</Button>
 									</div>
@@ -96,6 +131,27 @@ const ClientsList = () => {
 				hasNext={hasNext}
 				onPageChange={goToPage}
 			/>
+			{clientToDelete && (
+				<ConfirmModal
+					title="Eliminar cliente"
+					description={
+						<>
+							¿Estás seguro que deseas eliminar al cliente{" "}
+							<strong>
+								{clientToDelete.name?.trim()
+									? clientToDelete.name
+									: "No registrado"}
+							</strong>
+							?
+						</>
+					}
+					confirmText="Eliminar"
+					cancelText="Cancelar"
+					loading={deleting}
+					onConfirm={handleConfirmDelete}
+					onCancel={handleCancelDelete}
+				/>
+			)}
 		</section>
 	);
 };

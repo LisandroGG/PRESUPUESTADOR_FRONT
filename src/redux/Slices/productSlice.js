@@ -35,17 +35,17 @@ export const getAllProducts = createAsyncThunk(
 
 export const getProductById = createAsyncThunk(
 	"products/getProductById",
-	async(productId, { rejectedWithValue }) => {
+	async (productId, { rejectedWithValue }) => {
 		try {
-			const response = await axios.get(`/products/detail/${productId}`)
-			return response.data
+			const response = await axios.get(`/products/detail/${productId}`);
+			return response.data;
 		} catch (error) {
 			return rejectedWithValue(
-				error.response?.data.message || "Error al obtener producto"
-			)
+				error.response?.data.message || "Error al obtener producto",
+			);
 		}
-	}
-)
+	},
+);
 
 // SEARCH PRODUCT BY QUERY
 
@@ -147,7 +147,7 @@ export const productsSlice = createSlice({
 			// GET PRODUCT BY ID
 			.addCase(getProductById.pending, (state) => {
 				state.loading = true;
-				state.error = null
+				state.error = null;
 			})
 			.addCase(getProductById.fulfilled, (state, action) => {
 				state.loading = false;
@@ -156,7 +156,7 @@ export const productsSlice = createSlice({
 			})
 			.addCase(getProductById.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.payload || "Error al obtener producto"
+				state.error = action.payload || "Error al obtener producto";
 			})
 
 			// SEARCH PRODUCTS
