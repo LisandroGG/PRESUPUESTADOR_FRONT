@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	products: [],
+	product: null,
 	loading: false,
 	error: null,
 	message: null,
@@ -31,6 +32,20 @@ export const getAllProducts = createAsyncThunk(
 		}
 	},
 );
+
+export const getProductById = createAsyncThunk(
+	"products/getProductById",
+	async(productId, { rejectedWithValue }) => {
+		try {
+			const response = await axios.get(`/products/detail/${productId}`)
+			return response.data
+		} catch (error) {
+			return rejectedWithValue(
+				error.response?.data.message || "Error al obtener producto"
+			)
+		}
+	}
+)
 
 // SEARCH PRODUCT BY QUERY
 
@@ -127,6 +142,21 @@ export const productsSlice = createSlice({
 			.addCase(getAllProducts.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener productos";
+			})
+
+			// GET PRODUCT BY ID
+			.addCase(getProductById.pending, (state) => {
+				state.loading = true;
+				state.error = null
+			})
+			.addCase(getProductById.fulfilled, (state, action) => {
+				state.loading = false;
+				state.product = action.payload;
+				state.message = null;
+			})
+			.addCase(getProductById.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al obtener producto"
 			})
 
 			// SEARCH PRODUCTS
