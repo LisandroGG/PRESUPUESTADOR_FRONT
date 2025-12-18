@@ -15,29 +15,39 @@ import { formatCuit } from "@utils/formatCuit.js";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import ClientFormModal from "./ClientFormModal.jsx";
 
 const ClientsList = () => {
 	const { clients } = useSelector((state) => state.clients);
 	const { run } = useCrudDispatch();
 
-	const [clientToDelete, setClientToDelete] = useState(null);
-	const [deleting, setDeleting] = useState(false);
+	const [modalState, setModalState] = useState(null);
 
-	const handleConfirmDelete = async () => {
-		if (!clientToDelete) return;
-
-		setDeleting(true);
-		try {
-			await run(deleteClient, clientToDelete.id);
-			setClientToDelete(null);
-		} finally {
-			setDeleting(false);
-		}
+	const handleCancel = () => {
+		setModalState(null);
 	};
 
-	const handleCancelDelete = () => {
-		if (deleting) return;
-		setClientToDelete(null);
+	const handleConfirm = async (clientData) => {
+		if (!modalState) return;
+
+		try {
+			if (modalState.type === "delete") {
+				await run(deleteClient, modalState.data.id);
+			}
+
+			if (modalState.type === "create") {
+				await run(createClient, clientData);
+			}
+
+			if (modalState.type === "edit") {
+				await run(updateClient, {
+					clientId: modalState.data.id,
+					clientData,
+				});
+			}
+
+			setModalState(null);
+		} catch {}
 	};
 
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
@@ -54,7 +64,17 @@ const ClientsList = () => {
 		<section className="max-w-7xl mx-auto">
 			<div className="flex justify-between my-6 items-center">
 				<h2 className="text-lg font-semibold">Clientes:</h2>
-				<Button variant="primary" className="flex items-center gap-2">
+				<Button
+					variant="primary"
+					className="flex items-center gap-2"
+					onClick={() =>
+						setModalState({
+							type: "create",
+							entity: "client",
+							data: null,
+						})
+					}
+				>
 					<UserPlus size={16} />
 					Nuevo cliente
 				</Button>
@@ -107,13 +127,29 @@ const ClientsList = () => {
 								</td>
 								<td className="px-4 py-2 ">
 									<div className="flex items-center justify-center gap-2">
-										<Button variant="ghost" title="Editar">
+										<Button
+											variant="ghost"
+											title="Editar"
+											onClick={() =>
+												setModalState({
+													type: "edit",
+													entity: "client",
+													data: client,
+												})
+											}
+										>
 											<Pencil size={16} />
 										</Button>
 										<Button
 											variant="danger"
 											title="Eliminar"
-											onClick={() => setClientToDelete(client)}
+											onClick={() =>
+												setModalState({
+													type: "delete",
+													entity: "client",
+													data: client,
+												})
+											}
 										>
 											<Trash2 size={16} />
 										</Button>
@@ -131,27 +167,22 @@ const ClientsList = () => {
 				hasNext={hasNext}
 				onPageChange={goToPage}
 			/>
-			{clientToDelete && (
-				<ConfirmModal
-					title="Eliminar cliente"
-					description={
-						<>
-							¿Estás seguro que deseas eliminar al cliente{" "}
-							<strong>
-								{clientToDelete.name?.trim()
-									? clientToDelete.name
-									: "No registrado"}
-							</strong>
-							?
-						</>
-					}
-					confirmText="Eliminar"
-					cancelText="Cancelar"
-					loading={deleting}
-					onConfirm={handleConfirmDelete}
-					onCancel={handleCancelDelete}
+			{modalState && modalState.type !== "delete" && (
+				<ClientFormModal
+					open={modalState.type === "create" || modalState.type === "edit"}
+					mode={modalState.type}
+					initialData={modalState.data}
+					onCancel={handleCancel}
+					onConfirm={handleConfirm}
 				/>
 			)}
+			<ConfirmModal
+				open={modalState?.type === "delete"}
+				title="Eliminar cliente"
+				description="¿Estás seguro que deseas eliminar este cliente?"
+				onCancel={handleCancel}
+				onConfirm={() => handleConfirm()}
+			/>
 		</section>
 	);
 };

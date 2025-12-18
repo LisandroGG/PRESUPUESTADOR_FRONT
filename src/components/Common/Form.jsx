@@ -9,7 +9,7 @@ const Form = ({ children, onSubmit, className = "", title, submitText }) => {
 		>
 			{title && <h1 className="">{title}</h1>}
 			{children}
-			<Button variant="primary" type="submit" className="hover:scaz|le-100">
+			<Button variant="primary" type="submit" className="hover:scale-100">
 				{submitText}
 			</Button>
 		</form>

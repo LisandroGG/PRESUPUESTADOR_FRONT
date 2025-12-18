@@ -1,6 +1,7 @@
 import Button from "@components/Common/Button.jsx";
 
 const ConfirmModal = ({
+	open,
 	title = "Confirmar acción",
 	description,
 	confirmText = "Confirmar",
@@ -9,6 +10,7 @@ const ConfirmModal = ({
 	onCancel,
 	loading = false,
 }) => {
+	if (!open) return null;
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center">
 			<button
