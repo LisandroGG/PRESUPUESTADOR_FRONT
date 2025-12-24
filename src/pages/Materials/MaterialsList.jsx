@@ -8,34 +8,47 @@ import {
 	createMaterial,
 	deleteMaterial,
 	getAllMaterials,
+	searchMaterials,
 	updateMaterial,
 } from "@redux/Slices/materialSlice";
 import { Pencil, SquarePlus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import MaterialFormModal from "./MaterialFormModal.jsx";
 
 const MaterialsList = () => {
 	const { materials } = useSelector((state) => state.materials);
 	const { run } = useCrudDispatch();
 
-	const [materialToDelete, setMaterialToDelete] = useState(null);
-	const [deleting, setDeleting] = useState(false);
+	const [modalState, setModalState] = useState(null);
 
-	const handleConfirmDelete = async () => {
-		if (!materialToDelete) return;
-
-		setDeleting(true);
-		try {
-			await run(deleteMaterial, materialToDelete.id);
-			setMaterialToDelete(null);
-		} finally {
-			setDeleting(false);
-		}
+	const handleCancel = () => {
+		setModalState(null);
 	};
 
-	const handleCancelDelete = () => {
-		if (deleting) return;
-		setMaterialToDelete(null);
+	const handleConfirm = async (materialData) => {
+		if (!modalState) return;
+
+		try {
+			if (modalState.type === "delete") {
+				await run(deleteMaterial, modalState.data.id);
+				await run(getAllMaterials);
+			}
+
+			if (modalState.type === "create") {
+				await run(createMaterial, materialData);
+				await run(getAllMaterials);
+			}
+
+			if (modalState.type === "edit") {
+				await run(updateMaterial, {
+					materialId: modalState.data.id,
+					materialData,
+				});
+			}
+
+			setModalState(null);
+		} catch {}
 	};
 
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
@@ -52,7 +65,17 @@ const MaterialsList = () => {
 		<section className="max-w-7xl mx-auto">
 			<div className="flex justify-between my-6 items-center">
 				<h2 className="text-lg font-semibold">Materiales:</h2>
-				<Button variant="primary" className="flex items-center gap-2">
+				<Button
+					variant="primary"
+					className="flex items-center gap-2"
+					onClick={() =>
+						setModalState({
+							type: "create",
+							entity: "material",
+							data: null,
+						})
+					}
+				>
 					<SquarePlus size={16} />
 					Nuevo material
 				</Button>
@@ -97,13 +120,29 @@ const MaterialsList = () => {
 								</td>
 								<td className="px-4 py-2 ">
 									<div className="flex items-center justify-center gap-2">
-										<Button variant="ghost" title="Editar">
+										<Button
+											variant="ghost"
+											title="Editar"
+											onClick={() =>
+												setModalState({
+													type: "edit",
+													entity: "material",
+													data: material,
+												})
+											}
+										>
 											<Pencil size={16} />
 										</Button>
 										<Button
 											variant="danger"
 											title="Eliminar"
-											onClick={() => setMaterialToDelete(material)}
+											onClick={() =>
+												setModalState({
+													type: "delete",
+													entity: "material",
+													data: material,
+												})
+											}
 										>
 											<Trash2 size={16} />
 										</Button>
@@ -121,27 +160,22 @@ const MaterialsList = () => {
 				hasNext={hasNext}
 				onPageChange={goToPage}
 			/>
-			{materialToDelete && (
-				<ConfirmModal
-					title="Eliminar material"
-					description={
-						<>
-							¿Estás seguro que deseas eliminar el material{" "}
-							<strong>
-								{materialToDelete.name?.trim()
-									? materialToDelete.name
-									: "No registrado"}
-							</strong>
-							?
-						</>
-					}
-					confirmText="Eliminar"
-					cancelText="Cancelar"
-					loading={deleting}
-					onConfirm={handleConfirmDelete}
-					onCancel={handleCancelDelete}
+			{modalState && modalState.type !== "delete" && (
+				<MaterialFormModal
+					open={modalState.type === "create" || modalState.type === "edit"}
+					mode={modalState.type}
+					initialData={modalState.data}
+					onCancel={handleCancel}
+					onConfirm={handleConfirm}
 				/>
 			)}
+			<ConfirmModal
+				open={modalState?.type === "delete"}
+				title="Eliminar material"
+				description="¿Estás seguro que deseas eliminar este material?"
+				onCancel={handleCancel}
+				onConfirm={() => handleConfirm()}
+			/>
 		</section>
 	);
 };

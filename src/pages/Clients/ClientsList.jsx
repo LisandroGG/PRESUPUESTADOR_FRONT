@@ -8,7 +8,7 @@ import {
 	createClient,
 	deleteClient,
 	getAllClients,
-	searchClient,
+	searchClients,
 	updateClient,
 } from "@redux/Slices/clientSlice";
 import { formatCuit } from "@utils/formatCuit.js";
@@ -33,10 +33,12 @@ const ClientsList = () => {
 		try {
 			if (modalState.type === "delete") {
 				await run(deleteClient, modalState.data.id);
+				await run(getAllClients);
 			}
 
 			if (modalState.type === "create") {
 				await run(createClient, clientData);
+				await run(getAllClients);
 			}
 
 			if (modalState.type === "edit") {

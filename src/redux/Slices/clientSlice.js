@@ -34,7 +34,7 @@ export const getAllClients = createAsyncThunk(
 
 // SEARCH CLIENT BY QUERY
 
-export const searchClient = createAsyncThunk(
+export const searchClients = createAsyncThunk(
 	"clients/search",
 	async (query, { rejectWithValue }) => {
 		try {
@@ -130,11 +130,11 @@ export const clientsSlice = createSlice({
 			})
 
 			// SEARCH CLIENT BY QUERY
-			.addCase(searchClient.pending, (state) => {
+			.addCase(searchClients.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(searchClient.fulfilled, (state, action) => {
+			.addCase(searchClients.fulfilled, (state, action) => {
 				state.loading = false;
 				state.clients = action.payload.data;
 				state.page = action.payload.page;
@@ -145,7 +145,7 @@ export const clientsSlice = createSlice({
 				state.hasPrev = action.payload.hasPrev;
 				state.message = null;
 			})
-			.addCase(searchClient.rejected, (state, action) => {
+			.addCase(searchClients.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al buscar clientes";
 			})
