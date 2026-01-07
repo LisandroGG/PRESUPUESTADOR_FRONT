@@ -62,9 +62,9 @@ const MaterialsList = () => {
 		);
 	}
 	return (
-		<section className="max-w-7xl mx-auto">
-			<div className="flex justify-between my-6 items-center">
-				<h2 className="text-lg font-semibold">Materiales:</h2>
+		<section className="m-6 bg-white rounded-md shadow-md p-4 min-h-[85vh]">
+			<div className="flex justify-between items-center mb-6">
+				<h2 className="text-xl font-semibold">Materiales:</h2>
 				<Button
 					variant="primary"
 					className="flex items-center gap-2"
