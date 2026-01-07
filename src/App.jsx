@@ -16,7 +16,7 @@ import PrivateRoute from "../src/Routes/PrivateRoute.jsx";
 
 function App() {
 	return (
-		<div className="min-h-screen font-chivo">
+		<div className="min-h-screen font-chivo bg-neutral-100">
 			<Toaster position="top-center" />
 
 			<BrowserRouter>

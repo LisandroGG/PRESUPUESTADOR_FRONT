@@ -18,7 +18,7 @@ const MainLayout = () => {
 	};
 
 	return (
-		<div className="min-h-screen grid grid-cols-6 grid-rows-2 bg-neutral-100">
+		<div className="min-h-screen grid grid-cols-6 grid-rows-2">
 			<div className="col-span-1 row-span-2">
 			<Nav handleLogout={handleLogout} />
 			</div>
