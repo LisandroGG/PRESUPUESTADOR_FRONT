@@ -80,7 +80,7 @@ const MaterialsList = () => {
 					Nuevo material
 				</Button>
 			</div>
-			<div className="overflow-x-hidden min-h-156">
+			<div className="overflow-x-hidden min-h-158">
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-50">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">

@@ -27,7 +27,7 @@ const Pagination = ({ page, totalPages, hasNext, hasPrev, onPageChange }) => {
 				<ChevronLeft size={14} />
 			</Button>
 			<span className="font-semibold text-sm mx-2 text-neutral-600">
-				<span className="text-primary-600">{page}</span> de {totalPages}
+				<span className="text-primary-500">{page}</span> de {totalPages}
 			</span>
 			<Button
 				variant="pagination"
