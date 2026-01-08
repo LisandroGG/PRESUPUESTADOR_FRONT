@@ -62,7 +62,7 @@ const MaterialsList = () => {
 		);
 	}
 	return (
-		<section className="m-6 bg-white rounded-md shadow-md p-4 min-h-[85vh]">
+		<section className=" bg-white rounded-md shadow-md p-4 min-h-full">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-xl font-semibold">Materiales:</h2>
 				<Button

@@ -27,8 +27,8 @@ const ProductDetail = () => {
 		);
 	}
 	return (
-		<section className="max-w-7xl mx-auto">
-			<div className="flex justify-between my-6 items-center">
+		<section className="bg-white rounded-md shadow-md p-4 min-h-full">
+			<div className="flex justify-between items-center mb-6">
 				<h2>Producto: #{product?.id} - {product?.name}</h2>
 				<Button variant="primary" className="flex items-center gap-2">
 					<Pencil size={16} />

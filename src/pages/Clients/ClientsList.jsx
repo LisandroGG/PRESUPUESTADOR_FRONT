@@ -63,7 +63,7 @@ const ClientsList = () => {
 		);
 	}
 	return (
-		<section className="m-6 bg-white rounded-md shadow-md p-4 min-h-[85vh]">
+		<section className="bg-white rounded-md shadow-md p-4 min-h-full">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-xl font-semibold">Clientes:</h2>
 				<Button
@@ -81,7 +81,7 @@ const ClientsList = () => {
 					Nuevo cliente
 				</Button>
 			</div>
-			<div className="overflow-x-auto min-h-156">
+			<div className="overflow-x-auto min-h-full">
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-50">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">

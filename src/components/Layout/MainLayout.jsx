@@ -18,21 +18,23 @@ const MainLayout = () => {
 	};
 
 	return (
-		<div className="min-h-screen grid grid-cols-6 grid-rows-2">
-			<div className="col-span-1 row-span-2">
+		<div className="min-h-screen grid grid-cols-[260px_1fr] grid-rows-[88px_1fr]">
+			<aside className="row-span-2">
 			<Nav handleLogout={handleLogout} />
-			</div>
-			<main className="col-span-5 row-span-2">
-				<div className="bg-primary-500 h-22 flex items-center justify-center">
+			</aside>
+				<header className="bg-primary-500 flex items-center justify-center">
 				<Link to="/" className="flex items-center gap-2">
 					<img
 						src="assets/img/logo.webp"
 						alt="Logo"
-						className="rounded-full w-15 h-15"
+						className="w-15 h-15 rounded-full"
 					/>
-					<span className="text-lg font-bold text-white">Metalurgica vacari</span>
+					<span className="text-lg font-bold text-white">
+						Metalúrgica Vacari
+					</span>
 				</Link>
-				</div>
+				</header>
+			<main className="overflow-auto p-6">
 				<Outlet />
 			</main>
 		</div>

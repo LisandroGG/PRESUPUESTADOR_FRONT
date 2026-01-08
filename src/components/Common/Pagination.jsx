@@ -7,7 +7,6 @@ import {
 } from "lucide-react";
 
 const Pagination = ({ page, totalPages, hasNext, hasPrev, onPageChange }) => {
-	if (totalPages <= 1) return null;
 
 	return (
 		<div className="flex items-center justify-center gap-1 mt-6">
