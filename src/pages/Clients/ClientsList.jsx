@@ -81,7 +81,7 @@ const ClientsList = () => {
 					Nuevo cliente
 				</Button>
 			</div>
-			<div className="overflow-x-auto min-h-158">
+			<div className="overflow-x-auto h-158 overflow-y-auto">
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-50">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
@@ -94,7 +94,7 @@ const ClientsList = () => {
 					<tbody>
 						{!clients?.length && (
 							<tr>
-								<td colSpan={4} className="text-center py-10 text-neutral-500">
+								<td colSpan={4} className="text-center py-4 text-neutral-500">
 									No hay clientes registrados
 								</td>
 							</tr>

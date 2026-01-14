@@ -73,9 +73,9 @@ const ProductsList = () => {
 					Nuevo producto
 				</Button>
 			</div>
-			<div className="overflow-x-hidden min-h-158">
+			<div className="overflow-x-hidden h-158 overflow-y-auto">
 				<table className="min-w-full table-fixed border border-neutral-200">
-					<thead className="bg-neutral-50">
+					<thead className="bg-neutral-100">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
 							<th className="w-[15%] px-4 p-2">Identificador</th>
 							<th className="w-[40%] px-4 py-2">Nombre</th>
@@ -86,7 +86,7 @@ const ProductsList = () => {
 					<tbody>
 						{!products?.length && (
 							<tr>
-								<td colSpan={4} className="text-center py-10 text-neutral-500">
+								<td colSpan={4} className="text-center py-4 text-neutral-500">
 									No hay productos registrados
 								</td>
 							</tr>

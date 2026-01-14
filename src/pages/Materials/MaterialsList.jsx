@@ -80,7 +80,7 @@ const MaterialsList = () => {
 					Nuevo material
 				</Button>
 			</div>
-			<div className="overflow-x-hidden min-h-158">
+			<div className="overflow-x-hidden h-158 overflow-y-auto">
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-50">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
@@ -94,29 +94,29 @@ const MaterialsList = () => {
 					<tbody>
 						{!materials?.length && (
 							<tr>
-								<td colSpan={4} className="text-center py-10 text-neutral-500">
+								<td colSpan={4} className="text-center py-4 text-neutral-500">
 									No hay materiales registrados
 								</td>
 							</tr>
 						)}
 						{materials?.map((material) => (
 							<tr
-								key={material.id}
+								key={material?.id}
 								className="border-b border-neutral-200 hover:bg-neutral-50"
 							>
 								<td className="px-4 py-2 text-neutral-500 text-md">
 									{" "}
-									{material.id}
+									{material?.id}
 								</td>
 								<td className="px-4 py-2 text-neutral-500 text-md">
 									{" "}
-									{material.name}
+									{material?.name}
 								</td>
 								<td className="px-4 py-2 text-neutral-500 text-md">
-									{material.provider}
+									{material?.provider}
 								</td>
 								<td className="px-4 py-2 text-neutral-500 text-md">
-									{material.cost}
+									{material?.cost}
 								</td>
 								<td className="px-4 py-2 ">
 									<div className="flex items-center justify-center gap-2">
