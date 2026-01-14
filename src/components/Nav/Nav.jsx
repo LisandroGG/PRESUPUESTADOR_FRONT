@@ -1,4 +1,4 @@
-import { Boxes, FileText, LogOutIcon, Package, Users, Home } from "lucide-react";
+import { Boxes, FileText, LogOutIcon, Package, Users, Home, Factory } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Nav = ({ handleLogout }) => {
@@ -31,7 +31,11 @@ const Nav = ({ handleLogout }) => {
 	];
 	return (
 		<header className="bg-primary-500 h-full text-white shadow-md z-50 w-full flex">
-			<div className="mx-auto flex flex-col items-center gap-6 justify-center w-full">
+			<div className="mx-auto gap-6 grid grid-rows-[45px_1fr_45px] p-2">
+				<div className="flex gap-2 items-center">
+					<Factory size={24} />
+					<h1 className="text-2xl font-bold">Gestión</h1>
+				</div>
 				<nav>
 					<ul className="flex flex-col gap-6">
 						{navItems.map(({ to, label, icon }) => (
@@ -52,7 +56,7 @@ const Nav = ({ handleLogout }) => {
 					onClick={() => handleLogout()}
 					className="hover:scale-105 cursor-pointer flex gap-2 p-2 items-center hover:bg-white/10 rounded-lg transition-all duration-200 text-lg font-semibold"
 				>
-					<LogOutIcon size={16} />
+					<LogOutIcon size={24} />
 					Cerrar sesion
 				</button>
 			</div>

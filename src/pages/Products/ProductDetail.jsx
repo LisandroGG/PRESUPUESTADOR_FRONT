@@ -27,7 +27,7 @@ const ProductDetail = () => {
 		);
 	}
 	return (
-		<section className="bg-white rounded-md shadow-md p-4 min-h-full">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-8 min-h-full">
 			<div className="flex justify-between items-center mb-6">
 				<h2>Producto: #{product?.id} - {product?.name}</h2>
 				<Button variant="primary" className="flex items-center gap-2">
@@ -43,6 +43,10 @@ const ProductDetail = () => {
 					<span>{Number(material?.quantity)}</span>
 					</div>
 				))}</strong></p>
+				<p>Costo del producto</p>
+				<p>Costo de materiales</p>
+				<p>Costos adicionales</p>
+				<p>Precio de venta</p>
 			</div>
 		</section>
 	)

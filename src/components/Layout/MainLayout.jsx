@@ -18,7 +18,7 @@ const MainLayout = () => {
 	};
 
 	return (
-		<div className="min-h-screen grid grid-cols-[260px_1fr] grid-rows-[88px_1fr]">
+		<div className="min-h-screen grid grid-cols-[260px_1fr] grid-rows-[60px_1fr]">
 			<aside className="row-span-2">
 			<Nav handleLogout={handleLogout} />
 			</aside>
@@ -27,7 +27,7 @@ const MainLayout = () => {
 					<img
 						src="assets/img/logo.webp"
 						alt="Logo"
-						className="w-15 h-15 rounded-full"
+						className="w-10 h-10 rounded-full"
 					/>
 					<span className="text-lg font-bold text-white">
 						Metalúrgica Vacari

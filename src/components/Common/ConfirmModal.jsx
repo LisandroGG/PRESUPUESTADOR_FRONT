@@ -27,7 +27,7 @@ const ConfirmModal = ({
 					<p className="mt-2 text-sm text-neutral-600">{description}</p>
 				)}
 
-				<div className="mt-6 flex justify-end gap-3">
+				<div className="mt-6 flex justify-end gap-2">
 					<Button variant="ghost" onClick={onCancel} disabled={loading}>
 						{cancelText}
 					</Button>

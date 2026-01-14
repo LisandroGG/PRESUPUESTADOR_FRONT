@@ -55,7 +55,7 @@ const ProductsList = () => {
 	}
 
 	return (
-		<section className="bg-white rounded-md shadow-md p-4 min-h-full">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-xl font-semibold">Productos:</h2>
 				<Button
