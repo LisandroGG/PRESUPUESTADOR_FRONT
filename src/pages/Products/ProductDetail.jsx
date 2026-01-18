@@ -51,7 +51,7 @@ const ProductDetail = () => {
 						<span className="text-lg font-semibold">Descripción</span>
 					</div>
 					<div className="border-neutral-200 border rounded-xl shadow-md">
-						<div className="p-4 h-45 overflow-y-auto">
+						<div className="p-4 max-h-45 overflow-y-auto no-scrollbar">
 							<p>{product?.description}</p>
 						</div>
 					</div>
