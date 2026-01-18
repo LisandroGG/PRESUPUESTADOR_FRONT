@@ -5,7 +5,8 @@ import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProductById } from "@redux/Slices/productSlice.js";
-import { Pencil, Banknote, FileText, ClipboardCheck } from "lucide-react";
+import { Pencil, Banknote, FileText, ClipboardCheck, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -32,8 +33,11 @@ const ProductDetail = () => {
 	}
 	return (
 		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-8 min-h-full">
-			<div className="flex justify-between items-center mb-10">
-				<h2 className="font-bold text-2xl">Producto: #{product?.id} - {product?.name}</h2>
+			<div className="flex justify-between items-center mb-8">
+				<div className="flex flex-col">
+					<Link to="/products" className="flex items-center text-lg hover:text-primary-500"><ArrowLeft size={20} />Atrás</Link>
+				<h2 className="font-bold text-3xl">Producto: #{product?.id} - {product?.name}</h2>
+				</div>
 				<Button variant="primary" className="flex items-center gap-2">
 					<Pencil size={16} />
 					Editar Producto
@@ -47,7 +51,7 @@ const ProductDetail = () => {
 						<span className="text-lg font-semibold">Descripción</span>
 					</div>
 					<div className="border-neutral-200 border rounded-xl shadow-md">
-						<div className="p-4 h-30 overflow-y-auto">
+						<div className="p-4 h-45 overflow-y-auto">
 							<p>{product?.description}</p>
 						</div>
 					</div>
@@ -59,7 +63,7 @@ const ProductDetail = () => {
 	</div>
 
 	<div className="border border-neutral-200 rounded-xl shadow-md overflow-hidden">
-		<div className="max-h-80 overflow-y-auto">
+		<div className="h-80 overflow-y-auto">
 			<table className="w-full">
 				<thead className="bg-neutral-100 text-neutral-500 text-sm">
 					<tr className="font-semibold">
@@ -111,7 +115,7 @@ const ProductDetail = () => {
 						<span className="text-lg font-semibold">Resumen Financiero</span>
 						</div>
 						<div className="min-h-140">
-							<div className="p-6 grid grid-rows-[1fr_1fr_1fr_1fr] gap-6 min-h-140">
+							<div className="p-6 grid grid-rows-[1fr_1fr_1fr] gap-6 min-h-120">
 								<div className="flex flex-col items-center text-center">
 									<span className="text-neutral-500 text-lg">Costo Total de Materiales:</span>
 									<span className="font-semibold text-xl">

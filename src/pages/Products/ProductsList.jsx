@@ -77,9 +77,9 @@ const ProductsList = () => {
 				<table className="min-w-full table-fixed border border-neutral-200">
 					<thead className="bg-neutral-100">
 						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
-							<th className="w-[15%] px-4 p-2">Identificador</th>
-							<th className="w-[40%] px-4 py-2">Nombre</th>
-							<th className="w-[40%] px-4 py-2">Descripción</th>
+							<th className="w-[5%] px-4 p-2">Identificador</th>
+							<th className="w-[35%] px-4 py-2">Nombre</th>
+							<th className="w-[55%] px-4 py-2">Descripción</th>
 							<th className="w-[5%] px-4 py-2">Acciones</th>
 						</tr>
 					</thead>
@@ -109,8 +109,9 @@ const ProductsList = () => {
 									</Link>
 								</td>
 								<td className="px-4 py-2 text-neutral-500 text-md">
-									{" "}
+									<div className="h-12 overflow-y-auto no-scrollbar">
 									{product.description}
+									</div>
 								</td>
 								<td className="px-4 py-2 ">
 									<div className="flex items-center justify-center gap-2">

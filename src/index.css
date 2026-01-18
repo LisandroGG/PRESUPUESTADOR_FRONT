@@ -67,4 +67,13 @@
 	.font-chivo {
 		font-family: "Chivo", system-ui, sans-serif;
 	}
+
+	.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+	.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
 }
