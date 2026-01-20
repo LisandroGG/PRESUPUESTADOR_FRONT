@@ -18,14 +18,14 @@ const initialState = {
 
 export const getAllMaterials = createAsyncThunk(
 	"materials/getAllMaterials",
-	async (page, { rejectedWithValue }) => {
+	async (page, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/materials", {
 				params: page,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener materiales",
 			);
 		}
@@ -36,14 +36,14 @@ export const getAllMaterials = createAsyncThunk(
 
 export const searchMaterials = createAsyncThunk(
 	"materials/search",
-	async (query, { rejectedWithValue }) => {
+	async (query, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/materials/search", {
 				params: query,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al buscar materiales",
 			);
 		}
@@ -54,12 +54,12 @@ export const searchMaterials = createAsyncThunk(
 
 export const createMaterial = createAsyncThunk(
 	"materials/createMaterial",
-	async (materialData, { rejectedWithValue }) => {
+	async (materialData, { rejectWithValue }) => {
 		try {
 			const response = await axios.post("/materials", materialData);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al crear material",
 			);
 		}
@@ -70,12 +70,12 @@ export const createMaterial = createAsyncThunk(
 
 export const deleteMaterial = createAsyncThunk(
 	"materials/deleteMaterial",
-	async (materialId, { rejectedWithValue }) => {
+	async (materialId, { rejectWithValue }) => {
 		try {
 			const response = await axios.delete(`/materials/${materialId}`);
 			return { materialId, message: response.data.message };
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al eliminar material",
 			);
 		}
@@ -86,7 +86,7 @@ export const deleteMaterial = createAsyncThunk(
 
 export const updateMaterial = createAsyncThunk(
 	"materials/updateMaterial",
-	async ({ materialId, materialData }, { rejectedWithValue }) => {
+	async ({ materialId, materialData }, { rejectWithValue }) => {
 		try {
 			const response = await axios.put(
 				`/materials/${materialId}`,
@@ -94,7 +94,7 @@ export const updateMaterial = createAsyncThunk(
 			);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al actualizar material",
 			);
 		}

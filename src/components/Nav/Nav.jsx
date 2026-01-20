@@ -1,4 +1,12 @@
-import { Boxes, FileText, LogOutIcon, Package, Users, Home, Factory } from "lucide-react";
+import {
+	Boxes,
+	Factory,
+	FileText,
+	Home,
+	LogOutIcon,
+	Package,
+	Users,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Nav = ({ handleLogout }) => {
@@ -6,7 +14,7 @@ const Nav = ({ handleLogout }) => {
 		{
 			to: "/",
 			label: "Inicio",
-			icon: <Home size={16} />
+			icon: <Home size={16} />,
 		},
 		{
 			to: "/clients",

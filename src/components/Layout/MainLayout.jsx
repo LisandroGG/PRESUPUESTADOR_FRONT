@@ -2,7 +2,7 @@ import Nav from "@components/Nav/Nav.jsx";
 import { clearError, logoutUser } from "@redux/Slices/usersSlice";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { Outlet, Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const MainLayout = () => {
 	const dispatch = useDispatch();
@@ -20,9 +20,9 @@ const MainLayout = () => {
 	return (
 		<div className="min-h-screen grid grid-cols-[260px_1fr] grid-rows-[60px_1fr]">
 			<aside className="row-span-2">
-			<Nav handleLogout={handleLogout} />
+				<Nav handleLogout={handleLogout} />
 			</aside>
-				<header className="bg-primary-500 flex items-center justify-center">
+			<header className="bg-primary-500 flex items-center justify-center">
 				<Link to="/" className="flex items-center gap-2">
 					<img
 						src="assets/img/logo.webp"
@@ -33,7 +33,7 @@ const MainLayout = () => {
 						Metalúrgica Vacari
 					</span>
 				</Link>
-				</header>
+			</header>
 			<main className="overflow-auto p-6">
 				<Outlet />
 			</main>

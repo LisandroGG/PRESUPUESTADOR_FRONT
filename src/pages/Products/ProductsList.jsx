@@ -110,7 +110,7 @@ const ProductsList = () => {
 								</td>
 								<td className="px-4 py-2 text-neutral-500 text-md">
 									<div className="h-12 overflow-y-auto no-scrollbar">
-									{product.description}
+										{product.description}
 									</div>
 								</td>
 								<td className="px-4 py-2 ">

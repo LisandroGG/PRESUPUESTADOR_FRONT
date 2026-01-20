@@ -19,14 +19,14 @@ const initialState = {
 
 export const getAllProducts = createAsyncThunk(
 	"products/getAllProducts",
-	async (page, { rejectedWithValue }) => {
+	async (page, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/products", {
 				params: page,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener productos",
 			);
 		}
@@ -35,12 +35,12 @@ export const getAllProducts = createAsyncThunk(
 
 export const getProductById = createAsyncThunk(
 	"products/getProductById",
-	async (productId, { rejectedWithValue }) => {
+	async (productId, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(`/products/detail/${productId}`);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data.message || "Error al obtener producto",
 			);
 		}
@@ -51,14 +51,14 @@ export const getProductById = createAsyncThunk(
 
 export const searchProducts = createAsyncThunk(
 	"products/search",
-	async (query, { rejectedWithValue }) => {
+	async (query, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/products/search", {
 				params: query,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al buscar productos",
 			);
 		}
@@ -69,12 +69,12 @@ export const searchProducts = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
 	"products/createProduct",
-	async (productData, { rejectedWithValue }) => {
+	async (productData, { rejectWithValue }) => {
 		try {
 			const response = await axios.post("/products", productData);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al crear producto",
 			);
 		}
@@ -85,12 +85,12 @@ export const createProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
 	"products/deleteProduct",
-	async (productId, { rejectedWithValue }) => {
+	async (productId, { rejectWithValue }) => {
 		try {
 			const response = await axios.delete(`/products/${productId}`);
 			return { productId, message: response.data.message };
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al eliminar producto",
 			);
 		}
@@ -101,12 +101,12 @@ export const deleteProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
 	"products/updateProduct",
-	async ({ productId, productData }, { rejectedWithValue }) => {
+	async ({ productId, productData }, { rejectWithValue }) => {
 		try {
 			const response = await axios.put(`/products/${productId}`, productData);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al actualizar producto",
 			);
 		}
