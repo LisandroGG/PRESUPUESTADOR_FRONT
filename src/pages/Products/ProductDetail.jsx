@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
+import { getAllMaterials } from "@redux/Slices/materialSlice";
 import { getProductById, updateProduct } from "@redux/Slices/productSlice.js";
 import {
 	ArrowLeft,
@@ -9,10 +10,12 @@ import {
 	ClipboardCheck,
 	FileText,
 	Pencil,
+	Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import ProductMaterialsFormModal from "./ProductMaterialsFormModal";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -20,11 +23,14 @@ const ProductDetail = () => {
 
 	const { run } = useCrudDispatch();
 	const product = useSelector((state) => state.products.product);
+	const { materials } = useSelector((state) => state.materials);
 	const loading = useSelector((state) => state.products.loading);
 	const [originalData, setOriginalData] = useState(null);
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [modalState, setModalState] = useState(false);
+	const [deleteModalState, setDeleteModalState] = useState(null);
+	const [materialsModalOpen, setMaterialsModalOpen] = useState(false);
 
 	const [productData, setProductData] = useState({
 		name: "",
@@ -33,9 +39,11 @@ const ProductDetail = () => {
 		productionCost: 0,
 	});
 
+	// biome-ignore lint: useEffectBug
 	useEffect(() => {
 		run(getProductById, productId);
-	}, [productId, run]);
+		run(getAllMaterials);
+	}, [productId]);
 
 	useEffect(() => {
 		if (product) {
@@ -47,6 +55,29 @@ const ProductDetail = () => {
 			});
 		}
 	}, [product]);
+
+	const handleAddMaterial = (newMaterial) => {
+		setProductData((prev) => {
+			const exists = prev.materials.some(
+				(m) => m.materialId === newMaterial.materialId,
+			);
+
+			if (exists) return prev;
+
+			return {
+				...prev,
+				materials: [
+					...prev.materials,
+					{
+						...newMaterial,
+						tempId: crypto.randomUUID(),
+					},
+				],
+			};
+		});
+
+		setMaterialsModalOpen(false);
+	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -85,6 +116,7 @@ const ProductDetail = () => {
 	const handleCancelClick = () => {
 		if (!hasChanges()) {
 			setIsEditing(false);
+			setDeleteModalState(null);
 			return;
 		}
 		setModalState(true);
@@ -99,11 +131,16 @@ const ProductDetail = () => {
 			productionCost: product?.productionCost || 0,
 		});
 		setModalState(false);
+		setDeleteModalState(null);
 	};
 
 	const materialsCost = Number(product?.totalMaterialsCost || 0);
 	const productionCost = Number(product?.productionCost || 0);
 	const totalCost = materialsCost + productionCost;
+
+	const materialsToRender = isEditing
+		? productData.materials
+		: product?.productMaterials;
 
 	if (loading) {
 		return (
@@ -199,7 +236,14 @@ const ProductDetail = () => {
 								<span className="text-lg font-semibold">Materiales</span>
 							</div>
 
-							{isEditing && <Button variant="primary">Agregar Material</Button>}
+							{isEditing && (
+								<Button
+									variant="primary"
+									onClick={() => setMaterialsModalOpen(true)}
+								>
+									Agregar Material
+								</Button>
+							)}
 						</div>
 
 						<div className="border border-neutral-200 rounded-xl shadow-md overflow-hidden">
@@ -212,13 +256,16 @@ const ProductDetail = () => {
 											</th>
 											<th className="w-[25%] px-6 py-3 text-left">PROVEEDOR</th>
 											<th className="w-[5%] px-6 py-3 text-center">CANTIDAD</th>
+											{isEditing && (
+												<th className="text-center px-6 py-3">ACCIONES</th>
+											)}
 										</tr>
 									</thead>
 									<tbody>
-										{!product?.productMaterials?.length && (
+										{!materialsToRender?.length && (
 											<tr>
 												<td
-													colSpan={3}
+													colSpan={isEditing ? 4 : 3}
 													className="text-center py-4 text-neutral-500"
 												>
 													No hay materiales registrados en el producto
@@ -226,18 +273,41 @@ const ProductDetail = () => {
 											</tr>
 										)}
 
-										{product?.productMaterials?.map((material) => (
+										{materialsToRender?.map((material) => (
 											<tr
-												key={material?.id}
+												key={material.id ?? material.tempId}
 												className="border-b border-neutral-200 last:border-b-0"
 											>
-												<td className="px-6 py-3">{material?.material.name}</td>
 												<td className="px-6 py-3">
-													{material?.material.provider}
+													{material.material?.name ||
+														materials.find((m) => m.id === material.materialId)
+															?.name}
+												</td>
+												<td className="px-6 py-3">
+													{material.material?.provider || "-"}
 												</td>
 												<td className="px-6 py-3 text-center">
-													{Number(material?.quantity)}
+													{Number(material.quantity).toFixed(2)}
 												</td>
+												{isEditing && (
+													<td className="px-6 py-3 text-center">
+														{isEditing && (
+															<Button
+																variant="danger"
+																onClick={() =>
+																	setDeleteModalState({
+																		type: "delete-material",
+																		data: {
+																			key: material.id ?? material.tempId,
+																		},
+																	})
+																}
+															>
+																<Trash2 size={16} />
+															</Button>
+														)}
+													</td>
+												)}
 											</tr>
 										))}
 									</tbody>
@@ -307,6 +377,27 @@ const ProductDetail = () => {
 				description="¿Estás seguro que no quieres guardar los cambios?"
 				onCancel={() => setModalState(false)}
 				onConfirm={handleConfirmCancel}
+			/>
+			<ConfirmModal
+				open={deleteModalState?.type === "delete-material"}
+				title="Eliminar material"
+				description="¿Estás seguro que deseas eliminar este material del producto?"
+				onCancel={() => setDeleteModalState(null)}
+				onConfirm={() => {
+					setProductData((prev) => ({
+						...prev,
+						materials: prev.materials.filter(
+							(m) => (m.id ?? m.tempId) !== deleteModalState.data.key,
+						),
+					}));
+					setDeleteModalState(null);
+				}}
+			/>
+			<ProductMaterialsFormModal
+				open={materialsModalOpen}
+				onConfirm={handleAddMaterial}
+				onCancel={() => setMaterialsModalOpen(false)}
+				materials={materials}
 			/>
 		</section>
 	);
