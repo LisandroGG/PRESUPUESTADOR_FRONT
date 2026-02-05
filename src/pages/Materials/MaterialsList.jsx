@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
 import {
@@ -51,6 +52,62 @@ const MaterialsList = () => {
 		} catch {}
 	};
 
+	const columns = [
+		{
+			key: "id",
+			label: "Identificador",
+			width: "w-[15%]",
+		},
+		{
+			key: "name",
+			label: "Nombre",
+			width: "w-[30%]",
+		},
+		{
+			key: "provider",
+			label: "Proveedor",
+			width: "w-[20%]",
+		},
+		{
+			key: "cost",
+			label: "Costo",
+			width: "w-[15%]",
+			render: (material) => `$ ${material.cost}`,
+		},
+	];
+
+	const renderActions = (material) => (
+		<>
+			<Button
+				variant="ghost"
+				title="Editar"
+				onClick={() =>
+					setModalState({
+						type: "edit",
+						entity: "material",
+						data: material,
+					})
+				}
+			>
+				<Pencil size={16} />
+			</Button>
+
+			<Button
+				variant="danger"
+				title="Eliminar"
+				onClick={() =>
+					setModalState({
+						type: "delete",
+						entity: "material",
+						data: material,
+					})
+				}
+			>
+				<Trash2 size={16} />
+			</Button>
+		</>
+	);
+
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
 		usePagination((state) => state.materials, getAllMaterials);
 
@@ -80,79 +137,12 @@ const MaterialsList = () => {
 					Nuevo material
 				</Button>
 			</div>
-			<div className="overflow-x-hidden h-158 overflow-y-auto">
-				<table className="min-w-full table-fixed border border-neutral-200">
-					<thead className="bg-neutral-50">
-						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
-							<th className="w-[15%] px-4 p-2">Identificador</th>
-							<th className="w-[30%] px-4 py-2">Nombre</th>
-							<th className="w-[20%] px-4 py-2">Proveedor</th>
-							<th className="w-[15%] px-4 py-2">Costo</th>
-							<th className="w-[5%] px-4 py-2">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						{!materials?.length && (
-							<tr>
-								<td colSpan={4} className="text-center py-4 text-neutral-500">
-									No hay materiales registrados
-								</td>
-							</tr>
-						)}
-						{materials?.map((material) => (
-							<tr
-								key={material?.id}
-								className="border-b border-neutral-200 hover:bg-neutral-50"
-							>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									{" "}
-									{material?.id}
-								</td>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									{" "}
-									{material?.name}
-								</td>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									{material?.provider}
-								</td>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									{material?.cost}
-								</td>
-								<td className="px-4 py-2 ">
-									<div className="flex items-center justify-center gap-2">
-										<Button
-											variant="ghost"
-											title="Editar"
-											onClick={() =>
-												setModalState({
-													type: "edit",
-													entity: "material",
-													data: material,
-												})
-											}
-										>
-											<Pencil size={16} />
-										</Button>
-										<Button
-											variant="danger"
-											title="Eliminar"
-											onClick={() =>
-												setModalState({
-													type: "delete",
-													entity: "material",
-													data: material,
-												})
-											}
-										>
-											<Trash2 size={16} />
-										</Button>
-									</div>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
+			<TableList
+				columns={columns}
+				data={materials}
+				renderActions={renderActions}
+				emptyMessage="No hay materiales registrados"
+			/>
 			<Pagination
 				page={page}
 				totalPages={totalPages}

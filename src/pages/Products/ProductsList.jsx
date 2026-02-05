@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
 import {
@@ -43,6 +44,53 @@ const ProductsList = () => {
 		} catch {}
 	};
 
+	const columns = [
+		{
+			key: "id",
+			label: "Identificador",
+			width: "w-[5%]",
+		},
+		{
+			key: "name",
+			label: "Nombre",
+			width: "w-[35%]",
+			render: (product) => (
+				<Link
+					to={`/products/${product.id}`}
+					className="hover:text-primary-500 hover:font-semibold"
+				>
+					{product.name}
+				</Link>
+			),
+		},
+		{
+			key: "description",
+			label: "Descripción",
+			width: "w-[55%]",
+			render: (product) => (
+				<div className="h-12 overflow-y-auto no-scrollbar">
+					{product.description}
+				</div>
+			),
+		},
+	];
+
+	const renderActions = (product) => (
+		<Button
+			variant="danger"
+			title="Eliminar"
+			onClick={() =>
+				setModalState({
+					type: "delete",
+					entity: "product",
+					data: product,
+				})
+			}
+		>
+			<Trash2 size={16} />
+		</Button>
+	);
+
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
 		usePagination((state) => state.products, getAllProducts);
 
@@ -73,68 +121,14 @@ const ProductsList = () => {
 					Nuevo producto
 				</Button>
 			</div>
-			<div className="overflow-x-hidden h-158 overflow-y-auto">
-				<table className="min-w-full table-fixed border border-neutral-200">
-					<thead className="bg-neutral-100">
-						<tr className="text-left border-b border-neutral-200 text-neutral-700 text-sm font-semibold">
-							<th className="w-[5%] px-4 p-2">Identificador</th>
-							<th className="w-[35%] px-4 py-2">Nombre</th>
-							<th className="w-[55%] px-4 py-2">Descripción</th>
-							<th className="w-[5%] px-4 py-2">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						{!products?.length && (
-							<tr>
-								<td colSpan={4} className="text-center py-4 text-neutral-500">
-									No hay productos registrados
-								</td>
-							</tr>
-						)}
-						{products?.map((product) => (
-							<tr
-								className="border-b border-neutral-200 hover:bg-neutral-50"
-								key={product.id}
-							>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									{" "}
-									{product.id}
-								</td>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									<Link
-										to={`/products/${product.id}`}
-										className="hover:text-primary-500 hover:font-semibold"
-									>
-										{product.name}
-									</Link>
-								</td>
-								<td className="px-4 py-2 text-neutral-500 text-md">
-									<div className="h-12 overflow-y-auto no-scrollbar">
-										{product.description}
-									</div>
-								</td>
-								<td className="px-4 py-2 ">
-									<div className="flex items-center justify-center gap-2">
-										<Button
-											variant="danger"
-											title="Eliminar"
-											onClick={() =>
-												setModalState({
-													type: "delete",
-													entity: "product",
-													data: product,
-												})
-											}
-										>
-											<Trash2 size={16} />
-										</Button>
-									</div>
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
+
+			<TableList
+				columns={columns}
+				data={products}
+				renderActions={renderActions}
+				emptyMessage="No hay productos registrados"
+			/>
+
 			<Pagination
 				page={page}
 				totalPages={totalPages}
@@ -142,14 +136,16 @@ const ProductsList = () => {
 				hasNext={hasNext}
 				onPageChange={goToPage}
 			/>
-			{modalState && modalState.type !== "delete" && (
+
+			{modalState?.type === "create" && (
 				<ProductFormModal
-					open={modalState.type === "create"}
-					initialData={modalState.data}
+					open
+					initialData={null}
 					onCancel={handleCancel}
 					onConfirm={handleConfirm}
 				/>
 			)}
+
 			<ConfirmModal
 				open={modalState?.type === "delete"}
 				title="Eliminar producto"
