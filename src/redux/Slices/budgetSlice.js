@@ -98,6 +98,20 @@ export const deleteBudget = createAsyncThunk(
 	},
 );
 
+export const updateBudget = createAsyncThunk(
+	"budgets/updateBudget",
+	async ({ budgetId, budgetData }, { rejectWithValue}) => {
+		try {
+			const response = await axios.put(`/budgets/${budgetId}`, budgetData);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message || "Error al actualizar presuspuesto"
+			)
+		}
+	}
+)
+
 // UPDATE BUDGET STATUS
 
 export const updateBudgetStatus = createAsyncThunk(
@@ -217,6 +231,23 @@ export const budgetsSlice = createSlice({
 				state.error = action.payload || "Error al eliminar presupuesto";
 			})
 
+			// UPDATE BUDGET
+			.addCase(updateBudget.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(updateBudget.fulfilled, (state, action) => {
+				state.loading = false;
+				const updatedBudget = action.payload.budget;
+				state.budgets = state.budgets.map((b) => 
+					b.id === updatedBudget.id ? updatedBudget : b,
+				);
+				state.message = action.payload.message;
+			})
+			.addCase(updateBudget.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al actualizar presupuesto";
+			})
 			// UPDATE BUDGET STATUS
 			.addCase(updateBudgetStatus.pending, (state) => {
 				state.loading = true;
