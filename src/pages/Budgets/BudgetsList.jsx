@@ -60,7 +60,7 @@ const BudgetsList = () => {
 		{
 			key: "description",
 			label: "Descripción",
-			width: "w-[35&]",
+			width: "w-[30%]",
 			render: (budget) => (
 				<Link
 					to={`/budgets/${budget.id}`}
@@ -73,13 +73,37 @@ const BudgetsList = () => {
 		{
 			key: "client",
 			label: "Cliente",
-			width: "w-[30%]",
+			width: "w-[25%]",
 			render: (budget) =>
 				budget.client ? (
 					budget.client?.name || budget.client?.cuit
 				) : (
 					<span className="italic text-neutral-500">Sin cliente asignado</span>
 				),
+		},
+		{
+			key: "status",
+			label: "Estado",
+			width: "w-[10%]",
+			render: (budget) => (
+				<span>
+					{budget?.status === "pending" && (
+						<span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm flex items-center">
+							Pendiente
+						</span>
+					)}
+					{budget?.status === "approved" && (
+						<span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm flex items-center">
+							Aprobado
+						</span>
+					)}
+					{budget?.status === "paid" && (
+						<span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center">
+							Pagado
+						</span>
+					)}
+				</span>
+			),
 		},
 	];
 

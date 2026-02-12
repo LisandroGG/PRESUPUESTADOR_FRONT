@@ -100,17 +100,17 @@ export const deleteBudget = createAsyncThunk(
 
 export const updateBudget = createAsyncThunk(
 	"budgets/updateBudget",
-	async ({ budgetId, budgetData }, { rejectWithValue}) => {
+	async ({ budgetId, budgetData }, { rejectWithValue }) => {
 		try {
 			const response = await axios.put(`/budgets/${budgetId}`, budgetData);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(
-				error.response?.data?.message || "Error al actualizar presuspuesto"
-			)
+				error.response?.data?.message || "Error al actualizar presuspuesto",
+			);
 		}
-	}
-)
+	},
+);
 
 // UPDATE BUDGET STATUS
 
@@ -239,7 +239,7 @@ export const budgetsSlice = createSlice({
 			.addCase(updateBudget.fulfilled, (state, action) => {
 				state.loading = false;
 				const updatedBudget = action.payload.budget;
-				state.budgets = state.budgets.map((b) => 
+				state.budgets = state.budgets.map((b) =>
 					b.id === updatedBudget.id ? updatedBudget : b,
 				);
 				state.message = action.payload.message;
