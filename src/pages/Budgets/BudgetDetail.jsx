@@ -162,13 +162,13 @@ const BudgetDetail = () => {
 							</span>
 						)}
 						{budget?.status === "approved" && (
-							<span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm flex items-center">
-								Aprobado
+							<span className="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm flex items-center">
+								Confirmado
 							</span>
 						)}
 						{budget?.status === "paid" && (
-							<span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm flex items-center">
-								Pagado
+							<span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center">
+								Saldado
 							</span>
 						)}
 					</div>

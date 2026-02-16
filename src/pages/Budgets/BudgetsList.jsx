@@ -10,13 +10,15 @@ import {
 	deleteBudget,
 	getAllBudgets,
 	getAllBudgetsFromClient,
+	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
 import { getAllClients } from "@redux/Slices/clientSlice.js";
-import { SquarePlus, Trash2 } from "lucide-react";
+import { Settings, SquarePlus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import BudgetFormModal from "./BudgetFormModal.jsx";
+import ChangeStatusModal from "./ChangeStatusModal.jsx";
 
 const BudgetsList = () => {
 	const { budgets } = useSelector((state) => state.budgets);
@@ -44,6 +46,14 @@ const BudgetsList = () => {
 
 			if (modalState.type === "create") {
 				await run(createBudget, budgetData);
+				await run(getAllBudgets);
+			}
+
+			if (modalState.type === "changeStatus") {
+				await run(updateBudgetStatus, {
+					budgetId: modalState.data.id,
+					status: budgetData,
+				});
 				await run(getAllBudgets);
 			}
 
@@ -93,13 +103,13 @@ const BudgetsList = () => {
 						</span>
 					)}
 					{budget?.status === "approved" && (
-						<span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm flex items-center">
-							Aprobado
+						<span className="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm flex items-center">
+							Confirmado
 						</span>
 					)}
 					{budget?.status === "paid" && (
 						<span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center">
-							Pagado
+							Saldado
 						</span>
 					)}
 				</span>
@@ -108,19 +118,34 @@ const BudgetsList = () => {
 	];
 
 	const renderActions = (budget) => (
-		<Button
-			variant="danger"
-			title="Eliminar"
-			onClick={() =>
-				setModalState({
-					type: "delete",
-					entity: "budget",
-					data: budget,
-				})
-			}
-		>
-			<Trash2 size={16} />
-		</Button>
+		<>
+			<Button
+				variant="ghost"
+				title="Editar"
+				onClick={() => {
+					setModalState({
+						type: "changeStatus",
+						entity: "budget",
+						data: budget,
+					});
+				}}
+			>
+				<Settings size={16} />
+			</Button>
+			<Button
+				variant="danger"
+				title="Eliminar"
+				onClick={() =>
+					setModalState({
+						type: "delete",
+						entity: "budget",
+						data: budget,
+					})
+				}
+			>
+				<Trash2 size={16} />
+			</Button>
+		</>
 	);
 
 	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
@@ -185,6 +210,15 @@ const BudgetsList = () => {
 				onCancel={handleCancel}
 				onConfirm={handleConfirm}
 			/>
+
+			{modalState?.type === "changeStatus" && (
+				<ChangeStatusModal
+					open
+					initialStatus={modalState?.data}
+					onCancel={handleCancel}
+					onConfirm={handleConfirm}
+				/>
+			)}
 		</section>
 	);
 };
