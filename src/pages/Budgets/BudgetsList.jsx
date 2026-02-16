@@ -12,7 +12,7 @@ import {
 	getAllBudgetsFromClient,
 	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
-import { getAllClients } from "@redux/Slices/clientSlice.js";
+import { getAllClientsForSelect } from "@redux/Slices/clientSlice.js";
 import { Settings, SquarePlus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -29,7 +29,7 @@ const BudgetsList = () => {
 
 	// biome-ignore lint: useEffectBug
 	useEffect(() => {
-		run(getAllClients);
+		run(getAllClientsForSelect);
 	}, []);
 
 	const handleCancel = () => {

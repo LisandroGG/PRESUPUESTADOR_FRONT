@@ -18,12 +18,12 @@ const initialState = {
 
 export const getAllPaymentsFromBudget = createAsyncThunk(
 	"payments/getAllPayments",
-	async (budgetId, { rejectedWithValue }) => {
+	async (budgetId, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(`/payments/${budgetId}`);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener pagos",
 			);
 		}
@@ -34,12 +34,12 @@ export const getAllPaymentsFromBudget = createAsyncThunk(
 
 export const createPayment = createAsyncThunk(
 	"payments/createPayment",
-	async (paymentData, { rejectedWithValue }) => {
+	async (paymentData, { rejectWithValue }) => {
 		try {
 			const response = await axios.post("/payments", paymentData);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al crear pago",
 			);
 		}
@@ -50,12 +50,12 @@ export const createPayment = createAsyncThunk(
 
 export const deletePayment = createAsyncThunk(
 	"payments/deletePayment",
-	async (paymentId, { rejectedWithValue }) => {
+	async (paymentId, { rejectWithValue }) => {
 		try {
 			const response = await axios.delete(`/payments/${paymentId}`);
 			return { paymentId, message: response.data.message };
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al eliminar pago",
 			);
 		}

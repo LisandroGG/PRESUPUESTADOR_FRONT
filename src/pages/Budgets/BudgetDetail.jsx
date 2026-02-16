@@ -3,7 +3,8 @@ import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import { getBudgetById, updateBudget } from "@redux/slices/budgetSlice.js";
-import { getAllProducts } from "@redux/slices/productSlice.js";
+import { createPayment, deletePayment } from "@redux/slices/paymentSlice.js";
+import { getAllProductsForSelect } from "@redux/slices/productSlice.js";
 import {
 	ArrowLeft,
 	Banknote,
@@ -15,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import AddPaymentModal from "./AddPaymentModal.jsx";
 import ProductsFormModal from "./ProductsFormModal";
 
 const BudgetDetail = () => {
@@ -28,9 +30,7 @@ const BudgetDetail = () => {
 	const [originalData, setOriginalData] = useState(null);
 
 	const [isEditing, setIsEditing] = useState(false);
-	const [modalState, setModalState] = useState(false);
-	const [deleteModalState, setDeleteModalState] = useState(null);
-	const [productsModalOpen, setProductsModalOpen] = useState(false);
+	const [modalState, setModalState] = useState(null);
 
 	const [budgetData, setBudgetData] = useState({
 		description: "",
@@ -40,7 +40,7 @@ const BudgetDetail = () => {
 	// biome-ignore lint: useEffectBug
 	useEffect(() => {
 		run(getBudgetById, budgetId);
-		run(getAllProducts);
+		run(getAllProductsForSelect);
 	}, [budgetId]);
 
 	useEffect(() => {
@@ -78,7 +78,7 @@ const BudgetDetail = () => {
 			};
 		});
 
-		setProductsModalOpen(false);
+		setModalState(null);
 	};
 
 	const handleChange = (e) => {
@@ -116,10 +116,9 @@ const BudgetDetail = () => {
 	const handleCancelClick = () => {
 		if (!hasChanges()) {
 			setIsEditing(false);
-			setDeleteModalState(null);
 			return;
 		}
-		setModalState(true);
+		setModalState({ type: "cancelEdit" });
 	};
 
 	const handleConfirmCancel = () => {
@@ -128,8 +127,20 @@ const BudgetDetail = () => {
 			description: budget?.description || "",
 			items: budget?.items || [],
 		});
-		setModalState(false);
-		setDeleteModalState(false);
+		setModalState(null);
+	};
+
+	const handleAddPayment = async (paymentData) => {
+		try {
+			await run(createPayment, {
+				...paymentData,
+				budgetId,
+			});
+			await run(getBudgetById, budgetId);
+			setModalState(null);
+		} catch (error) {
+			console.error("Error al registrar el pago:", error);
+		}
 	};
 
 	const productsToRender = isEditing ? budgetData.items : budget?.items;
@@ -176,23 +187,39 @@ const BudgetDetail = () => {
 
 				<div className="flex items-center gap-2">
 					{!isEditing ? (
-						<Button
-							variant="primary"
-							className="flex items-center gap-2"
-							onClick={() => {
-								setOriginalData(budgetData);
-								setIsEditing(true);
-							}}
-						>
-							<Pencil size={16} />
-							Editar Producto
-						</Button>
+						<>
+							<Button
+								variant="primary"
+								className="flex items-center gap-2"
+								onClick={() => {
+									setModalState({ type: "registerPayment" });
+								}}
+							>
+								<Banknote size={16} />
+								Registrar Pago
+							</Button>
+							<Button
+								variant="primary"
+								className="flex items-center gap-2"
+								onClick={() => {
+									setOriginalData(budgetData);
+									setIsEditing(true);
+								}}
+							>
+								<Pencil size={16} />
+								Editar Producto
+							</Button>
+						</>
 					) : (
 						<>
 							<Button variant="ghost" onClick={handleCancelClick}>
 								Cancelar
 							</Button>
-							<Button variant="primary" onClick={handleSave}>
+							<Button
+								variant="primary"
+								onClick={handleSave}
+								disabled={!hasChanges()}
+							>
 								Guardar cambios
 							</Button>
 						</>
@@ -235,7 +262,7 @@ const BudgetDetail = () => {
 								<Button
 									variant="primary"
 									onClick={() => {
-										setProductsModalOpen(true);
+										setModalState({ type: "addProduct" });
 									}}
 								>
 									Agregar Producto
@@ -305,8 +332,8 @@ const BudgetDetail = () => {
 														<Button
 															variant="danger"
 															onClick={() => {
-																setDeleteModalState({
-																	type: "delete-product",
+																setModalState({
+																	type: "deleteProduct",
 																	data: {
 																		key: product.id ?? product.tempId,
 																	},
@@ -340,6 +367,9 @@ const BudgetDetail = () => {
 										</th>
 										<th className="w-[30%] px-6 py-3 text-center">MONTO</th>
 										<th className="w-[30%] px-6 py-3 text-center">FECHA</th>
+										{!isEditing && (
+											<th className="text-center px-6 py-3">ACCIONES</th>
+										)}
 									</tr>
 								</thead>
 								<tbody>
@@ -353,8 +383,25 @@ const BudgetDetail = () => {
 												${Number(payment.amount).toFixed(2)}
 											</td>
 											<td className="px-6 py-3 text-center">
-												{new Date(payment.date).toLocaleDateString("es-ES")}
+												{payment.date.split("-").reverse().join("/")}
 											</td>
+											{!isEditing && (
+												<td className="px-6 py-3 text-center">
+													<Button
+														variant="danger"
+														onClick={() => {
+															setModalState({
+																type: "deletePayment",
+																data: {
+																	key: payment.id,
+																},
+															});
+														}}
+													>
+														<Trash2 size={16} />
+													</Button>
+												</td>
+											)}
 										</tr>
 									))}
 								</tbody>
@@ -368,32 +415,52 @@ const BudgetDetail = () => {
 				</section>
 			</div>
 			<ConfirmModal
-				open={modalState}
+				open={modalState?.type === "cancelEdit"}
 				title="Cancelar edición"
 				description="¿Estás seguro que no quieres guardar los cambios?"
 				onCancel={() => setModalState(false)}
 				onConfirm={handleConfirmCancel}
 			/>
 			<ConfirmModal
-				open={deleteModalState?.type === "delete-product"}
+				open={modalState?.type === "deleteProduct"}
 				title="Eliminar producto"
 				description="¿Estás seguro que deseas eliminar este producto del presupuesto?"
-				onCancel={() => setDeleteModalState(null)}
+				onCancel={() => setModalState(null)}
 				onConfirm={() => {
 					setBudgetData((prev) => ({
 						...prev,
 						items: prev.items.filter(
-							(i) => (i.id ?? i.tempId) !== deleteModalState.data.key,
+							(i) => (i.id ?? i.tempId) !== modalState.data.key,
 						),
 					}));
-					setDeleteModalState(null);
+					setModalState(null);
+				}}
+			/>
+			<ConfirmModal
+				open={modalState?.type === "deletePayment"}
+				title="Eliminar pago"
+				description="¿Estás seguro que deseas eliminar este pago del presupuesto?"
+				onCancel={() => setModalState(null)}
+				onConfirm={async () => {
+					try {
+						await run(deletePayment, modalState.data.key);
+						await run(getBudgetById, budgetId);
+						setModalState(null);
+					} catch (error) {
+						console.error("Error al eliminar el pago:", error);
+					}
 				}}
 			/>
 			<ProductsFormModal
-				open={productsModalOpen}
+				open={modalState?.type === "addProduct"}
 				onConfirm={handleAddProduct}
-				onCancel={() => setProductsModalOpen(false)}
+				onCancel={() => setModalState(null)}
 				products={products}
+			/>
+			<AddPaymentModal
+				open={modalState?.type === "registerPayment"}
+				onCancel={() => setModalState(null)}
+				onConfirm={handleAddPayment}
 			/>
 		</section>
 	);

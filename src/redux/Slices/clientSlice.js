@@ -32,6 +32,22 @@ export const getAllClients = createAsyncThunk(
 	},
 );
 
+// GET ALL CLIENTS FOR SELECT
+
+export const getAllClientsForSelect = createAsyncThunk(
+	"clients/getAllClientsForSelect",
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await axios.get("/clients/select");
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message || "Error al obtener clientes",
+			);
+		}
+	},
+);
+
 // SEARCH CLIENT BY QUERY
 
 export const searchClients = createAsyncThunk(
@@ -125,6 +141,21 @@ export const clientsSlice = createSlice({
 				state.message = null;
 			})
 			.addCase(getAllClients.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al obtener clientes";
+			})
+
+			// GET ALL CLIENTS FOR SELECT
+			.addCase(getAllClientsForSelect.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getAllClientsForSelect.fulfilled, (state, action) => {
+				state.loading = false;
+				state.clients = action.payload;
+				state.message = null;
+			})
+			.addCase(getAllClientsForSelect.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener clientes";
 			})

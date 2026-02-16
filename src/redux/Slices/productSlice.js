@@ -33,6 +33,22 @@ export const getAllProducts = createAsyncThunk(
 	},
 );
 
+// GET ALL PRODUCTS FOR SELECT
+
+export const getAllProductsForSelect = createAsyncThunk(
+	"products/getAllProductsForSelect",
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await axios.get("/products/select");
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message || "Error al obtener productos",
+			);
+		}
+	},
+);
+
 export const getProductById = createAsyncThunk(
 	"products/getProductById",
 	async (productId, { rejectWithValue }) => {
@@ -140,6 +156,21 @@ export const productsSlice = createSlice({
 				state.message = null;
 			})
 			.addCase(getAllProducts.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al obtener productos";
+			})
+
+			// GET ALL PRODUCTS FOR SELECT
+			.addCase(getAllProductsForSelect.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getAllProductsForSelect.fulfilled, (state, action) => {
+				state.loading = false;
+				state.products = action.payload;
+				state.message = null;
+			})
+			.addCase(getAllProductsForSelect.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener productos";
 			})

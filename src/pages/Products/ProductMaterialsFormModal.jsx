@@ -34,7 +34,7 @@ const ProductMaterialsFormModal = ({
 						onChange={(e) => setMaterialId(e.target.value)}
 					>
 						<option value="">Seleccione un material</option>
-						{materials.map((mat) => (
+						{materials?.map((mat) => (
 							<option key={mat.id} value={mat.id}>
 								{mat.name}
 							</option>

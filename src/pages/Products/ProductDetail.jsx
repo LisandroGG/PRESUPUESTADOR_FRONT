@@ -2,7 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
-import { getAllMaterials } from "@redux/Slices/materialSlice";
+import { getAllMaterialsForSelect } from "@redux/Slices/materialSlice.js";
 import { getProductById, updateProduct } from "@redux/Slices/productSlice.js";
 import {
 	ArrowLeft,
@@ -28,9 +28,7 @@ const ProductDetail = () => {
 	const [originalData, setOriginalData] = useState(null);
 
 	const [isEditing, setIsEditing] = useState(false);
-	const [modalState, setModalState] = useState(false);
-	const [deleteModalState, setDeleteModalState] = useState(null);
-	const [materialsModalOpen, setMaterialsModalOpen] = useState(false);
+	const [modalState, setModalState] = useState(null);
 
 	const [productData, setProductData] = useState({
 		name: "",
@@ -42,7 +40,7 @@ const ProductDetail = () => {
 	// biome-ignore lint: useEffectBug
 	useEffect(() => {
 		run(getProductById, productId);
-		run(getAllMaterials);
+		run(getAllMaterialsForSelect);
 	}, [productId]);
 
 	useEffect(() => {
@@ -76,7 +74,7 @@ const ProductDetail = () => {
 			};
 		});
 
-		setMaterialsModalOpen(false);
+		setModalState(null);
 	};
 
 	const handleChange = (e) => {
@@ -116,10 +114,9 @@ const ProductDetail = () => {
 	const handleCancelClick = () => {
 		if (!hasChanges()) {
 			setIsEditing(false);
-			setDeleteModalState(null);
 			return;
 		}
-		setModalState(true);
+		setModalState({ type: "cancelEdit" });
 	};
 
 	const handleConfirmCancel = () => {
@@ -130,8 +127,7 @@ const ProductDetail = () => {
 			materials: product?.productMaterials || [],
 			productionCost: product?.productionCost || 0,
 		});
-		setModalState(false);
-		setDeleteModalState(null);
+		setModalState(null);
 	};
 
 	const materialsCost = Number(product?.totalMaterialsCost || 0);
@@ -197,7 +193,11 @@ const ProductDetail = () => {
 							<Button variant="ghost" onClick={handleCancelClick}>
 								Cancelar
 							</Button>
-							<Button variant="primary" onClick={handleSave}>
+							<Button
+								variant="primary"
+								onClick={handleSave}
+								disabled={!hasChanges()}
+							>
 								Guardar cambios
 							</Button>
 						</>
@@ -239,7 +239,7 @@ const ProductDetail = () => {
 							{isEditing && (
 								<Button
 									variant="primary"
-									onClick={() => setMaterialsModalOpen(true)}
+									onClick={() => setModalState({ type: "addMaterial" })}
 								>
 									Agregar Material
 								</Button>
@@ -295,8 +295,8 @@ const ProductDetail = () => {
 															<Button
 																variant="danger"
 																onClick={() =>
-																	setDeleteModalState({
-																		type: "delete-material",
+																	setModalState({
+																		type: "deleteMaterial",
 																		data: {
 																			key: material.id ?? material.tempId,
 																		},
@@ -372,31 +372,31 @@ const ProductDetail = () => {
 				</section>
 			</div>
 			<ConfirmModal
-				open={modalState}
+				open={modalState?.type === "cancelEdit"}
 				title="Cancelar edición"
 				description="¿Estás seguro que no quieres guardar los cambios?"
-				onCancel={() => setModalState(false)}
+				onCancel={() => setModalState(null)}
 				onConfirm={handleConfirmCancel}
 			/>
 			<ConfirmModal
-				open={deleteModalState?.type === "delete-material"}
+				open={modalState?.type === "deleteMaterial"}
 				title="Eliminar material"
 				description="¿Estás seguro que deseas eliminar este material del producto?"
-				onCancel={() => setDeleteModalState(null)}
+				onCancel={() => setModalState(null)}
 				onConfirm={() => {
 					setProductData((prev) => ({
 						...prev,
 						materials: prev.materials.filter(
-							(m) => (m.id ?? m.tempId) !== deleteModalState.data.key,
+							(m) => (m.id ?? m.tempId) !== modalState.data.key,
 						),
 					}));
-					setDeleteModalState(null);
+					setModalState(null);
 				}}
 			/>
 			<ProductMaterialsFormModal
-				open={materialsModalOpen}
+				open={modalState?.type === "addMaterial"}
 				onConfirm={handleAddMaterial}
-				onCancel={() => setMaterialsModalOpen(false)}
+				onCancel={() => setModalState(null)}
 				materials={materials}
 			/>
 		</section>

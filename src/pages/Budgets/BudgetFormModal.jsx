@@ -29,7 +29,7 @@ const BudgetFormModal = ({ open, onCancel, onConfirm, clients }) => {
 						onChange={(e) => setClientId(e.target.value)}
 					>
 						<option value="">Seleccione un cliente</option>
-						{clients.map((client) => (
+						{clients?.map((client) => (
 							<option key={client.id} value={client.id}>
 								{client.name || client.cuit}
 							</option>

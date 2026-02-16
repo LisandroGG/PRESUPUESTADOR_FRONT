@@ -32,6 +32,22 @@ export const getAllMaterials = createAsyncThunk(
 	},
 );
 
+// GET ALL MATERIALS FOR SELECT
+
+export const getAllMaterialsForSelect = createAsyncThunk(
+	"materials/getAllMaterialsForSelect",
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await axios.get("/materials/select");
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message || "Error al obtener materiales",
+			);
+		}
+	},
+);
+
 // SEARCH MATERIAL BY QUERY
 
 export const searchMaterials = createAsyncThunk(
@@ -130,6 +146,22 @@ export const materialsSlice = createSlice({
 			.addCase(getAllMaterials.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener materiales";
+			})
+
+			// GET ALL MATERIALS FOR SELECT
+			.addCase(getAllMaterialsForSelect.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getAllMaterialsForSelect.fulfilled, (state, action) => {
+				state.loading = false;
+				state.materials = action.payload;
+				state.message = null;
+			})
+			.addCase(getAllMaterialsForSelect.rejected, (state, action) => {
+				state.loading = false;
+				state.error =
+					action.payload || "Error al obtener materiales para selección";
 			})
 
 			// SEARCH MATERIALS BY QUERY
