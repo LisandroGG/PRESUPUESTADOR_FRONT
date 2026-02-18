@@ -37,6 +37,8 @@ const BudgetDetail = () => {
 		items: [],
 	});
 
+	const LOCAL = import.meta.env.VITE_LOCAL;
+
 	// biome-ignore lint: useEffectBug
 	useEffect(() => {
 		run(getBudgetById, budgetId);
@@ -51,6 +53,14 @@ const BudgetDetail = () => {
 			});
 		}
 	}, [budget]);
+
+	const downloadPdf = (id) => {
+		const link = document.createElement("a");
+		link.href = `${LOCAL}/budgets/pdf/${id}`;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
 
 	const handleAddProduct = (newProduct) => {
 		const productData = products.find((p) => p.id === newProduct.productId);
@@ -188,6 +198,14 @@ const BudgetDetail = () => {
 				<div className="flex items-center gap-2">
 					{!isEditing ? (
 						<>
+							<Button
+								variant="primary"
+								className="flex items-center gap-2"
+								onClick={() => downloadPdf(budgetId)}
+							>
+								<FileText size={16} />
+								Descargar PDF
+							</Button>
 							<Button
 								variant="primary"
 								className="flex items-center gap-2"

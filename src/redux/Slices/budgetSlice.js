@@ -19,14 +19,14 @@ const initialState = {
 
 export const getAllBudgets = createAsyncThunk(
 	"budgets/getAllBudgets",
-	async (page, { rejectedWithValue }) => {
+	async (page, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/budgets", {
 				params: page,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener presupuestos",
 			);
 		}
@@ -37,12 +37,12 @@ export const getAllBudgets = createAsyncThunk(
 
 export const getAllBudgetsFromClient = createAsyncThunk(
 	"budgets/getAllBudgetsFromCient",
-	async (cliendId, { rejectedWithValue }) => {
+	async (cliendId, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(`/budgets/client/${cliendId}`);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message ||
 					"Error al obtener presupuestos del cliente",
 			);
@@ -54,12 +54,12 @@ export const getAllBudgetsFromClient = createAsyncThunk(
 
 export const getBudgetById = createAsyncThunk(
 	"budgets/getBudgetById",
-	async (budgetId, { rejectedWithValue }) => {
+	async (budgetId, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(`/budgets/detail/${budgetId}`);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener el presupuesto",
 			);
 		}
@@ -70,12 +70,12 @@ export const getBudgetById = createAsyncThunk(
 
 export const createBudget = createAsyncThunk(
 	"budgets/createBudget",
-	async (budgetData, { rejectedWithValue }) => {
+	async (budgetData, { rejectWithValue }) => {
 		try {
 			const response = await axios.post("/budgets", budgetData);
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al crear el presupuesto",
 			);
 		}
@@ -86,12 +86,12 @@ export const createBudget = createAsyncThunk(
 
 export const deleteBudget = createAsyncThunk(
 	"budget/deleteBudget",
-	async (budgetId, { rejectedWithValue }) => {
+	async (budgetId, { rejectWithValue }) => {
 		try {
 			const response = await axios.delete(`/budgets/${budgetId}`);
 			return { budgetId, message: response.data.message };
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message || "Error al eliminar presupuesto",
 			);
 		}
@@ -116,14 +116,14 @@ export const updateBudget = createAsyncThunk(
 
 export const updateBudgetStatus = createAsyncThunk(
 	"budgets/updateBudgetStatus",
-	async ({ budgetId, status }, { rejectedWithValue }) => {
+	async ({ budgetId, status }, { rejectWithValue }) => {
 		try {
 			const response = await axios.put(`/budgets/status/${budgetId}`, {
 				status,
 			});
 			return response.data;
 		} catch (error) {
-			return rejectedWithValue(
+			return rejectWithValue(
 				error.response?.data?.message ||
 					"Error al actualizar el estado del presupuesto",
 			);
