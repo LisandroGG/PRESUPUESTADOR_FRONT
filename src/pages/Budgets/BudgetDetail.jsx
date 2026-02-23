@@ -206,27 +206,36 @@ const BudgetDetail = () => {
 								<FileText size={16} />
 								Descargar PDF
 							</Button>
-							<Button
-								variant="primary"
-								className="flex items-center gap-2"
-								onClick={() => {
-									setModalState({ type: "registerPayment" });
-								}}
-							>
-								<Banknote size={16} />
-								Registrar Pago
-							</Button>
-							<Button
-								variant="primary"
-								className="flex items-center gap-2"
-								onClick={() => {
-									setOriginalData(budgetData);
-									setIsEditing(true);
-								}}
-							>
-								<Pencil size={16} />
-								Editar Producto
-							</Button>
+							{budget?.status !== "paid" ? (
+								<Button
+									variant="primary"
+									className="flex items-center gap-2"
+									onClick={() => {
+										setModalState({ type: "registerPayment" });
+									}}
+								>
+									<Banknote size={16} />
+									Registrar Pago
+								</Button>
+							) : (
+								""
+							)}
+
+							{budget?.status === "pending" ? (
+								<Button
+									variant="primary"
+									className="flex items-center gap-2"
+									onClick={() => {
+										setOriginalData(budgetData);
+										setIsEditing(true);
+									}}
+								>
+									<Pencil size={16} />
+									Editar Presupuesto
+								</Button>
+							) : (
+								""
+							)}
 						</>
 					) : (
 						<>
