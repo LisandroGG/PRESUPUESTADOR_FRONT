@@ -1,57 +1,87 @@
-import Button from "@components/Common/Button.jsx";
+import Modal from "@components/Common/Modal.jsx";
+import {
+	isDateStructurallyValid,
+	validatePayment,
+} from "@utils/Validations/paymentValidations.js";
 import { useState } from "react";
 
 const AddPaymentModal = ({ open, onCancel, onConfirm }) => {
 	const [method, setMethod] = useState("");
 	const [amount, setAmount] = useState("");
 	const [date, setDate] = useState("");
+	const [error, setError] = useState(null);
+	const isValid =
+		method.trim() !== "" && amount !== "" && isDateStructurallyValid(date);
+	const methods = [
+		"Efectivo",
+		"Tarjeta de crédito",
+		"Transferencia bancaria",
+		"Cheque",
+		"Otro",
+	];
 
-	const handleSubmit = () => {
-		onConfirm({
-			method,
-			amount: Number(amount),
-			date,
-		});
+	const clearFields = () => {
 		setMethod("");
 		setAmount("");
 		setDate("");
+		setError(null);
+	};
+
+	const handleCancel = () => {
+		clearFields();
+		onCancel();
+	};
+
+	const handleSubmit = () => {
+		const validateError = validatePayment(method, amount, date);
+		if (validateError) {
+			setError(validateError);
+			return;
+		}
+		onConfirm({
+			method: method.trim(),
+			amount: Number(amount),
+			date,
+		});
+		clearFields();
 	};
 
 	if (!open) return null;
 
 	return (
-		<div className="fixed inset-0 bg-black/40 grid place-content-center z-50">
-			<div className="bg-white rounded-lg p-6 w-full max-w-md">
-				<h3 className="text-lg font-semibold mb-4">Agregar pago</h3>
-				<div className="space-y-4">
-					<input
-						type="text"
-						className="w-full border p-2 rounded"
-						placeholder="Método de pago"
-						onChange={(e) => setMethod(e.target.value)}
-					/>
-					<input
-						type="number"
-						className="w-full border p-2 rounded"
-						placeholder="Monto del pago"
-						onChange={(e) => setAmount(e.target.value)}
-					/>
-					<input
-						type="date"
-						className="w-full border p-2 rounded"
-						onChange={(e) => setDate(e.target.value)}
-					/>
-					<div className="flex justify-end gap-2 mt-6">
-						<Button variant="ghost" onClick={onCancel}>
-							Cancelar
-						</Button>
-						<Button variant="primary" onClick={handleSubmit}>
-							Agregar
-						</Button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<Modal
+			title={"Agregar pago"}
+			onCancel={handleCancel}
+			onConfirm={handleSubmit}
+			disabled={!isValid}
+			error={error}
+		>
+			<select
+				className="w-full border p-2 rounded"
+				value={method}
+				onChange={(e) => setMethod(e.target.value)}
+			>
+				<option value="">Seleccionar método de pago</option>
+				{methods.map((m) => (
+					<option key={m} value={m}>
+						{m}
+					</option>
+				))}
+			</select>
+			<input
+				type="number"
+				value={amount}
+				className="w-full border p-2 rounded"
+				placeholder="Monto del pago"
+				onChange={(e) => setAmount(e.target.value)}
+			/>
+			<input
+				type="date"
+				value={date}
+				className="w-full border p-2 rounded"
+				onChange={(e) => setDate(e.target.value)}
+			/>
+		</Modal>
 	);
 };
 

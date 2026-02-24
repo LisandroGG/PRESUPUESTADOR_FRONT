@@ -287,7 +287,7 @@ const ProductDetail = () => {
 													{material.material?.provider || "-"}
 												</td>
 												<td className="px-6 py-3 text-center">
-													{Number(material.quantity).toFixed(2)}
+													{Number(material.quantity)}
 												</td>
 												{isEditing && (
 													<td className="px-6 py-3 text-center">

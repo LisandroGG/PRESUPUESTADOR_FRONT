@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import SectionList from "@components/Common/SectionList.jsx";
 import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
@@ -11,7 +12,7 @@ import {
 	getAllProducts,
 	searchProducts,
 } from "@redux/Slices/productSlice";
-import { SquarePlus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -102,26 +103,29 @@ const ProductsList = () => {
 		);
 	}
 
-	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold">Productos:</h2>
-				<Button
-					variant="primary"
-					className="flex items-center gap-2"
-					onClick={() =>
-						setModalState({
-							type: "create",
-							entity: "product",
-							data: null,
-						})
-					}
-				>
-					<SquarePlus size={16} />
-					Nuevo producto
-				</Button>
-			</div>
+	const onAdd = () => {
+		setModalState({
+			type: "create",
+			entity: "product",
+			data: null,
+		});
+	};
 
+	const onSearch = () => {
+		setModalState({
+			type: "search",
+			entity: "product",
+			data: null,
+		});
+	};
+
+	return (
+		<SectionList
+			list="producto"
+			title="Productos"
+			onAdd={onAdd}
+			onSearch={onSearch}
+		>
 			<TableList
 				columns={columns}
 				data={products}
@@ -140,7 +144,6 @@ const ProductsList = () => {
 			{modalState?.type === "create" && (
 				<ProductFormModal
 					open
-					initialData={null}
 					onCancel={handleCancel}
 					onConfirm={handleConfirm}
 				/>
@@ -153,7 +156,7 @@ const ProductsList = () => {
 				onCancel={handleCancel}
 				onConfirm={() => handleConfirm()}
 			/>
-		</section>
+		</SectionList>
 	);
 };
 

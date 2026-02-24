@@ -1,45 +1,61 @@
-import Button from "@components/Common/Button.jsx";
+import Modal from "@components/Common/Modal.jsx";
+import { validateProduct } from "@utils/Validations/productValidations.js";
 import { useState } from "react";
 
-const ProductFormModal = ({ open, onCancel, onConfirm, initialData }) => {
-	const [name, setName] = useState(initialData?.name);
-	const [description, setDescription] = useState(initialData?.description);
+const ProductFormModal = ({ open, onCancel, onConfirm }) => {
+	const [name, setName] = useState("");
+	const [description, setDescription] = useState("");
+	const [error, setError] = useState(null);
+	const isValid = name.trim() !== "" && description.trim() !== "";
+
+	const clearFields = () => {
+		setName("");
+		setDescription("");
+		setError(null);
+	};
+
+	const handleCancel = () => {
+		clearFields();
+		onCancel();
+	};
+
+	const handleSubmit = () => {
+		const validateError = validateProduct(name, description);
+		if (validateError) {
+			setError(validateError);
+			return;
+		}
+		onConfirm({
+			name: name.trim(),
+			description: description.trim(),
+		});
+
+		clearFields();
+	};
 
 	if (!open) return null;
 
 	return (
-		<div className="fixed inset-0 bg-black/40 grid place-content-center">
-			<div className="bg-white rounded-lg p-6 w-full max-w-md">
-				<h3 className="text-lg font-semibold mb-4">Nuevo producto</h3>
-
-				<div className="space-y-4">
-					<input
-						className="w-full border p-2 rounded"
-						placeholder="Nombre"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-					<input
-						className="w-full border p-2 rounded"
-						placeholder="Descripción"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-					/>
-				</div>
-
-				<div className="flex justify-end gap-2 mt-6">
-					<Button variant="ghost" onClick={onCancel} className="">
-						Cancelar
-					</Button>
-					<Button
-						variant="primary"
-						onClick={() => onConfirm({ name, description })}
-					>
-						Guardar
-					</Button>
-				</div>
-			</div>
-		</div>
+		<Modal
+			title={"Nuevo producto"}
+			onCancel={handleCancel}
+			onConfirm={handleSubmit}
+			disabled={!isValid}
+			error={error}
+		>
+			<input
+				className="w-full border p-2 rounded"
+				placeholder="Nombre"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+			/>
+			<input
+				className="w-full border p-2 rounded"
+				placeholder="Descripción"
+				value={description}
+				onChange={(e) => setDescription(e.target.value)}
+			/>
+		</Modal>
 	);
 };
 

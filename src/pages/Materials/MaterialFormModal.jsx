@@ -1,5 +1,6 @@
-import Button from "@components/Common/Button.jsx";
-import { useState } from "react";
+import Modal from "@components/Common/Modal.jsx";
+import { validateMaterial } from "@utils/Validations/materialValidations.js";
+import { useEffect, useMemo, useState } from "react";
 
 const MaterialFormModal = ({
 	open,
@@ -8,53 +9,77 @@ const MaterialFormModal = ({
 	onCancel,
 	onConfirm,
 }) => {
-	const [name, setName] = useState(initialData?.name);
-	const [provider, setProvider] = useState(initialData?.provider);
-	const [cost, setCost] = useState(initialData?.cost);
+	const [name, setName] = useState("");
+	const [provider, setProvider] = useState("");
+	const [cost, setCost] = useState("");
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		if (open) {
+			setName(initialData?.name || "");
+			setProvider(initialData?.provider || "");
+			setCost(initialData?.cost || "");
+			setError(null);
+		}
+	}, [initialData, open]);
+	const isValid = name.trim() !== "" && provider.trim() !== "" && cost !== "";
+
+	const hasChanges = useMemo(() => {
+		if (mode === "create") return true;
+
+		return (
+			name !== (initialData?.name || "") ||
+			provider !== (initialData?.provider || "") ||
+			cost !== (initialData?.cost || "")
+		);
+	}, [mode, name, provider, cost, initialData]);
+
+	const isDisabled = mode === "create" ? !isValid : !isValid || !hasChanges;
+
+	const handleSubmit = () => {
+		const validateError = validateMaterial(name, provider, cost);
+		if (validateError) {
+			setError(validateError);
+			return;
+		}
+
+		onConfirm({
+			name: name.trim(),
+			provider: provider.trim(),
+			cost: Number(cost),
+		});
+	};
 
 	if (!open) return null;
 
 	return (
-		<div className="fixed inset-0 bg-black/40 grid place-content-center">
-			<div className="bg-white rounded-lg p-6 w-full max-w-md">
-				<h3 className="text-lg font-semibold mb-4">
-					{mode === "create" ? "Nuevo material" : "Editar material"}
-				</h3>
-
-				<div className="space-y-4">
-					<input
-						className="w-full border p-2 rounded"
-						placeholder="Nombre"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-					<input
-						className="w-full border p-2 rounded"
-						placeholder="Proveedor"
-						value={provider}
-						onChange={(e) => setProvider(e.target.value)}
-					/>
-					<input
-						className="w-full border p-2 rounded"
-						placeholder="Costo"
-						value={cost}
-						onChange={(e) => setCost(e.target.value)}
-					/>
-				</div>
-
-				<div className="flex justify-end gap-2 mt-6">
-					<Button variant="ghost" onClick={onCancel} className="">
-						Cancelar
-					</Button>
-					<Button
-						variant="primary"
-						onClick={() => onConfirm({ name, provider, cost })}
-					>
-						Guardar
-					</Button>
-				</div>
-			</div>
-		</div>
+		<Modal
+			title={mode === "create" ? "Nuevo material" : "Editar material"}
+			onCancel={onCancel}
+			onConfirm={handleSubmit}
+			disabled={isDisabled}
+			error={error}
+		>
+			<input
+				className="w-full border p-2 rounded"
+				placeholder="Nombre"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+			/>
+			<input
+				className="w-full border p-2 rounded"
+				placeholder="Proveedor"
+				value={provider}
+				onChange={(e) => setProvider(e.target.value)}
+			/>
+			<input
+				type="number"
+				className="w-full border p-2 rounded"
+				placeholder="Costo"
+				value={cost}
+				onChange={(e) => setCost(e.target.value)}
+			/>
+		</Modal>
 	);
 };
 

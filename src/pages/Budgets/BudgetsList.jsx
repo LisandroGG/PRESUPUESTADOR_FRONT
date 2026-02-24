@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import SectionList from "@components/Common/SectionList.jsx";
 import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
@@ -13,7 +14,7 @@ import {
 	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
 import { getAllClientsForSelect } from "@redux/Slices/clientSlice.js";
-import { Settings, SquarePlus, Trash2 } from "lucide-react";
+import { Settings, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -159,26 +160,29 @@ const BudgetsList = () => {
 		);
 	}
 
-	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold">Presupuestos:</h2>
-				<Button
-					variant="primary"
-					className="flex items-center gap-2"
-					onClick={() =>
-						setModalState({
-							type: "create",
-							entity: "budget",
-							data: null,
-						})
-					}
-				>
-					<SquarePlus size={16} />
-					Crear presupuesto
-				</Button>
-			</div>
+	const onAdd = () => {
+		setModalState({
+			type: "create",
+			entity: "budget",
+			data: null,
+		});
+	};
 
+	const onSearch = () => {
+		setModalState({
+			type: "search",
+			entity: "budget",
+			data: null,
+		});
+	};
+
+	return (
+		<SectionList
+			list="presupuesto"
+			title="Presupuestos"
+			onAdd={onAdd}
+			onSearch={onSearch}
+		>
 			<TableList
 				columns={columns}
 				data={budgets}
@@ -219,7 +223,7 @@ const BudgetsList = () => {
 					onConfirm={handleConfirm}
 				/>
 			)}
-		</section>
+		</SectionList>
 	);
 };
 

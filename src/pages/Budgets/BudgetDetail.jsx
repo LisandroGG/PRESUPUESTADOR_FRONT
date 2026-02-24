@@ -352,7 +352,7 @@ const BudgetDetail = () => {
 													)}
 												</td>
 												<td className="px-6 py-3 text-center">
-													{Number(product.quantity).toFixed(2)}
+													{Number(product.quantity)}
 												</td>
 												{isEditing && (
 													<td className="px-6 py-3 text-center">

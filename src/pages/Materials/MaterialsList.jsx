@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import SectionList from "@components/Common/SectionList.jsx";
 import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
@@ -12,7 +13,7 @@ import {
 	searchMaterials,
 	updateMaterial,
 } from "@redux/Slices/materialSlice";
-import { Pencil, SquarePlus, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialFormModal from "./MaterialFormModal.jsx";
@@ -118,25 +119,29 @@ const MaterialsList = () => {
 			</div>
 		);
 	}
+
+	const onAdd = () => {
+		setModalState({
+			type: "create",
+			entity: "material",
+			data: null,
+		});
+	};
+
+	const onSearch = () => {
+		setModalState({
+			type: "search",
+			entity: "material",
+			data: null,
+		});
+	};
 	return (
-		<section className=" bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold">Materiales:</h2>
-				<Button
-					variant="primary"
-					className="flex items-center gap-2"
-					onClick={() =>
-						setModalState({
-							type: "create",
-							entity: "material",
-							data: null,
-						})
-					}
-				>
-					<SquarePlus size={16} />
-					Nuevo material
-				</Button>
-			</div>
+		<SectionList
+			list="material"
+			title="Materiales"
+			onAdd={onAdd}
+			onSearch={onSearch}
+		>
 			<TableList
 				columns={columns}
 				data={materials}
@@ -166,7 +171,7 @@ const MaterialsList = () => {
 				onCancel={handleCancel}
 				onConfirm={() => handleConfirm()}
 			/>
-		</section>
+		</SectionList>
 	);
 };
 

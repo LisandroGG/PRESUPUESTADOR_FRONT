@@ -2,6 +2,7 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import Pagination from "@components/Common/Pagination.jsx";
+import SectionList from "@components/Common/SectionList.jsx";
 import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
@@ -13,7 +14,7 @@ import {
 	updateClient,
 } from "@redux/Slices/clientSlice";
 import { formatCuit } from "@utils/formatCuit.js";
-import { Pencil, Trash2, UserPlus } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import ClientFormModal from "./ClientFormModal.jsx";
@@ -124,25 +125,30 @@ const ClientsList = () => {
 			</div>
 		);
 	}
+
+	const onAdd = () => {
+		setModalState({
+			type: "create",
+			entity: "client",
+			data: null,
+		});
+	};
+
+	const onSearch = () => {
+		setModalState({
+			type: "search",
+			entity: "client",
+			data: null,
+		});
+	};
+
 	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-xl font-semibold">Clientes:</h2>
-				<Button
-					variant="primary"
-					className="flex items-center gap-2"
-					onClick={() =>
-						setModalState({
-							type: "create",
-							entity: "client",
-							data: null,
-						})
-					}
-				>
-					<UserPlus size={16} />
-					Nuevo cliente
-				</Button>
-			</div>
+		<SectionList
+			list="cliente"
+			title="Clientes"
+			onAdd={onAdd}
+			onSearch={onSearch}
+		>
 			<TableList
 				columns={columns}
 				data={clients}
@@ -172,7 +178,7 @@ const ClientsList = () => {
 				onCancel={handleCancel}
 				onConfirm={() => handleConfirm()}
 			/>
-		</section>
+		</SectionList>
 	);
 };
 
