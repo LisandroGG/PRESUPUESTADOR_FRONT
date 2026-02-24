@@ -76,6 +76,7 @@ const BudgetsList = () => {
 				<Link
 					to={`/budgets/${budget.id}`}
 					className="hover:text-primary-500 hover:font-semibold"
+					title="Ver detalle"
 				>
 					{budget.description}
 				</Link>
@@ -122,7 +123,7 @@ const BudgetsList = () => {
 		<>
 			<Button
 				variant="ghost"
-				title="Editar"
+				title="Cambiar estado"
 				onClick={() => {
 					setModalState({
 						type: "changeStatus",

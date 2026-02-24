@@ -59,6 +59,7 @@ const ProductsList = () => {
 				<Link
 					to={`/products/${product.id}`}
 					className="hover:text-primary-500 hover:font-semibold"
+					title="Ver detalle"
 				>
 					{product.name}
 				</Link>
