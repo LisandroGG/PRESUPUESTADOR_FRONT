@@ -11,14 +11,16 @@ const SectionList = ({ title, list, onAdd, onSearch, children }) => {
 						variant="primary"
 						className="flex items-center gap-2"
 						onClick={onSearch}
+						title={`Buscar ${list}`}
 					>
-						<Search size={16} />
-						Buscar {list}
+						<Search size={18} />
+						Buscar
 					</Button>
 					<Button
 						variant="primary"
 						className="flex items-center gap-2"
 						onClick={onAdd}
+						title={`Nuevo ${list}`}
 					>
 						<SquarePlus size={16} />
 						Nuevo {list}
