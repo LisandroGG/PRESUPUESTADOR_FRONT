@@ -1,16 +1,14 @@
 import Modal from "@components/Common/Modal.jsx";
-import { validateClientName } from "@utils/validations/clientValidations.js";
+import { validateProductName } from "@utils/validations/productValidations.js";
 import { useState } from "react";
 
-const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
+const ProductSearchModal = ({ open, onCancel, onConfirm }) => {
 	const [name, setName] = useState("");
-	const [cuit, setCuit] = useState("");
 	const [error, setError] = useState(null);
-	const isValid = name.trim() !== "" || cuit.trim() !== "";
+	const isValid = name.trim() !== "";
 
 	const clearFields = () => {
 		setName("");
-		setCuit("");
 		setError(null);
 	};
 
@@ -22,7 +20,7 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 	const handleSubmit = () => {
 		setError(null);
 		if (name.trim()) {
-			const nameError = validateClientName(name);
+			const nameError = validateProductName(name);
 			if (nameError) {
 				setError(nameError);
 				return;
@@ -30,7 +28,6 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 		}
 		onConfirm({
 			name: name.trim() || undefined,
-			cuit: cuit.trim() || undefined,
 		});
 	};
 
@@ -38,7 +35,7 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 
 	return (
 		<Modal
-			title="Buscar cliente"
+			title="Buscar producto"
 			onCancel={handleCancel}
 			onConfirm={handleSubmit}
 			confirmText={"Buscar"}
@@ -51,15 +48,8 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
-				type="number"
-				className="w-full border p-2 rounded"
-				placeholder="CUIT"
-				value={cuit}
-				onChange={(e) => setCuit(e.target.value)}
-			/>
 		</Modal>
 	);
 };
 
-export default ClientSearchModal;
+export default ProductSearchModal;

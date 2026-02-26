@@ -8,7 +8,7 @@ const validateBudgetDescription = (description) => {
 	}
 };
 
-const validateBudgetClient = (clientId) => {
+export const validateBudgetClient = (clientId) => {
 	if (!clientId) return "Debe seleccionar un cliente";
 	return null;
 };

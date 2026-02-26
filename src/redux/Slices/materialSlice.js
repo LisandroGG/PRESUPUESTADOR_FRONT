@@ -18,10 +18,10 @@ const initialState = {
 
 export const getAllMaterials = createAsyncThunk(
 	"materials/getAllMaterials",
-	async (page, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/materials", {
-				params: page,
+				params,
 			});
 			return response.data;
 		} catch (error) {
@@ -43,24 +43,6 @@ export const getAllMaterialsForSelect = createAsyncThunk(
 		} catch (error) {
 			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener materiales",
-			);
-		}
-	},
-);
-
-// SEARCH MATERIAL BY QUERY
-
-export const searchMaterials = createAsyncThunk(
-	"materials/search",
-	async (query, { rejectWithValue }) => {
-		try {
-			const response = await axios.get("/materials/search", {
-				params: query,
-			});
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(
-				error.response?.data?.message || "Error al buscar materiales",
 			);
 		}
 	},
@@ -162,27 +144,6 @@ export const materialsSlice = createSlice({
 				state.loading = false;
 				state.error =
 					action.payload || "Error al obtener materiales para selección";
-			})
-
-			// SEARCH MATERIALS BY QUERY
-			.addCase(searchMaterials.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
-			.addCase(searchMaterials.fulfilled, (state, action) => {
-				state.loading = false;
-				state.materials = action.payload.data;
-				state.page = action.payload.page;
-				state.totalPages = action.payload.totalPages;
-				state.totalItems = action.payload.total;
-				state.limit = action.payload.limit;
-				state.hasNext = action.payload.hasNext;
-				state.hasPrev = action.payload.hasPrev;
-				state.message = null;
-			})
-			.addCase(searchMaterials.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload || "Error al buscar materiales";
 			})
 
 			// CREATE MATERIAL

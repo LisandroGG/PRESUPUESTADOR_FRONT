@@ -19,32 +19,15 @@ const initialState = {
 
 export const getAllBudgets = createAsyncThunk(
 	"budgets/getAllBudgets",
-	async (page, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/budgets", {
-				params: page,
+				params,
 			});
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener presupuestos",
-			);
-		}
-	},
-);
-
-// GET ALL BUDGETS FROM A CLIENT
-
-export const getAllBudgetsFromClient = createAsyncThunk(
-	"budgets/getAllBudgetsFromCient",
-	async (cliendId, { rejectWithValue }) => {
-		try {
-			const response = await axios.get(`/budgets/client/${cliendId}`);
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(
-				error.response?.data?.message ||
-					"Error al obtener presupuestos del cliente",
 			);
 		}
 	},
@@ -160,28 +143,6 @@ export const budgetsSlice = createSlice({
 			.addCase(getAllBudgets.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener presupuestos";
-			})
-
-			// GET ALL BUDGETS FROM A CLIENT
-			.addCase(getAllBudgetsFromClient.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
-			.addCase(getAllBudgetsFromClient.fulfilled, (state, action) => {
-				state.loading = false;
-				state.budgets = action.payload.data;
-				state.page = action.payload.page;
-				state.totalPages = action.payload.totalPages;
-				state.totalItems = action.payload.total;
-				state.limit = action.payload.limit;
-				state.hasNext = action.payload.hasNext;
-				state.hasPrev = action.payload.hasPrev;
-				state.message = null;
-			})
-			.addCase(getAllBudgetsFromClient.rejected, (state, action) => {
-				state.loading = false;
-				state.error =
-					action.payload || "Error al obtener presupuestos del cliente";
 			})
 
 			// GET BUDGET BY ID

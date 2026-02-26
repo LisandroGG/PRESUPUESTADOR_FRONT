@@ -1,10 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const usePagination = (selector, fetchAction) => {
 	const dispatch = useDispatch();
-	const { page, totalPages, hasNext, hasPrev, loading } =
-		useSelector(selector);
+	const { page, totalPages, hasNext, hasPrev, loading } = useSelector(selector);
 
 	const [filters, setFilters] = useState({});
 
@@ -17,7 +16,7 @@ const usePagination = (selector, fetchAction) => {
 			if (newPage < 1 || newPage > totalPages) return;
 			dispatch(fetchAction({ page: newPage, ...filters }));
 		},
-		[dispatch, fetchAction, totalPages, filters]
+		[dispatch, fetchAction, totalPages, filters],
 	);
 
 	const next = useCallback(() => {

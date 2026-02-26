@@ -19,10 +19,10 @@ const initialState = {
 
 export const getAllProducts = createAsyncThunk(
 	"products/getAllProducts",
-	async (page, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/products", {
-				params: page,
+				params,
 			});
 			return response.data;
 		} catch (error) {
@@ -58,24 +58,6 @@ export const getProductById = createAsyncThunk(
 		} catch (error) {
 			return rejectWithValue(
 				error.response?.data.message || "Error al obtener producto",
-			);
-		}
-	},
-);
-
-// SEARCH PRODUCT BY QUERY
-
-export const searchProducts = createAsyncThunk(
-	"products/search",
-	async (query, { rejectWithValue }) => {
-		try {
-			const response = await axios.get("/products/search", {
-				params: query,
-			});
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(
-				error.response?.data?.message || "Error al buscar productos",
 			);
 		}
 	},
@@ -188,27 +170,6 @@ export const productsSlice = createSlice({
 			.addCase(getProductById.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener producto";
-			})
-
-			// SEARCH PRODUCTS
-			.addCase(searchProducts.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
-			.addCase(searchProducts.fulfilled, (state, action) => {
-				state.loading = false;
-				state.products = action.payload.data;
-				state.page = action.payload.page;
-				state.totalPages = action.payload.totalPages;
-				state.totalItems = action.payload.total;
-				state.limit = action.payload.limit;
-				state.hasNext = action.payload.hasNext;
-				state.hasPrev = action.payload.hasPrev;
-				state.message = null;
-			})
-			.addCase(searchProducts.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload || "Error al buscar productos";
 			})
 
 			// CREATE PRODUCT

@@ -1,16 +1,19 @@
 import Modal from "@components/Common/Modal.jsx";
-import { validateClientName } from "@utils/validations/clientValidations.js";
+import {
+	validateMaterialName,
+	validateMaterialProvider,
+} from "@utils/Validations/materialValidations";
 import { useState } from "react";
 
-const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
+const MaterialSearchModal = ({ open, onCancel, onConfirm }) => {
 	const [name, setName] = useState("");
-	const [cuit, setCuit] = useState("");
+	const [provider, setProvider] = useState("");
 	const [error, setError] = useState(null);
-	const isValid = name.trim() !== "" || cuit.trim() !== "";
+	const isValid = name.trim() !== "" || provider.trim() !== "";
 
 	const clearFields = () => {
 		setName("");
-		setCuit("");
+		setProvider("");
 		setError(null);
 	};
 
@@ -22,15 +25,23 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 	const handleSubmit = () => {
 		setError(null);
 		if (name.trim()) {
-			const nameError = validateClientName(name);
+			const nameError = validateMaterialName(name);
 			if (nameError) {
 				setError(nameError);
 				return;
 			}
 		}
+
+		if (provider.trim()) {
+			const providerError = validateMaterialProvider(provider);
+			if (providerError) {
+				setError(providerError);
+				return;
+			}
+		}
 		onConfirm({
 			name: name.trim() || undefined,
-			cuit: cuit.trim() || undefined,
+			provider: provider.trim() || undefined,
 		});
 	};
 
@@ -38,7 +49,7 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 
 	return (
 		<Modal
-			title="Buscar cliente"
+			title="Buscar material"
 			onCancel={handleCancel}
 			onConfirm={handleSubmit}
 			confirmText={"Buscar"}
@@ -52,14 +63,13 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 				onChange={(e) => setName(e.target.value)}
 			/>
 			<input
-				type="number"
 				className="w-full border p-2 rounded"
-				placeholder="CUIT"
-				value={cuit}
-				onChange={(e) => setCuit(e.target.value)}
+				placeholder="Proveedor"
+				value={provider}
+				onChange={(e) => setProvider(e.target.value)}
 			/>
 		</Modal>
 	);
 };
 
-export default ClientSearchModal;
+export default MaterialSearchModal;

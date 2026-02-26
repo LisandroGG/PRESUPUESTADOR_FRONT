@@ -10,7 +10,6 @@ import {
 	createBudget,
 	deleteBudget,
 	getAllBudgets,
-	getAllBudgetsFromClient,
 	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
 import { getAllClientsForSelect } from "@redux/Slices/clientSlice.js";
@@ -19,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import BudgetFormModal from "./BudgetFormModal.jsx";
+import BudgetSearchModal from "./BudgetSearchModal.jsx";
 import ChangeStatusModal from "./ChangeStatusModal.jsx";
 
 const BudgetsList = () => {
@@ -43,11 +43,13 @@ const BudgetsList = () => {
 			if (modalState.type === "delete") {
 				await run(deleteBudget, modalState.data.id);
 				await run(getAllBudgets);
+				clearFilters();
 			}
 
 			if (modalState.type === "create") {
 				await run(createBudget, budgetData);
 				await run(getAllBudgets);
+				clearFilters();
 			}
 
 			if (modalState.type === "changeStatus") {
@@ -56,6 +58,11 @@ const BudgetsList = () => {
 					status: budgetData,
 				});
 				await run(getAllBudgets);
+				clearFilters();
+			}
+
+			if (modalState.type === "search") {
+				applyFilters(budgetData);
 			}
 
 			setModalState(null);
@@ -150,8 +157,19 @@ const BudgetsList = () => {
 		</>
 	);
 
-	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
-		usePagination((state) => state.budgets, getAllBudgets);
+	const {
+		page,
+		totalPages,
+		hasNext,
+		hasPrev,
+		loading,
+		goToPage,
+		applyFilters,
+		clearFilters,
+		filters,
+	} = usePagination((state) => state.budgets, getAllBudgets);
+
+	const hasActiveFilters = Object.keys(filters || {}).length > 0;
 
 	if (loading) {
 		return (
@@ -183,6 +201,7 @@ const BudgetsList = () => {
 			title="Presupuestos"
 			onAdd={onAdd}
 			onSearch={onSearch}
+			onClearSearch={hasActiveFilters ? clearFilters : undefined}
 		>
 			<TableList
 				columns={columns}
@@ -199,14 +218,12 @@ const BudgetsList = () => {
 				onPageChange={goToPage}
 			/>
 
-			{modalState?.type === "create" && (
-				<BudgetFormModal
-					open
-					clients={clients}
-					onCancel={handleCancel}
-					onConfirm={handleConfirm}
-				/>
-			)}
+			<BudgetFormModal
+				open={modalState?.type === "create"}
+				clients={clients}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
+			/>
 
 			<ConfirmModal
 				open={modalState?.type === "delete"}
@@ -216,14 +233,18 @@ const BudgetsList = () => {
 				onConfirm={handleConfirm}
 			/>
 
-			{modalState?.type === "changeStatus" && (
-				<ChangeStatusModal
-					open
-					initialStatus={modalState?.data}
-					onCancel={handleCancel}
-					onConfirm={handleConfirm}
-				/>
-			)}
+			<ChangeStatusModal
+				open={modalState?.type === "changeStatus"}
+				initialStatus={modalState?.data}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
+			/>
+			<BudgetSearchModal
+				open={modalState?.type === "search"}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
+				clients={clients}
+			/>
 		</SectionList>
 	);
 };

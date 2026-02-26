@@ -21,7 +21,7 @@ export const getAllClients = createAsyncThunk(
 	async (params, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/clients", {
-				params
+				params,
 			});
 			return response.data;
 		} catch (error) {

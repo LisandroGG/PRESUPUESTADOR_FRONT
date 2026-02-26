@@ -36,12 +36,13 @@ const ClientsList = () => {
 			if (modalState.type === "delete") {
 				await run(deleteClient, modalState.data.id);
 				await run(getAllClients);
+				clearFilters();
 			}
 
 			if (modalState.type === "create") {
 				await run(createClient, clientData);
 				await run(getAllClients);
-				clearFilters()
+				clearFilters();
 			}
 
 			if (modalState.type === "edit") {
@@ -49,13 +50,12 @@ const ClientsList = () => {
 					clientId: modalState.data.id,
 					clientData,
 				});
-				clearFilters()
+				clearFilters();
 			}
 
 			if (modalState.type === "search") {
-			applyFilters(clientData);
+				applyFilters(clientData);
 			}
-
 			setModalState(null);
 		} catch {}
 	};
@@ -121,8 +121,17 @@ const ClientsList = () => {
 		</>
 	);
 
-	const { page, totalPages, hasNext, hasPrev, loading, goToPage, applyFilters, clearFilters, filters } =
-		usePagination((state) => state.clients, getAllClients);
+	const {
+		page,
+		totalPages,
+		hasNext,
+		hasPrev,
+		loading,
+		goToPage,
+		applyFilters,
+		clearFilters,
+		filters,
+	} = usePagination((state) => state.clients, getAllClients);
 
 	const hasActiveFilters = Object.keys(filters || {}).length > 0;
 
@@ -191,7 +200,7 @@ const ClientsList = () => {
 				open={modalState?.type === "search"}
 				onCancel={handleCancel}
 				onConfirm={handleConfirm}
-/>
+			/>
 		</SectionList>
 	);
 };

@@ -10,13 +10,13 @@ import {
 	createMaterial,
 	deleteMaterial,
 	getAllMaterials,
-	searchMaterials,
 	updateMaterial,
 } from "@redux/Slices/materialSlice";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialFormModal from "./MaterialFormModal.jsx";
+import MaterialSearchModal from "./MaterialSearchModal.jsx";
 
 const MaterialsList = () => {
 	const { materials } = useSelector((state) => state.materials);
@@ -35,11 +35,13 @@ const MaterialsList = () => {
 			if (modalState.type === "delete") {
 				await run(deleteMaterial, modalState.data.id);
 				await run(getAllMaterials);
+				clearFilters();
 			}
 
 			if (modalState.type === "create") {
 				await run(createMaterial, materialData);
 				await run(getAllMaterials);
+				clearFilters();
 			}
 
 			if (modalState.type === "edit") {
@@ -47,6 +49,11 @@ const MaterialsList = () => {
 					materialId: modalState.data.id,
 					materialData,
 				});
+				clearFilters();
+			}
+
+			if (modalState.type === "search") {
+				applyFilters(materialData);
 			}
 
 			setModalState(null);
@@ -109,8 +116,19 @@ const MaterialsList = () => {
 		</>
 	);
 
-	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
-		usePagination((state) => state.materials, getAllMaterials);
+	const {
+		page,
+		totalPages,
+		hasNext,
+		hasPrev,
+		loading,
+		goToPage,
+		applyFilters,
+		clearFilters,
+		filters,
+	} = usePagination((state) => state.materials, getAllMaterials);
+
+	const hasActiveFilters = Object.keys(filters || {}).length > 0;
 
 	if (loading) {
 		return (
@@ -141,6 +159,7 @@ const MaterialsList = () => {
 			title="Materiales"
 			onAdd={onAdd}
 			onSearch={onSearch}
+			onClearSearch={hasActiveFilters ? clearFilters : undefined}
 		>
 			<TableList
 				columns={columns}
@@ -169,7 +188,12 @@ const MaterialsList = () => {
 				title="Eliminar material"
 				description="¿Estás seguro que deseas eliminar este material?"
 				onCancel={handleCancel}
-				onConfirm={() => handleConfirm()}
+				onConfirm={handleConfirm}
+			/>
+			<MaterialSearchModal
+				open={modalState?.type === "search"}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
 			/>
 		</SectionList>
 	);

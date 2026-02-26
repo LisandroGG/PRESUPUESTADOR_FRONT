@@ -1,14 +1,14 @@
 const materialNameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
 const materialProviderRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
 
-const validateMaterialName = (name) => {
+export const validateMaterialName = (name) => {
 	if (!name?.trim()) return "El nombre es obligatorio";
 	if (!materialNameRegex.test(name.trim())) {
 		return "El nombre solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
 	}
 };
 
-const validateMaterialProvider = (provider) => {
+export const validateMaterialProvider = (provider) => {
 	if (!provider?.trim()) return "El proveedor es obligatorio";
 	if (!materialProviderRegex.test(provider.trim())) {
 		return "El proveedor solo puede contener letras y espacios.";

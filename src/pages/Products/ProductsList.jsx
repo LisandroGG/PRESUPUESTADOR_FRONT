@@ -10,13 +10,13 @@ import {
 	createProduct,
 	deleteProduct,
 	getAllProducts,
-	searchProducts,
 } from "@redux/Slices/productSlice";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProductFormModal from "./ProductFormModal.jsx";
+import ProductSearchModal from "./ProductSearchModal.jsx";
 
 const ProductsList = () => {
 	const { products } = useSelector((state) => state.products);
@@ -34,11 +34,17 @@ const ProductsList = () => {
 			if (modalState.type === "delete") {
 				await run(deleteProduct, modalState.data.id);
 				await run(getAllProducts);
+				clearFilters();
 			}
 
 			if (modalState.type === "create") {
 				await run(createProduct, productData);
 				await run(getAllProducts);
+				clearFilters();
+			}
+
+			if (modalState.type === "search") {
+				applyFilters(productData);
 			}
 
 			setModalState(null);
@@ -93,8 +99,19 @@ const ProductsList = () => {
 		</Button>
 	);
 
-	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
-		usePagination((state) => state.products, getAllProducts);
+	const {
+		page,
+		totalPages,
+		hasNext,
+		hasPrev,
+		loading,
+		goToPage,
+		applyFilters,
+		clearFilters,
+		filters,
+	} = usePagination((state) => state.products, getAllProducts);
+
+	const hasActiveFilters = Object.keys(filters || {}).length > 0;
 
 	if (loading) {
 		return (
@@ -126,6 +143,7 @@ const ProductsList = () => {
 			title="Productos"
 			onAdd={onAdd}
 			onSearch={onSearch}
+			onClearSearch={hasActiveFilters ? clearFilters : undefined}
 		>
 			<TableList
 				columns={columns}
@@ -142,13 +160,11 @@ const ProductsList = () => {
 				onPageChange={goToPage}
 			/>
 
-			{modalState?.type === "create" && (
-				<ProductFormModal
-					open
-					onCancel={handleCancel}
-					onConfirm={handleConfirm}
-				/>
-			)}
+			<ProductFormModal
+				open={modalState?.type === "create"}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
+			/>
 
 			<ConfirmModal
 				open={modalState?.type === "delete"}
@@ -156,6 +172,12 @@ const ProductsList = () => {
 				description="¿Estás seguro que deseas eliminar este producto?"
 				onCancel={handleCancel}
 				onConfirm={() => handleConfirm()}
+			/>
+
+			<ProductSearchModal
+				open={modalState?.type === "search"}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
 			/>
 		</SectionList>
 	);

@@ -2,7 +2,7 @@ const productNameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
 const productDescriptionRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
 const productMaterialQuantityRegex = /^\d+$/;
 
-const validateProductName = (name) => {
+export const validateProductName = (name) => {
 	if (!name?.trim()) return "El nombre es obligatorio";
 	if (!productNameRegex.test(name.trim())) {
 		return "El nombre solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
