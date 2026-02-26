@@ -1,7 +1,7 @@
 import Button from "@components/Common/Button.jsx";
-import { Search, SquarePlus } from "lucide-react";
+import { Search, SquarePlus, SearchX } from "lucide-react";
 
-const SectionList = ({ title, list, onAdd, onSearch, children }) => {
+const SectionList = ({ title, list, onAdd, onSearch, onClearSearch, children }) => {
 	return (
 		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
 			<div className="flex justify-between items-center mb-6">
@@ -16,6 +16,17 @@ const SectionList = ({ title, list, onAdd, onSearch, children }) => {
 						<Search size={18} />
 						Buscar
 					</Button>
+					{onClearSearch && (
+	<Button
+		variant="primary"
+		className="flex items-center gap-2"
+		onClick={onClearSearch}
+		title="Limpiar filtros"
+	>
+		<SearchX size={18} />
+		Limpiar
+	</Button>
+)}
 					<Button
 						variant="primary"
 						className="flex items-center gap-2"

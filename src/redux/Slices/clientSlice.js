@@ -18,10 +18,10 @@ const initialState = {
 
 export const getAllClients = createAsyncThunk(
 	"clients/getAllClients",
-	async (page, { rejectWithValue }) => {
+	async (params, { rejectWithValue }) => {
 		try {
 			const response = await axios.get("/clients", {
-				params: page,
+				params
 			});
 			return response.data;
 		} catch (error) {
@@ -43,24 +43,6 @@ export const getAllClientsForSelect = createAsyncThunk(
 		} catch (error) {
 			return rejectWithValue(
 				error.response?.data?.message || "Error al obtener clientes",
-			);
-		}
-	},
-);
-
-// SEARCH CLIENT BY QUERY
-
-export const searchClients = createAsyncThunk(
-	"clients/search",
-	async (query, { rejectWithValue }) => {
-		try {
-			const response = await axios.get("/clients/search", {
-				params: query,
-			});
-			return response.data;
-		} catch (error) {
-			return rejectWithValue(
-				error.response?.data?.message || "Error al buscar clientes",
 			);
 		}
 	},
@@ -158,27 +140,6 @@ export const clientsSlice = createSlice({
 			.addCase(getAllClientsForSelect.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener clientes";
-			})
-
-			// SEARCH CLIENT BY QUERY
-			.addCase(searchClients.pending, (state) => {
-				state.loading = true;
-				state.error = null;
-			})
-			.addCase(searchClients.fulfilled, (state, action) => {
-				state.loading = false;
-				state.clients = action.payload.data;
-				state.page = action.payload.page;
-				state.totalPages = action.payload.totalPages;
-				state.totalItems = action.payload.total;
-				state.limit = action.payload.limit;
-				state.hasNext = action.payload.hasNext;
-				state.hasPrev = action.payload.hasPrev;
-				state.message = null;
-			})
-			.addCase(searchClients.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload || "Error al buscar clientes";
 			})
 
 			// CREATE CLIENT

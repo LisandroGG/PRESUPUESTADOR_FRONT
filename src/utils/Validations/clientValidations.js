@@ -8,7 +8,7 @@ const validateCuit = (cuit) => {
 	}
 };
 
-const validateClientName = (name) => {
+export const validateClientName = (name) => {
 	if (!name?.trim()) return "El nombre es obligatorio";
 	if (!nameRegex.test(name.trim())) {
 		return "El nombre solo puede contener letras y espacios";

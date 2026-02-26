@@ -10,7 +10,6 @@ import {
 	createClient,
 	deleteClient,
 	getAllClients,
-	searchClients,
 	updateClient,
 } from "@redux/Slices/clientSlice";
 import { formatCuit } from "@utils/formatCuit.js";
@@ -18,6 +17,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import ClientFormModal from "./ClientFormModal.jsx";
+import ClientSearchModal from "./ClientSearchModal.jsx";
 
 const ClientsList = () => {
 	const { clients } = useSelector((state) => state.clients);
@@ -41,6 +41,7 @@ const ClientsList = () => {
 			if (modalState.type === "create") {
 				await run(createClient, clientData);
 				await run(getAllClients);
+				clearFilters()
 			}
 
 			if (modalState.type === "edit") {
@@ -48,6 +49,11 @@ const ClientsList = () => {
 					clientId: modalState.data.id,
 					clientData,
 				});
+				clearFilters()
+			}
+
+			if (modalState.type === "search") {
+			applyFilters(clientData);
 			}
 
 			setModalState(null);
@@ -115,8 +121,10 @@ const ClientsList = () => {
 		</>
 	);
 
-	const { page, totalPages, hasNext, hasPrev, loading, goToPage } =
+	const { page, totalPages, hasNext, hasPrev, loading, goToPage, applyFilters, clearFilters, filters } =
 		usePagination((state) => state.clients, getAllClients);
+
+	const hasActiveFilters = Object.keys(filters || {}).length > 0;
 
 	if (loading) {
 		return (
@@ -148,6 +156,7 @@ const ClientsList = () => {
 			title="Clientes"
 			onAdd={onAdd}
 			onSearch={onSearch}
+			onClearSearch={hasActiveFilters ? clearFilters : undefined}
 		>
 			<TableList
 				columns={columns}
@@ -176,8 +185,13 @@ const ClientsList = () => {
 				title="Eliminar cliente"
 				description="¿Estás seguro que deseas eliminar este cliente?"
 				onCancel={handleCancel}
-				onConfirm={() => handleConfirm()}
+				onConfirm={handleConfirm}
 			/>
+			<ClientSearchModal
+				open={modalState?.type === "search"}
+				onCancel={handleCancel}
+				onConfirm={handleConfirm}
+/>
 		</SectionList>
 	);
 };

@@ -36,7 +36,7 @@ const ClientFormModal = ({ open, mode, initialData, onCancel, onConfirm }) => {
 
 		onConfirm({
 			name: name.trim(),
-			cuit: Number(cuit),
+			cuit: cuit.trim(),
 		});
 	};
 

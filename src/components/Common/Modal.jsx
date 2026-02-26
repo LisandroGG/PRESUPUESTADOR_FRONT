@@ -1,7 +1,7 @@
 import Button from "@components/Common/Button.jsx";
 import ErrorMessage from "@components/Common/ErrorMessage.jsx";
 
-const Modal = ({ title, children, onCancel, onConfirm, disabled, error }) => {
+const Modal = ({ title, confirmText = "Guardar", children, onCancel, onConfirm, disabled, error }) => {
 	return (
 		<div className="fixed inset-0 bg-black/40 grid place-content-center">
 			<div className="bg-white rounded-lg p-6 w-full max-w-md">
@@ -13,7 +13,7 @@ const Modal = ({ title, children, onCancel, onConfirm, disabled, error }) => {
 						Cancelar
 					</Button>
 					<Button variant="primary" onClick={onConfirm} disabled={disabled}>
-						Guardar
+						{confirmText}
 					</Button>
 				</div>
 			</div>
