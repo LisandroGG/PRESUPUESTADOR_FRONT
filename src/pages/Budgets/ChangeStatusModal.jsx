@@ -2,15 +2,30 @@ import Modal from "@components/Common/Modal.jsx";
 import { useEffect, useState } from "react";
 
 const ChangeStatusModal = ({ open, onCancel, onConfirm, initialStatus }) => {
+	const allowedTransitions = {
+		pending: ["approved"],
+		approved: [],
+		paid: [],
+	};
+
+	const labels = {
+		pending: "Pendiente",
+		approved: "Confirmado",
+		paid: "Saldado",
+	};
 	const [status, setStatus] = useState("");
+
+	const current = initialStatus?.status;
 
 	useEffect(() => {
 		if (open) {
-			setStatus(initialStatus?.status);
+			setStatus(current);
 		}
-	}, [initialStatus, open]);
+	}, [open, current]);
 
-	const isValid = status && status !== initialStatus?.status;
+	const allowed = allowedTransitions[current] || [];
+
+	const isValid = status && status !== current;
 
 	const handleSubmit = () => {
 		onConfirm(status);
@@ -18,6 +33,7 @@ const ChangeStatusModal = ({ open, onCancel, onConfirm, initialStatus }) => {
 	};
 
 	if (!open) return null;
+
 	return (
 		<Modal
 			title={"Cambiar estado del presupuesto"}
@@ -30,9 +46,13 @@ const ChangeStatusModal = ({ open, onCancel, onConfirm, initialStatus }) => {
 				value={status}
 				onChange={(e) => setStatus(e.target.value)}
 			>
-				<option value="pending">Pendiente</option>
-				<option value="approved">Confirmado</option>
-				<option value="paid">Saldado</option>
+				<option value={current}>{labels[current]}</option>
+
+				{allowed.map((s) => (
+					<option key={s} value={s}>
+						{labels[s]}
+					</option>
+				))}
 			</select>
 		</Modal>
 	);

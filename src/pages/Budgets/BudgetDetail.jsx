@@ -206,7 +206,7 @@ const BudgetDetail = () => {
 								<FileText size={16} />
 								Descargar PDF
 							</Button>
-							{budget?.status !== "paid" ? (
+							{budget?.status !== "pending" && budget?.status !== "paid" ? (
 								<Button
 									variant="primary"
 									className="flex items-center gap-2"
@@ -384,7 +384,31 @@ const BudgetDetail = () => {
 						<Banknote size={28} />
 						<span className="text-lg font-semibold">Pagos del presupuesto</span>
 					</div>
-					<div className="min-h-140">
+					<div className="p-4 border-b">
+						<div className="flex flex-col gap-2 text-sm">
+							<div className="flex justify-between">
+								<span className="text-neutral-500">Total</span>
+								<span className="font-semibold">
+									${Number(budget?.totals?.total || 0).toLocaleString()}
+								</span>
+							</div>
+
+							<div className="flex justify-between">
+								<span className="text-neutral-500">Pagado</span>
+								<span className="text-green-600 font-semibold">
+									${Number(budget?.totals?.paid || 0).toLocaleString()}
+								</span>
+							</div>
+
+							<div className="flex justify-between">
+								<span className="text-neutral-500">Restante</span>
+								<span className="text-red-500 font-semibold">
+									${Number(budget?.totals?.remaining || 0).toLocaleString()}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div className="h-110 overflow-y-auto no-scrollbar">
 						{budget?.payments?.length ? (
 							<table className="w-full">
 								<thead className="bg-neutral">
@@ -394,7 +418,7 @@ const BudgetDetail = () => {
 										</th>
 										<th className="w-[30%] px-6 py-3 text-center">MONTO</th>
 										<th className="w-[30%] px-6 py-3 text-center">FECHA</th>
-										{!isEditing && (
+										{!isEditing && budget.status !== "paid" && (
 											<th className="text-center px-6 py-3">ACCIONES</th>
 										)}
 									</tr>
@@ -412,7 +436,7 @@ const BudgetDetail = () => {
 											<td className="px-6 py-3 text-center">
 												{payment.date.split("-").reverse().join("/")}
 											</td>
-											{!isEditing && (
+											{!isEditing && budget.status !== "paid" && (
 												<td className="px-6 py-3 text-center">
 													<Button
 														variant="danger"
