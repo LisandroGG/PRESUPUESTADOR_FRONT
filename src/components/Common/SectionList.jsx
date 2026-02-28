@@ -1,5 +1,5 @@
 import Button from "@components/Common/Button.jsx";
-import { Search, SearchX, SquarePlus } from "lucide-react";
+import { Funnel, FunnelX, Search, SquarePlus } from "lucide-react";
 
 const SectionList = ({
 	title,
@@ -20,8 +20,17 @@ const SectionList = ({
 						onClick={onSearch}
 						title={`Buscar ${list}`}
 					>
-						<Search size={18} />
-						Buscar
+						{onClearSearch ? (
+							<>
+								<Funnel size={18} />
+								Filtrar
+							</>
+						) : (
+							<>
+								<Search size={18} />
+								Buscar
+							</>
+						)}
 					</Button>
 					{onClearSearch && (
 						<Button
@@ -30,7 +39,7 @@ const SectionList = ({
 							onClick={onClearSearch}
 							title="Limpiar filtros"
 						>
-							<SearchX size={18} />
+							<FunnelX size={18} />
 							Limpiar
 						</Button>
 					)}

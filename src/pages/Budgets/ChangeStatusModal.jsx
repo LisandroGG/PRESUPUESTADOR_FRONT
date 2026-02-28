@@ -1,10 +1,16 @@
 import Modal from "@components/Common/Modal.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ChangeStatusModal = ({ open, onCancel, onConfirm, initialStatus }) => {
-	const [status, setStatus] = useState(initialStatus?.status);
+	const [status, setStatus] = useState("");
 
-	const isValid = status && status !== initialStatus.status;
+	useEffect(() => {
+		if (open) {
+			setStatus(initialStatus?.status);
+		}
+	}, [initialStatus, open]);
+
+	const isValid = status && status !== initialStatus?.status;
 
 	const handleSubmit = () => {
 		onConfirm(status);

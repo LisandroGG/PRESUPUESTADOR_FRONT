@@ -214,7 +214,7 @@ const ProductDetail = () => {
 						</div>
 
 						<div className="border-neutral-200 border rounded-xl shadow-md">
-							<div className="p-4 max-h-45 overflow-y-auto no-scrollbar">
+							<div className="p-4 max-h-45 overflow-y-auto no-scrollbar max-w-270 wrap-break-word whitespace-normal">
 								{isEditing ? (
 									<textarea
 										name="description"

@@ -1,6 +1,5 @@
 import {
 	Boxes,
-	Factory,
 	FileText,
 	Home,
 	LogOutIcon,
@@ -39,13 +38,9 @@ const Nav = ({ handleLogout }) => {
 	];
 	return (
 		<header className="bg-primary-500 h-full text-white shadow-md z-50 w-full flex">
-			<div className="mx-auto gap-6 grid grid-rows-[45px_1fr_45px] p-2">
-				<div className="flex gap-2 items-center">
-					<Factory size={24} />
-					<h1 className="text-2xl font-bold">Gestión</h1>
-				</div>
+			<div className="mx-auto gap-6 grid grid-rows-[1fr_45px] p-2">
 				<nav>
-					<ul className="flex flex-col gap-6">
+					<ul className="flex flex-col gap-6 pt-13">
 						{navItems.map(({ to, label, icon }) => (
 							<li key={label}>
 								<Link

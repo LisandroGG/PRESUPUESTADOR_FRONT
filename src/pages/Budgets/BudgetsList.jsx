@@ -13,10 +13,10 @@ import {
 	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
 import { getAllClientsForSelect } from "@redux/Slices/clientSlice.js";
-import { Settings, Trash2 } from "lucide-react";
+import { FileText, Settings, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BudgetFormModal from "./BudgetFormModal.jsx";
 import BudgetSearchModal from "./BudgetSearchModal.jsx";
 import ChangeStatusModal from "./ChangeStatusModal.jsx";
@@ -25,6 +25,8 @@ const BudgetsList = () => {
 	const { budgets } = useSelector((state) => state.budgets);
 	const { clients } = useSelector((state) => state.clients);
 	const { run } = useCrudDispatch();
+
+	const navigate = useNavigate();
 
 	const [modalState, setModalState] = useState(null);
 
@@ -80,13 +82,9 @@ const BudgetsList = () => {
 			label: "Descripción",
 			width: "w-[30%]",
 			render: (budget) => (
-				<Link
-					to={`/budgets/${budget.id}`}
-					className="hover:text-primary-500 hover:font-semibold"
-					title="Ver detalle"
-				>
+				<div className="overflow-y-auto no-scrollbar max-w-100 truncate">
 					{budget.description}
-				</Link>
+				</div>
 			),
 		},
 		{
@@ -128,6 +126,13 @@ const BudgetsList = () => {
 
 	const renderActions = (budget) => (
 		<>
+			<Button
+				variant="ghost"
+				title="Ver detalle"
+				onClick={() => navigate(`/budgets/${budget.id}`)}
+			>
+				<FileText size={16} />
+			</Button>
 			<Button
 				variant="ghost"
 				title="Cambiar estado"

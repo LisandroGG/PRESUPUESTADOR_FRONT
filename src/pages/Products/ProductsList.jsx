@@ -11,16 +11,18 @@ import {
 	deleteProduct,
 	getAllProducts,
 } from "@redux/Slices/productSlice";
-import { Trash2 } from "lucide-react";
+import { Package, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductFormModal from "./ProductFormModal.jsx";
 import ProductSearchModal from "./ProductSearchModal.jsx";
 
 const ProductsList = () => {
 	const { products } = useSelector((state) => state.products);
 	const { run } = useCrudDispatch();
+
+	const navigate = useNavigate();
 
 	const [modalState, setModalState] = useState(null);
 
@@ -61,22 +63,13 @@ const ProductsList = () => {
 			key: "name",
 			label: "Nombre",
 			width: "w-[35%]",
-			render: (product) => (
-				<Link
-					to={`/products/${product.id}`}
-					className="hover:text-primary-500 hover:font-semibold"
-					title="Ver detalle"
-				>
-					{product.name}
-				</Link>
-			),
 		},
 		{
 			key: "description",
 			label: "Descripción",
 			width: "w-[55%]",
 			render: (product) => (
-				<div className="h-12 overflow-y-auto no-scrollbar">
+				<div className="overflow-y-auto no-scrollbar max-w-100 truncate">
 					{product.description}
 				</div>
 			),
@@ -84,19 +77,28 @@ const ProductsList = () => {
 	];
 
 	const renderActions = (product) => (
-		<Button
-			variant="danger"
-			title="Eliminar"
-			onClick={() =>
-				setModalState({
-					type: "delete",
-					entity: "product",
-					data: product,
-				})
-			}
-		>
-			<Trash2 size={16} />
-		</Button>
+		<>
+			<Button
+				variant="ghost"
+				title="Ver detalle"
+				onClick={() => navigate(`/products/${product.id}`)}
+			>
+				<Package size={16} />
+			</Button>
+			<Button
+				variant="danger"
+				title="Eliminar"
+				onClick={() =>
+					setModalState({
+						type: "delete",
+						entity: "product",
+						data: product,
+					})
+				}
+			>
+				<Trash2 size={16} />
+			</Button>
+		</>
 	);
 
 	const {
