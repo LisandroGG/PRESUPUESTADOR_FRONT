@@ -1,43 +1,17 @@
-import Button from "@components/Common/Button.jsx";
+import Modal from "@components/Common/Modal.jsx";
 
-const ConfirmModal = ({
-	open,
-	title = "Confirmar acción",
-	description,
-	confirmText = "Confirmar",
-	cancelText = "Cancelar",
-	onConfirm,
-	onCancel,
-	loading = false,
-}) => {
+const ConfirmModal = ({ open, title, description, onConfirm, onCancel }) => {
 	if (!open) return null;
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center">
-			<button
-				type="button"
-				className="absolute inset-0 bg-black/40"
-				onClick={onCancel}
-				aria-label="Cerrar modal"
-			/>
-
-			<div className="relative bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-				<h3 className="text-lg font-semibold text-neutral-800">{title}</h3>
-
-				{description && (
-					<p className="mt-2 text-sm text-neutral-600">{description}</p>
-				)}
-
-				<div className="mt-6 flex justify-end gap-2">
-					<Button variant="ghost" onClick={onCancel} disabled={loading}>
-						{cancelText}
-					</Button>
-
-					<Button variant="danger" onClick={onConfirm} disabled={loading}>
-						{confirmText}
-					</Button>
-				</div>
-			</div>
-		</div>
+		<Modal
+			title={title}
+			onCancel={onCancel}
+			onConfirm={onConfirm}
+			confirmText={"Confirmar"}
+			buttonVariant={"danger"}
+		>
+			{description && <p className="text-sm text-neutral-600">{description}</p>}
+		</Modal>
 	);
 };
 

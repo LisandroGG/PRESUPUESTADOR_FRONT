@@ -4,6 +4,7 @@ import ErrorMessage from "@components/Common/ErrorMessage.jsx";
 const Modal = ({
 	title,
 	confirmText = "Guardar",
+	buttonVariant = "primary",
 	children,
 	onCancel,
 	onConfirm,
@@ -19,14 +20,24 @@ const Modal = ({
 				aria-label="Cerrar modal"
 			/>
 			<div className="relative bg-white rounded-lg p-6 w-100">
-				<h2 className="text-xl font-bold mb-4">{title}</h2>
+				<h3 className="text-lg font-semibold text-neutral-800 mb-2">{title}</h3>
 				<div className="space-y-4">{children}</div>
-				<div className="my-2">{error && <ErrorMessage message={error} />}</div>
-				<div className="flex justify-end gap-2">
+				{error ? (
+					<div className="my-2">
+						<ErrorMessage message={error} />
+					</div>
+				) : (
+					""
+				)}
+				<div className="flex justify-end gap-2 mt-2">
 					<Button variant="ghost" onClick={onCancel}>
 						Cancelar
 					</Button>
-					<Button variant="primary" onClick={onConfirm} disabled={disabled}>
+					<Button
+						variant={buttonVariant}
+						onClick={onConfirm}
+						disabled={disabled}
+					>
 						{confirmText}
 					</Button>
 				</div>

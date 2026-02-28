@@ -10,10 +10,9 @@ import {
 	createBudget,
 	deleteBudget,
 	getAllBudgets,
-	updateBudgetStatus,
 } from "@redux/Slices/budgetSlice";
 import { getAllClientsForSelect } from "@redux/Slices/clientSlice.js";
-import { FileText, Settings, Trash2 } from "lucide-react";
+import { FileText, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -132,19 +131,6 @@ const BudgetsList = () => {
 				onClick={() => navigate(`/budgets/${budget.id}`)}
 			>
 				<FileText size={16} />
-			</Button>
-			<Button
-				variant="ghost"
-				title="Cambiar estado"
-				onClick={() => {
-					setModalState({
-						type: "changeStatus",
-						entity: "budget",
-						data: budget,
-					});
-				}}
-			>
-				<Settings size={16} />
 			</Button>
 			<Button
 				variant="danger"

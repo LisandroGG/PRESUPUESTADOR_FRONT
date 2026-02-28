@@ -2,13 +2,18 @@ import Button from "@components/Common/Button.jsx";
 import ConfirmModal from "@components/Common/ConfirmModal.jsx";
 import Loading from "@components/Common/Loading.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
-import { getBudgetById, updateBudget } from "@redux/slices/budgetSlice.js";
+import {
+	getBudgetById,
+	updateBudget,
+	updateBudgetStatus,
+} from "@redux/slices/budgetSlice.js";
 import { createPayment, deletePayment } from "@redux/slices/paymentSlice.js";
 import { getAllProductsForSelect } from "@redux/slices/productSlice.js";
 import {
 	ArrowLeft,
 	Banknote,
 	ClipboardCheck,
+	FileCheckCorner,
 	FileText,
 	Pencil,
 	Trash2,
@@ -17,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import AddPaymentModal from "./AddPaymentModal.jsx";
+import ChangeStatusModal from "./ChangeStatusModal.jsx";
 import ProductsFormModal from "./ProductsFormModal";
 
 const BudgetDetail = () => {
@@ -140,6 +146,15 @@ const BudgetDetail = () => {
 		setModalState(null);
 	};
 
+	const handleChangeStatus = async () => {
+		await run(updateBudgetStatus, {
+			budgetId,
+			status: "approved",
+		});
+		await run(getBudgetById, budgetId);
+		setModalState(null);
+	};
+
 	const handleAddPayment = async (paymentData) => {
 		try {
 			await run(createPayment, {
@@ -222,17 +237,29 @@ const BudgetDetail = () => {
 							)}
 
 							{budget?.status === "pending" ? (
-								<Button
-									variant="primary"
-									className="flex items-center gap-2"
-									onClick={() => {
-										setOriginalData(budgetData);
-										setIsEditing(true);
-									}}
-								>
-									<Pencil size={16} />
-									Editar Presupuesto
-								</Button>
+								<>
+									<Button
+										variant="primary"
+										className="flex items-center gap-2"
+										onClick={() => {
+											setOriginalData(budgetData);
+											setIsEditing(true);
+										}}
+									>
+										<Pencil size={16} />
+										Editar Presupuesto
+									</Button>
+									<Button
+										variant="primary"
+										className="flex items-center gap-2"
+										onClick={() => {
+											setModalState({ type: "changeStatus" });
+										}}
+									>
+										<FileCheckCorner size={16} />
+										Confirmar presupuesto
+									</Button>
+								</>
 							) : (
 								""
 							)}
@@ -512,6 +539,11 @@ const BudgetDetail = () => {
 				open={modalState?.type === "registerPayment"}
 				onCancel={() => setModalState(null)}
 				onConfirm={handleAddPayment}
+			/>
+			<ChangeStatusModal
+				open={modalState?.type === "changeStatus"}
+				onConfirm={handleChangeStatus}
+				onCancel={() => setModalState(null)}
 			/>
 		</section>
 	);
