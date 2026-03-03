@@ -49,6 +49,23 @@ export const getBudgetById = createAsyncThunk(
 	},
 );
 
+export const getRecentBudgets = createAsyncThunk(
+	"budgets/getRecentBudgets",
+	async (ids, { rejectWithValue }) => {
+		try {
+			const response = await axios.post("/budgets/recent", {
+				ids,
+			});
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message ||
+					"Error al obtener el presupuestos recientes",
+			);
+		}
+	},
+);
+
 // CREATE BUDGET
 
 export const createBudget = createAsyncThunk(
@@ -158,6 +175,21 @@ export const budgetsSlice = createSlice({
 			.addCase(getBudgetById.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload || "Error al obtener presupuesto";
+			})
+
+			.addCase(getRecentBudgets.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getRecentBudgets.fulfilled, (state, action) => {
+				state.loading = false;
+				state.budgets = action.payload;
+				state.message = null;
+			})
+			.addCase(getRecentBudgets.rejected, (state, action) => {
+				state.loading = false;
+				state.error =
+					action.payload || "Error al obtener presupuestos recientes";
 			})
 
 			// CREATE BUDGET

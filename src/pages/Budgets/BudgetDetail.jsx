@@ -9,6 +9,7 @@ import {
 } from "@redux/slices/budgetSlice.js";
 import { createPayment, deletePayment } from "@redux/slices/paymentSlice.js";
 import { getAllProductsForSelect } from "@redux/slices/productSlice.js";
+import { saveRecentBudget } from "@utils/recentBudgets.js";
 import {
 	ArrowLeft,
 	Banknote,
@@ -57,6 +58,7 @@ const BudgetDetail = () => {
 				description: budget.description || "",
 				items: budget.items || [],
 			});
+			saveRecentBudget(budget.id);
 		}
 	}, [budget]);
 
