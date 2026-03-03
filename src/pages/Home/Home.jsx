@@ -1,5 +1,6 @@
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import { getRecentBudgets } from "@redux/Slices/budgetSlice";
+import { getDashboardStats } from "@redux/Slices/statsSlice";
 import {
 	Calendar,
 	ClipboardCheck,
@@ -16,6 +17,7 @@ const Home = () => {
 	const [ids, setIds] = useState([]);
 	const { run } = useCrudDispatch();
 	const { budgets, loading } = useSelector((state) => state.budgets);
+	const { stats } = useSelector((state) => state.stats);
 
 	useEffect(() => {
 		const stored = JSON.parse(localStorage.getItem("recentBudgets")) || [];
@@ -31,6 +33,11 @@ const Home = () => {
 			run(getRecentBudgets, ids);
 		}
 	}, [ids]);
+
+	// biome-ignore lint: useEffectBug
+	useEffect(() => {
+		run(getDashboardStats);
+	}, []);
 
 	const orderedBudgets = [...budgets].sort(
 		(a, b) => ids.indexOf(a.id) - ids.indexOf(b.id),
@@ -88,7 +95,7 @@ const Home = () => {
 					</div>
 					<div className="flex flex-col">
 						<span>Clientes</span>
-						<span className="text-xl font-semibold">55</span>
+						<span className="text-xl font-semibold">{stats.totalClients}</span>
 					</div>
 				</div>
 				<div className="border-neutral-300 border rounded-md flex items-center py-4 justify-center gap-2 shadow-sm">
@@ -97,7 +104,7 @@ const Home = () => {
 					</div>
 					<div className="flex flex-col">
 						<span>Productos</span>
-						<span className="text-xl font-semibold">4</span>
+						<span className="text-xl font-semibold">{stats.totalProducts}</span>
 					</div>
 				</div>
 				<div className="border-neutral-300 border rounded-md flex items-center py-4 justify-center gap-2 shadow-sm">
@@ -106,7 +113,9 @@ const Home = () => {
 					</div>
 					<div className="flex flex-col">
 						<span>Pendientes</span>
-						<span className="text-xl font-semibold">3</span>
+						<span className="text-xl font-semibold">
+							{stats.pendingBudgets}
+						</span>
 					</div>
 				</div>
 				<div className="border-neutral-300 border rounded-md flex items-center py-4 justify-center gap-2 shadow-sm">
@@ -115,7 +124,9 @@ const Home = () => {
 					</div>
 					<div className="flex flex-col">
 						<span>Confirmados</span>
-						<span className="text-xl font-semibold">2</span>
+						<span className="text-xl font-semibold">
+							{stats.approvedBudgets}
+						</span>
 					</div>
 				</div>
 			</div>

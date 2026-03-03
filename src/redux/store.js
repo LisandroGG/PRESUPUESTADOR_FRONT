@@ -4,6 +4,7 @@ import clientsReducer from "./Slices/clientSlice.js";
 import materialsReducer from "./Slices/materialSlice.js";
 import paymentsReducer from "./Slices/paymentSlice.js";
 import productsSlice from "./Slices/productSlice.js";
+import statsSlice from "./Slices/statsSlice.js";
 import usersReducer from "./Slices/usersSlice.js";
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
 		products: productsSlice,
 		payments: paymentsReducer,
 		budgets: budgetsReducer,
+		stats: statsSlice,
 	},
 	devTools: import.meta.env.VITE_MODE !== "production",
 });
