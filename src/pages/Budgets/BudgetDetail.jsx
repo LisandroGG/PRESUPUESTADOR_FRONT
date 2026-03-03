@@ -178,18 +178,18 @@ const BudgetDetail = () => {
 		);
 	}
 	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-8 min-h-full">
-			<div className="flex justify-between items-center mb-8">
-				<div className="flex flex-col">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full grid">
+			<div className="flex justify-between items-center mb-6">
+				<div>
 					<Link
 						to="/budgets"
-						className="flex items-center text-lg hover:text-primary-500"
+						className="flex items-center hover:text-primary-500"
 					>
 						<ArrowLeft size={20} />
 						Atrás
 					</Link>
 
-					<div className="flex font-bold text-3xl gap-2">
+					<div className="flex font-bold text-2xl gap-2">
 						<h2>Presupuesto: #{budget?.id}</h2>
 						<span>-</span>
 						{budget?.status === "pending" && (
@@ -210,12 +210,12 @@ const BudgetDetail = () => {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex gap-2">
 					{!isEditing ? (
 						<>
 							<Button
 								variant="primary"
-								className="flex items-center gap-2"
+								className="flex items-center gap-1"
 								onClick={() => downloadPdf(budgetId)}
 							>
 								<FileText size={16} />
@@ -224,7 +224,7 @@ const BudgetDetail = () => {
 							{budget?.status !== "pending" && budget?.status !== "paid" ? (
 								<Button
 									variant="primary"
-									className="flex items-center gap-2"
+									className="flex items-center gap-1"
 									onClick={() => {
 										setModalState({ type: "registerPayment" });
 									}}
@@ -240,7 +240,7 @@ const BudgetDetail = () => {
 								<>
 									<Button
 										variant="primary"
-										className="flex items-center gap-2"
+										className="flex items-center gap-1"
 										onClick={() => {
 											setOriginalData(budgetData);
 											setIsEditing(true);
@@ -251,13 +251,13 @@ const BudgetDetail = () => {
 									</Button>
 									<Button
 										variant="primary"
-										className="flex items-center gap-2"
+										className="flex items-center gap-1"
 										onClick={() => {
 											setModalState({ type: "changeStatus" });
 										}}
 									>
 										<FileCheckCorner size={16} />
-										Confirmar presupuesto
+										Cambiar Estado
 									</Button>
 								</>
 							) : (
@@ -281,22 +281,22 @@ const BudgetDetail = () => {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-[3fr_1fr] justify-between gap-12">
-				<div className="flex flex-col gap-8 my-auto">
-					<section className="flex flex-col gap-4">
-						<div className="flex items-center gap-2">
+			<div className="grid grid-cols-[6fr_4fr] justify-between gap-4">
+				<div className="flex flex-col mx-auto lg:mx-0 lg:my-auto gap-8">
+					<section className="flex flex-col gap-2">
+						<div className="flex items-center gap-1">
 							<FileText size={28} className="text-primary-500" />
-							<span className="text-lg font-semibld">Descripción</span>
+							<span className="font-semibold">Descripción</span>
 						</div>
 
-						<div className="border-neutral-200 border rounded-xl shadow-md">
-							<div className="p-4 max-h-45 overflow-y-auto no-scrollbar max-w-270 wrap-break-word whitespace-normal">
+						<div className="border-neutral-200 border rounded-xl shadow-md max-w-[40vw]">
+							<div className="p-2 h-25 lg:h-40 overflow-y-auto no-scrollbar wrap-break-word whitespace-normal">
 								{isEditing ? (
 									<textarea
 										name="description"
 										value={budgetData.description}
 										onChange={handleChange}
-										className="w-full resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
+										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
 									/>
 								) : (
 									<p>{budget?.description || "Sin descripción"}</p>
@@ -305,11 +305,11 @@ const BudgetDetail = () => {
 						</div>
 					</section>
 
-					<section className="flex flex-col gap-4">
+					<section className="flex flex-col gap-2 max-w-[40vw]">
 						<div className="flex justify-between">
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-1">
 								<ClipboardCheck size={28} className="text-primary-500" />
-								<span className="text-lg font-semibold">Productos</span>
+								<span className="font-semibold">Productos</span>
 							</div>
 
 							{isEditing && (
@@ -325,16 +325,18 @@ const BudgetDetail = () => {
 						</div>
 
 						<div className="border border-neutral-200 rounded-xl shadow-md overflow-hidden">
-							<div className="h-80 overflow-y-auto">
+							<div className="h-58 overflow-y-auto">
 								<table className="w-full">
 									<thead className="bg-neutral-100 text-neutral-500 text-sm">
 										<tr className="font-semibold">
-											<th className="w-[95%] px-6 py-3 text-left">
+											<th
+												className={`px-6 py-3 text-left ${isEditing ? "w-[80%]" : "w-[90%]"}`}
+											>
 												NOMBRE DEL PRODUCTO
 											</th>
-											<th className="w-[5%] px-6 py-3 text-center">CANTIDAD</th>
+											<th className="px-6 py-3 text-center">CANTIDAD</th>
 											{isEditing && (
-												<th className="text-center px-6 py-3">ACCIONES</th>
+												<th className="px-6 py-3 text-center">ACCIONES</th>
 											)}
 										</tr>
 									</thead>
@@ -406,13 +408,13 @@ const BudgetDetail = () => {
 						</div>
 					</section>
 				</div>
-				<section className="border-neutral-200 border rounded-xl shadow-md">
-					<div className="flex justify-center items-center bg-primary-500 rounded-t-xl h-20 gap-2 text-white">
+				<section className="border-neutral-200 border rounded-xl shadow-md max-h-[70vh] h-[65vh]">
+					<div className="flex justify-center items-center bg-primary-500 rounded-t-xl h-15 gap-1 text-white">
 						<Banknote size={28} />
-						<span className="text-lg font-semibold">Pagos del presupuesto</span>
+						<span className="font-semibold">Pagos del presupuesto</span>
 					</div>
 					<div className="p-4 border-b">
-						<div className="flex flex-col gap-2 text-sm">
+						<div className="flex flex-col gap-2">
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Total</span>
 								<span className="font-semibold">
@@ -422,7 +424,7 @@ const BudgetDetail = () => {
 
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Pagado</span>
-								<span className="text-green-600 font-semibold">
+								<span className="text-green-500 font-semibold">
 									${Number(budget?.totals?.paid || 0).toLocaleString()}
 								</span>
 							</div>
@@ -435,18 +437,16 @@ const BudgetDetail = () => {
 							</div>
 						</div>
 					</div>
-					<div className="h-110 overflow-y-auto no-scrollbar">
+					<div className="max-h-[42vh] overflow-y-auto no-scrollbar">
 						{budget?.payments?.length ? (
 							<table className="w-full">
 								<thead className="bg-neutral">
-									<tr className="font-semibold">
-										<th className="w-[40%] px-6 py-3 text-left">
-											METODO DE PAGO
-										</th>
-										<th className="w-[30%] px-6 py-3 text-center">MONTO</th>
-										<th className="w-[30%] px-6 py-3 text-center">FECHA</th>
+									<tr className="font-semibold text-sm">
+										<th className="px-6 py-3 text-left">MÉTODO</th>
+										<th className="px-6 py-3 text-center">MONTO</th>
+										<th className="px-6 py-3 text-center">FECHA</th>
 										{!isEditing && budget.status !== "paid" && (
-											<th className="text-center px-6 py-3">ACCIONES</th>
+											<th className="px-6 py-3 text-center">ACCIONES</th>
 										)}
 									</tr>
 								</thead>
@@ -454,7 +454,7 @@ const BudgetDetail = () => {
 									{budget.payments.map((payment) => (
 										<tr
 											key={payment.id}
-											className="border-b border-neutral-200 last:border-b-0"
+											className="border-b border-neutral-200 last:border-b-0 text-sm"
 										>
 											<td className="px-6 py-3">{payment.method}</td>
 											<td className="px-6 py-3 text-center">

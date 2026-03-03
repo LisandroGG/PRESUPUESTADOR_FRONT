@@ -147,18 +147,18 @@ const ProductDetail = () => {
 	}
 
 	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-8 min-h-full">
-			<div className="flex justify-between items-center mb-8">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full grid">
+			<div className="flex justify-between items-center mb-6">
 				<div className="flex flex-col">
 					<Link
 						to="/products"
-						className="flex items-center text-lg hover:text-primary-500"
+						className="flex items-center hover:text-primary-500"
 					>
 						<ArrowLeft size={20} />
 						Atrás
 					</Link>
 
-					<div className="flex font-bold text-3xl gap-2">
+					<div className="flex font-bold text-2xl gap-2">
 						<h2>Producto: #{product?.id}</h2>
 						<span>-</span>
 						{isEditing ? (
@@ -175,11 +175,11 @@ const ProductDetail = () => {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex gap-2">
 					{!isEditing ? (
 						<Button
 							variant="primary"
-							className="flex items-center gap-2"
+							className="flex items-center gap-1"
 							onClick={() => {
 								setOriginalData(productData);
 								setIsEditing(true);
@@ -205,22 +205,22 @@ const ProductDetail = () => {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-[3fr_1fr] justify-between gap-12">
-				<div className="flex flex-col gap-8 my-auto">
-					<section className="flex flex-col gap-4">
-						<div className="flex items-center gap-2">
+			<div className="grid grid-cols-[6fr_4fr] justify-between gap-4">
+				<div className="flex flex-col mx-auto lg:mx-0 lg:my-auto gap-8">
+					<section className="flex flex-col gap-2">
+						<div className="flex items-center gap-1">
 							<FileText size={28} className="text-primary-500" />
-							<span className="text-lg font-semibold">Descripción</span>
+							<span className="font-semibold">Descripción</span>
 						</div>
 
-						<div className="border-neutral-200 border rounded-xl shadow-md">
-							<div className="p-4 max-h-45 overflow-y-auto no-scrollbar max-w-270 wrap-break-word whitespace-normal">
+						<div className="border-neutral-200 border rounded-xl shadow-md max-w-[40vw]">
+							<div className="p-2 h-25 lg:h-40 overflow-y-auto no-scrollbar wrap-break-word whitespace-normal">
 								{isEditing ? (
 									<textarea
 										name="description"
 										value={productData.description}
 										onChange={handleChange}
-										className="w-full resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
+										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
 									/>
 								) : (
 									<p>{product?.description || "Sin descripción"}</p>
@@ -229,11 +229,11 @@ const ProductDetail = () => {
 						</div>
 					</section>
 
-					<section className="flex flex-col gap-4">
+					<section className="flex flex-col gap-2 max-w-[40vw]">
 						<div className="flex justify-between">
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-1">
 								<ClipboardCheck size={28} className="text-primary-500" />
-								<span className="text-lg font-semibold">Materiales</span>
+								<span className="font-semibold">Materiales</span>
 							</div>
 
 							{isEditing && (
@@ -247,17 +247,19 @@ const ProductDetail = () => {
 						</div>
 
 						<div className="border border-neutral-200 rounded-xl shadow-md overflow-hidden">
-							<div className="h-80 overflow-y-auto">
+							<div className="h-58 overflow-y-auto">
 								<table className="w-full">
 									<thead className="bg-neutral-100 text-neutral-500 text-sm">
 										<tr className="font-semibold">
-											<th className="w-[70%] px-6 py-3 text-left">
-												NOMBRE DEL MATERIAL
+											<th
+												className={`px-6 py-3 text-left ${isEditing ? "w-[80%]" : "w-[90%]"}`}
+											>
+												NOMBRE
 											</th>
-											<th className="w-[25%] px-6 py-3 text-left">PROVEEDOR</th>
-											<th className="w-[5%] px-6 py-3 text-center">CANTIDAD</th>
+											<th className="px-6 py-3 text-left">PROVEEDOR</th>
+											<th className="px-6 py-3 text-center">CANTIDAD</th>
 											{isEditing && (
-												<th className="text-center px-6 py-3">ACCIONES</th>
+												<th className="px-6 py-3 text-center">ACCIONES</th>
 											)}
 										</tr>
 									</thead>
@@ -316,54 +318,52 @@ const ProductDetail = () => {
 						</div>
 					</section>
 				</div>
-				<section className="border-neutral-200 border rounded-xl shadow-md">
-					<div className="flex justify-center items-center bg-primary-500 rounded-t-xl h-20 gap-2 text-white">
+				<section className="border-neutral-200 border rounded-xl shadow-md max-h-[70vh] h-[65vh] flex flex-col">
+					<div className="flex justify-center items-center bg-primary-500 rounded-t-xl h-15 gap-1 text-white">
 						<Banknote size={20} />
-						<span className="text-lg font-semibold">Resumen Financiero</span>
+						<span className="font-semibold">Resumen Financiero</span>
 					</div>
 
-					<div className="min-h-140">
-						<div className="p-6 grid grid-rows-[1fr_1fr_1fr] gap-6 min-h-120">
-							<div className="flex flex-col items-center text-center">
-								<span className="text-neutral-500 text-lg">
+					<div className="p-6 flex flex-col flex-1 justify-between text-lg">
+						<div className="flex flex-col gap-8">
+							<div className="flex justify-between">
+								<span className="text-neutral-500">
 									Costo Total de Materiales:
 								</span>
-								<span className="font-semibold text-xl">
+								<span className="font-semibold">
 									${materialsCost.toFixed(2)}
 								</span>
 							</div>
 
-							<div className="flex flex-col items-center text-center">
-								<span className="text-neutral-500 text-lg">
-									Costo de Producción:
-								</span>
+							<div className="flex justify-between">
+								<span className="text-neutral-500">Costo de Producción:</span>
 								{isEditing ? (
 									<input
 										type="number"
 										name="productionCost"
 										value={productData.productionCost}
 										onChange={handleChange}
-										className="text-center font-semibold text-xl ring-2 ring-primary-500 rounded-md"
+										className="text-right font-semibold ring-2 ring-primary-500 rounded-md"
 									/>
 								) : (
-									<span className="font-semibold text-xl">
+									<span className="font-semibold">
 										${productionCost.toFixed(2)}
 									</span>
 								)}
 							</div>
 
-							<div className="flex flex-col items-center text-center text-lg">
+							<div className="flex justify-between">
 								<span className="text-neutral-500">Costo Total:</span>
-								<span className="font-semibold text-xl">
-									${totalCost.toFixed(2)}
-								</span>
+								<span className="font-semibold">${totalCost.toFixed(2)}</span>
 							</div>
+						</div>
 
-							<hr />
-
-							<div className="flex flex-col items-center text-center text-primary-500">
-								<span className="font-semibold text-lg">Precio de venta:</span>
-								<span className="font-semibold text-2xl">
+						<div className="mt-6 pt-4 border-t border-neutral-200">
+							<div className="flex flex-col items-center gap-1">
+								<span className="font-semibold text-neutral-500 text-lg">
+									Precio de venta
+								</span>
+								<span className="font-bold text-3xl text-primary-600">
 									${totalCost.toFixed(2)}
 								</span>
 							</div>
