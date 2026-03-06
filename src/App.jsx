@@ -10,6 +10,7 @@ import ProductDetail from "@pages/Products/ProductDetail.jsx";
 import ProductsList from "@pages/Products/ProductsList.jsx";
 import { Toaster } from "react-hot-toast";
 import { HashRouter, Route, Routes } from "react-router-dom";
+
 //ROUTES
 
 function App() {
@@ -19,20 +20,19 @@ function App() {
 
 			<HashRouter>
 				<Routes>
+					<Route element={<MainLayout />}>
+						<Route index element={<Home />} />
 
-						<Route element={<MainLayout />}>
-							<Route index element={<Home />} />
+						<Route path="budgets" element={<BudgetsList />} />
+						<Route path="budgets/:id" element={<BudgetDetail />} />
 
-							<Route path="budgets" element={<BudgetsList />} />
-							<Route path="budgets/:id" element={<BudgetDetail />} />
+						<Route path="clients" element={<ClientList />} />
 
-							<Route path="clients" element={<ClientList />} />
+						<Route path="products" element={<ProductsList />} />
+						<Route path="products/:id" element={<ProductDetail />} />
 
-							<Route path="products" element={<ProductsList />} />
-							<Route path="products/:id" element={<ProductDetail />} />
-
-							<Route path="materials" element={<MaterialsList />} />
-						</Route>
+						<Route path="materials" element={<MaterialsList />} />
+					</Route>
 
 					{/* 404 */}
 					<Route path="*" element={<h1>Página no encontrada</h1>} />

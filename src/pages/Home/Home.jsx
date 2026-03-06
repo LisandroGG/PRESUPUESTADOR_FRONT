@@ -1,6 +1,7 @@
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import { getRecentBudgets } from "@redux/Slices/budgetSlice";
 import { getDashboardStats } from "@redux/Slices/statsSlice";
+import { setHomeLoading } from "@redux/Slices/uiSlice.js";
 import {
 	Calendar,
 	ClipboardCheck,
@@ -10,33 +11,29 @@ import {
 	Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Home = () => {
 	const [ids, setIds] = useState([]);
+	const dispatch = useDispatch();
 	const { run } = useCrudDispatch();
 	const { budgets, loading } = useSelector((state) => state.budgets);
 	const { stats } = useSelector((state) => state.stats);
 
 	useEffect(() => {
 		const stored = JSON.parse(localStorage.getItem("recentBudgets")) || [];
+		setIds(stored);
 
-		if (stored.length > 0) {
-			setIds(stored);
-		}
-	}, []);
+		const fetchData = async () => {
+			await run(getDashboardStats);
+			if (stored.length > 0) await run(getRecentBudgets, stored);
 
-	// biome-ignore lint: useEffectBug
-	useEffect(() => {
-		if (ids.length > 0) {
-			run(getRecentBudgets, ids);
-		}
-	}, [ids]);
+			// 🚀 Home terminó de cargar → apagamos loader global
+			dispatch(setHomeLoading(false));
+		};
 
-	// biome-ignore lint: useEffectBug
-	useEffect(() => {
-		run(getDashboardStats);
+		fetchData();
 	}, []);
 
 	const orderedBudgets = [...budgets].sort(

@@ -198,7 +198,7 @@ const BudgetsList = () => {
 				columns={columns}
 				data={budgets}
 				renderActions={renderActions}
-				empryMessage="No hay presupuestos registrados"
+				emptyMessage="No hay presupuestos registrados"
 			/>
 
 			<Pagination
