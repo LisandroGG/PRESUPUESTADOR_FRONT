@@ -1,11 +1,4 @@
-import {
-	Boxes,
-	FileText,
-	Home,
-	LogOutIcon,
-	Package,
-	Users,
-} from "lucide-react";
+import { Boxes, FileText, Home, Package, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Nav = () => {

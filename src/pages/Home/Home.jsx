@@ -21,6 +21,7 @@ const Home = () => {
 	const { budgets, loading } = useSelector((state) => state.budgets);
 	const { stats } = useSelector((state) => state.stats);
 
+	// biome-ignore lint: useEffectBug
 	useEffect(() => {
 		const stored = JSON.parse(localStorage.getItem("recentBudgets")) || [];
 		setIds(stored);
@@ -29,7 +30,6 @@ const Home = () => {
 			await run(getDashboardStats);
 			if (stored.length > 0) await run(getRecentBudgets, stored);
 
-			// 🚀 Home terminó de cargar → apagamos loader global
 			dispatch(setHomeLoading(false));
 		};
 
