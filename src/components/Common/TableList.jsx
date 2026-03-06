@@ -13,7 +13,7 @@ const TableList = ({
 	}
 
 	return (
-		<div className="overflow-x-hidden h-158 overflow-y-auto">
+		<div className="overflow-y-auto h-[65vh]">
 			<table className="min-w-full table-fixed border border-neutral-200">
 				<thead className="bg-neutral-100">
 					<tr className="border-b border-neutral-200 text-sm font-semibold text-neutral-700">

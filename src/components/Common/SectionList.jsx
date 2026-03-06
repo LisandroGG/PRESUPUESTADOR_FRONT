@@ -10,7 +10,7 @@ const SectionList = ({
 	children,
 }) => {
 	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full grid grid_rows-[100px_1fr_100px]">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-xl font-semibold">{title}:</h2>
 				<div className="flex gap-2">
