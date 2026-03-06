@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Nav = ({ handleLogout }) => {
+const Nav = () => {
 	const navItems = [
 		{
 			to: "/",
@@ -54,14 +54,6 @@ const Nav = ({ handleLogout }) => {
 						))}
 					</ul>
 				</nav>
-				<button
-					type="button"
-					onClick={() => handleLogout()}
-					className="hover:scale-105 cursor-pointer flex gap-2 p-2 items-center hover:bg-white/10 rounded-lg transition-all duration-200 text-lg font-semibold"
-				>
-					<LogOutIcon size={24} />
-					Cerrar sesion
-				</button>
 			</div>
 		</header>
 	);

@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
 	plugins: [react(), tailwindcss()],
+	base: "./",
 
 	resolve: {
 		alias: {
@@ -24,6 +25,8 @@ export default defineConfig({
 	},
 
 	build: {
+		outDir: "dist",
+		assetsDir: "assets",
 		chunkSizeWarningLimit: 500,
 	},
 });

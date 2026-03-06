@@ -1,26 +1,12 @@
 import Nav from "@components/Nav/Nav.jsx";
-import { clearError, logoutUser } from "@redux/Slices/usersSlice";
-import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 
 const MainLayout = () => {
-	const dispatch = useDispatch();
-	const handleLogout = async () => {
-		try {
-			await dispatch(logoutUser()).unwrap();
-
-			toast.success("Sesión cerrada correctamente");
-			dispatch(clearError());
-		} catch (error) {
-			toast.error(error || "No se pudo cerrar la sesión");
-		}
-	};
 
 	return (
 		<div className="min-h-screen grid grid-cols-[260px_1fr] grid-rows-[60px_1fr]">
 			<aside className="row-span-2">
-				<Nav handleLogout={handleLogout} />
+				<Nav />
 			</aside>
 			<header className="bg-primary-500 flex items-center justify-center">
 				<Link to="/" className="flex items-center gap-2">
