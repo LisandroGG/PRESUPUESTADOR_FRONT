@@ -30,7 +30,7 @@ const Home = () => {
 			await run(getDashboardStats);
 			if (stored.length > 0) await run(getRecentBudgets, stored);
 
-			dispatch(setHomeLoading(false));
+			await dispatch(setHomeLoading(false));
 		};
 
 		fetchData();
