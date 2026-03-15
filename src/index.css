@@ -76,4 +76,35 @@
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.animate-fadeIn {
+		animation: fadeIn 0.1s ease-out;
+	}
+
+	@keyframes fadeInToBottom {
+		0% {
+			opacity: 0;
+			transform: translateY(25px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fadeInToBottom {
+		animation: fadeInToBottom 0.2s ease-out both;
+		will-change: transform, opacity;
+	}
 }

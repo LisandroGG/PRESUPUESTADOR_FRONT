@@ -70,7 +70,7 @@ const Home = () => {
 		}).format(amount);
 
 	return (
-		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full">
+		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full animate-fadeIn">
 			<div className="flex justify-between mb-6 xl:mb-16">
 				<div>
 					<h1 className="text-3xl font-semibold">Panel de control</h1>

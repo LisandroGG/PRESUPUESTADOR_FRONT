@@ -80,7 +80,7 @@ const MaterialsList = () => {
 			key: "cost",
 			label: "Costo",
 			width: "w-[15%]",
-			render: (material) => `$ ${material.cost}`,
+			render: (material) => `$ ${Number(material.cost).toFixed(2)}`,
 		},
 	];
 

@@ -434,7 +434,7 @@ const BudgetDetail = () => {
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Restante</span>
 								<span className="text-red-500 font-semibold">
-									${Number(budget?.totals?.remaining || 0)}
+									${Number(budget?.totals?.remaining || 0).toFixed(2)}
 								</span>
 							</div>
 						</div>

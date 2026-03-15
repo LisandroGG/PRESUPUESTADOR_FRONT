@@ -19,7 +19,7 @@ const Modal = ({
 				onClick={onCancel}
 				aria-label="Cerrar modal"
 			/>
-			<div className="relative bg-white rounded-lg p-6 w-100">
+			<div className="relative bg-white rounded-lg p-6 w-100 animate-fadeIn">
 				<h3 className="text-lg font-semibold text-neutral-800 mb-2">{title}</h3>
 				<div className="space-y-4">{children}</div>
 				{error ? (
