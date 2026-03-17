@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateProductName } from "@utils/validations/productValidations.js";
 import { useState } from "react";
 
@@ -42,7 +43,7 @@ const ProductSearchModal = ({ open, onCancel, onConfirm }) => {
 			error={error}
 			disabled={!isValid}
 		>
-			<input
+			<Input
 				className="w-full border p-2 rounded"
 				placeholder="Nombre"
 				value={name}

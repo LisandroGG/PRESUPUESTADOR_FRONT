@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import {
 	validateMaterialName,
 	validateMaterialProvider,
@@ -56,14 +57,12 @@ const MaterialSearchModal = ({ open, onCancel, onConfirm }) => {
 			error={error}
 			disabled={!isValid}
 		>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Nombre"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Proveedor"
 				value={provider}
 				onChange={(e) => setProvider(e.target.value)}

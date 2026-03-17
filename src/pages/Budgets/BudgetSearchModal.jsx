@@ -46,7 +46,7 @@ const BudgetSearchModal = ({ open, onCancel, onConfirm, clients }) => {
 			disabled={!isValid}
 		>
 			<select
-				className="w-full border p-2 rounded"
+				className="w-full border p-2 rounded outline-none focus:border-primary-500 focus:border-2"
 				value={clientId}
 				onChange={(e) => setClientId(e.target.value)}
 			>
@@ -58,7 +58,7 @@ const BudgetSearchModal = ({ open, onCancel, onConfirm, clients }) => {
 				))}
 			</select>
 			<select
-				className="w-full border p-2 rounded"
+				className="w-full border p-2 rounded outline-none focus:border-primary-500 focus:border-2"
 				value={status}
 				onChange={(e) => setStatus(e.target.value)}
 			>

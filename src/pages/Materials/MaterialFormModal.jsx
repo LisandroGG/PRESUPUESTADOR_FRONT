@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateMaterial } from "@utils/Validations/materialValidations.js";
 import { useEffect, useMemo, useState } from "react";
 
@@ -60,21 +61,18 @@ const MaterialFormModal = ({
 			disabled={isDisabled}
 			error={error}
 		>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Nombre"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Proveedor"
 				value={provider}
 				onChange={(e) => setProvider(e.target.value)}
 			/>
-			<input
+			<Input
 				type="number"
-				className="w-full border p-2 rounded"
 				placeholder="Costo"
 				value={cost}
 				onChange={(e) => setCost(e.target.value)}

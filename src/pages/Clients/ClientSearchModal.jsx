@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateClientName } from "@utils/validations/clientValidations.js";
 import { useState } from "react";
 
@@ -45,15 +46,13 @@ const ClientSearchModal = ({ open, onCancel, onConfirm }) => {
 			error={error}
 			disabled={!isValid}
 		>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Nombre"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
+			<Input
 				type="number"
-				className="w-full border p-2 rounded"
 				placeholder="CUIT"
 				value={cuit}
 				onChange={(e) => setCuit(e.target.value)}

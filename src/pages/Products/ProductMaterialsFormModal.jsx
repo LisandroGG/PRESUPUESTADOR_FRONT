@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateProductMaterial } from "@utils/Validations/productValidations.js";
 import { useState } from "react";
 
@@ -49,7 +50,7 @@ const ProductMaterialsFormModal = ({
 			error={error}
 		>
 			<select
-				className="w-full border p-2 rounded"
+				className="w-full border p-2 rounded outline-none focus:border-primary-500 focus:border-2"
 				value={materialId}
 				onChange={(e) => setMaterialId(e.target.value)}
 			>
@@ -61,7 +62,7 @@ const ProductMaterialsFormModal = ({
 				))}
 			</select>
 
-			<input
+			<Input
 				type="number"
 				min="1"
 				className="w-full border p-2 rounded"

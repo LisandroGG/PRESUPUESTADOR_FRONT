@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateBudget } from "@utils/Validations/budgetValidations.js";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ const BudgetFormModal = ({ open, onCancel, onConfirm, clients }) => {
 			error={error}
 		>
 			<select
-				className="w-full border p-2 rounded"
+				className="w-full border p-2 rounded outline-none focus:border-primary-500 focus:border-2"
 				value={clientId}
 				onChange={(e) => setClientId(e.target.value)}
 			>
@@ -55,8 +56,7 @@ const BudgetFormModal = ({ open, onCancel, onConfirm, clients }) => {
 					</option>
 				))}
 			</select>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Descripción"
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}

@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateClientData } from "@utils/validations/clientValidations.js";
 import { useEffect, useMemo, useState } from "react";
 
@@ -50,15 +51,14 @@ const ClientFormModal = ({ open, mode, initialData, onCancel, onConfirm }) => {
 			disabled={isDisabled}
 			error={error}
 		>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
+				type="text"
 				placeholder="Nombre"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
+			<Input
 				type="number"
-				className="w-full border p-2 rounded"
 				placeholder="CUIT"
 				value={cuit}
 				onChange={(e) => setCuit(e.target.value)}

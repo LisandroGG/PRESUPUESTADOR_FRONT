@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import { validateProduct } from "@utils/Validations/productValidations.js";
 import { useState } from "react";
 
@@ -43,14 +44,12 @@ const ProductFormModal = ({ open, onCancel, onConfirm }) => {
 			disabled={!isValid}
 			error={error}
 		>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Nombre"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
 			/>
-			<input
-				className="w-full border p-2 rounded"
+			<Input
 				placeholder="Descripción"
 				value={description}
 				onChange={(e) => setDescription(e.target.value)}

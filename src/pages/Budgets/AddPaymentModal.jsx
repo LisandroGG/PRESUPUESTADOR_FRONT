@@ -1,4 +1,5 @@
 import Modal from "@components/Common/Modal.jsx";
+import Input from "@components/common/Input.jsx";
 import {
 	isDateStructurallyValid,
 	validatePayment,
@@ -57,7 +58,7 @@ const AddPaymentModal = ({ open, onCancel, onConfirm }) => {
 			error={error}
 		>
 			<select
-				className="w-full border p-2 rounded"
+				className="w-full border p-2 rounded outline-none focus:border-primary-500 focus:border-2"
 				value={method}
 				onChange={(e) => setMethod(e.target.value)}
 			>
@@ -68,17 +69,15 @@ const AddPaymentModal = ({ open, onCancel, onConfirm }) => {
 					</option>
 				))}
 			</select>
-			<input
+			<Input
 				type="number"
 				value={amount}
-				className="w-full border p-2 rounded"
 				placeholder="Monto del pago"
 				onChange={(e) => setAmount(e.target.value)}
 			/>
-			<input
+			<Input
 				type="date"
 				value={date}
-				className="w-full border p-2 rounded"
 				onChange={(e) => setDate(e.target.value)}
 			/>
 		</Modal>
