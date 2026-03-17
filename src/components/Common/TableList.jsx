@@ -6,7 +6,7 @@ const TableList = ({
 }) => {
 	if (!data?.length) {
 		return (
-			<div className="items-center flex justify-center text-neutral-500 h-158">
+			<div className="items-center flex justify-center text-neutral-500 h-[65vh]">
 				{emptyMessage}
 			</div>
 		);
