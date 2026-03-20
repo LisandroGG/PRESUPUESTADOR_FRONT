@@ -298,7 +298,7 @@ const BudgetDetail = () => {
 										name="description"
 										value={budgetData.description}
 										onChange={handleChange}
-										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
+										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md outline-none focus:border-primary-500"
 									/>
 								) : (
 									<p>{budget?.description || "Sin descripción"}</p>

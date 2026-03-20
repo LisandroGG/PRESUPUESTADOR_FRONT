@@ -167,7 +167,7 @@ const ProductDetail = () => {
 								name="name"
 								value={productData.name}
 								onChange={handleChange}
-								className="ring-2 ring-primary-500 rounded-md"
+								className="ring-2 ring-primary-500 rounded-md outline-none focus:border-primary-500"
 							/>
 						) : (
 							<span>{product?.name || "Sin nombre"}</span>
@@ -220,7 +220,7 @@ const ProductDetail = () => {
 										name="description"
 										value={productData.description}
 										onChange={handleChange}
-										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md"
+										className="w-full h-35 resize-none no-scrollbar ring-2 ring-primary-500 rounded-md outline-none focus:border-primary-500"
 									/>
 								) : (
 									<p>{product?.description || "Sin descripción"}</p>
@@ -343,7 +343,7 @@ const ProductDetail = () => {
 										name="productionCost"
 										value={productData.productionCost}
 										onChange={handleChange}
-										className="text-right font-semibold ring-2 ring-primary-500 rounded-md"
+										className="text-right font-semibold ring-2 ring-primary-500 rounded-md outline-none focus:border-primary-500"
 									/>
 								) : (
 									<span className="font-semibold">
