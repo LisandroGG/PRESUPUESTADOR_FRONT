@@ -3,6 +3,7 @@ import MainLayout from "@components/Layout/MainLayout.jsx";
 import BudgetDetail from "@pages/Budgets/BudgetDetail.jsx";
 //PAGES
 import BudgetsList from "@pages/Budgets/BudgetsList.jsx";
+import ChecksList from "@pages/Checks/ChecksList";
 import ClientList from "@pages/Clients/ClientsList.jsx";
 import Home from "@pages/Home/Home.jsx";
 import MaterialsList from "@pages/Materials/MaterialsList.jsx";
@@ -32,10 +33,9 @@ function App() {
 						<Route path="products/:id" element={<ProductDetail />} />
 
 						<Route path="materials" element={<MaterialsList />} />
-					</Route>
 
-					{/* 404 */}
-					<Route path="*" element={<h1>Página no encontrada</h1>} />
+						<Route path="checks" element={<ChecksList />} />
+					</Route>
 				</Routes>
 			</HashRouter>
 		</div>

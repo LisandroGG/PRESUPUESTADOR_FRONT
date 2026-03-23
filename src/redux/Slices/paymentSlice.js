@@ -3,7 +3,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	payments: [],
+	checks: [],
 	loading: false,
+	updateLoading: false,
 	error: null,
 	message: null,
 	page: 1,
@@ -62,6 +64,40 @@ export const deletePayment = createAsyncThunk(
 	},
 );
 
+// GET ALL CHECKS
+
+export const getAllChecks = createAsyncThunk(
+	"payments/getAllChecks",
+	async (params, { rejectWithValue }) => {
+		try {
+			const response = await axios.get("/payments", {
+				params,
+			});
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data?.message || "Error al obtener cheques",
+			);
+		}
+	},
+);
+
+// UPDATE CHECK DETAIL
+
+export const updateCheckDetail = createAsyncThunk(
+	"payments/updateCheckDetail",
+	async ({ paymentId, checkData }, { rejectWithValue }) => {
+		try {
+			const response = await axios.put(`/payments/${paymentId}`, checkData);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response?.data.message || "Error al actualizar cheque",
+			);
+		}
+	},
+);
+
 export const paymentsSlice = createSlice({
 	name: "payments",
 	initialState,
@@ -80,12 +116,6 @@ export const paymentsSlice = createSlice({
 			.addCase(getAllPaymentsFromBudget.fulfilled, (state, action) => {
 				state.loading = false;
 				state.payments = action.payload.data;
-				state.page = action.payload.page;
-				state.totalPages = action.payload.totalPages;
-				state.totalItems = action.payload.total;
-				state.limit = action.payload.limit;
-				state.hasNext = action.payload.hasNext;
-				state.hasPrev = action.payload.hasPrev;
 				state.message = null;
 			})
 			.addCase(getAllPaymentsFromBudget.rejected, (state, action) => {
@@ -123,6 +153,45 @@ export const paymentsSlice = createSlice({
 			.addCase(deletePayment.rejected, (state, action) => {
 				state.loading = false;
 				state.message = action.payload || "Error al eliminar pago";
+			})
+
+			// GET ALL CHECKS
+			.addCase(getAllChecks.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(getAllChecks.fulfilled, (state, action) => {
+				state.loading = false;
+				state.checks = action.payload.data;
+				state.page = action.payload.page;
+				state.totalPages = action.payload.totalPages;
+				state.totalItems = action.payload.total;
+				state.limit = action.payload.limit;
+				state.hasNext = action.payload.hasNext;
+				state.hasPrev = action.payload.hasPrev;
+				state.message = null;
+			})
+			.addCase(getAllChecks.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || "Error al obtener cheques";
+			})
+
+			// UPDATE CHECK DETAIL
+			.addCase(updateCheckDetail.pending, (state) => {
+				state.updateLoading = true;
+				state.error = null;
+			})
+			.addCase(updateCheckDetail.fulfilled, (state, action) => {
+				state.updateLoading = false;
+				const updatedCheck = action.payload.payment;
+				state.checks = state.checks.map((p) =>
+					p.id === updatedCheck.id ? updatedCheck : p,
+				);
+				state.message = action.payload.message;
+			})
+			.addCase(updateCheckDetail.rejected, (state) => {
+				state.updateLoading = false;
+				state.error = action.payload || "Error al actualizar cheque";
 			});
 	},
 });

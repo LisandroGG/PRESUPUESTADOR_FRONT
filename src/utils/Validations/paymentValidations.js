@@ -1,3 +1,5 @@
+const checkEntityRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+
 const validatePaymentMethod = (method) => {
 	if (!method) return "El método de pago es obligatorio";
 	return null;
@@ -42,10 +44,21 @@ const validatePaymentDate = (date) => {
 	return null;
 };
 
+export const validateCheckEntity = (checkEntity) => {
+	if (!checkEntity?.trim()) return "El nombre es obligatorio";
+	if (!checkEntityRegex.test(checkEntity.trim())) {
+		return "La entidad solo puede contener letras y espacios";
+	}
+};
+
 export const validatePayment = (method, amount, date) => {
 	return (
 		validatePaymentMethod(method) ||
 		validatePaymentAmount(amount) ||
 		validatePaymentDate(date)
 	);
+};
+
+export const validateCheck = (checkEntity, date) => {
+	return validateCheckEntity(checkEntity) || validatePaymentDate(date);
 };

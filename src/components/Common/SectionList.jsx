@@ -43,15 +43,17 @@ const SectionList = ({
 							Limpiar
 						</Button>
 					)}
-					<Button
-						variant="primary"
-						className="flex items-center gap-2"
-						onClick={onAdd}
-						title={`Nuevo ${list}`}
-					>
-						<SquarePlus size={16} />
-						Nuevo {list}
-					</Button>
+					{onAdd ? (
+						<Button
+							variant="primary"
+							className="flex items-center gap-2"
+							onClick={onAdd}
+							title={`Nuevo ${list}`}
+						>
+							<SquarePlus size={16} />
+							Nuevo {list}
+						</Button>
+					) : null}
 				</div>
 			</div>
 			{children}

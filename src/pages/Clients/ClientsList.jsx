@@ -70,23 +70,12 @@ const ClientsList = () => {
 			key: "name",
 			label: "Nombre",
 			width: "w-[40%]",
-			render: (client) =>
-				client.name?.trim() ? (
-					client.name
-				) : (
-					<span className="italic text-neutral-400">No registrado</span>
-				),
 		},
 		{
 			key: "cuit",
 			label: "CUIT",
 			width: "w-[25%]",
-			render: (client) =>
-				client.cuit ? (
-					formatCuit(client.cuit)
-				) : (
-					<span className="italic text-neutral-400">No registrado</span>
-				),
+			render: (client) => formatCuit(client.cuit),
 		},
 	];
 

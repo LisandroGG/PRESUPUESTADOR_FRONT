@@ -1,4 +1,4 @@
-import { Boxes, FileText, Home, Package, Users } from "lucide-react";
+import { Banknote, Boxes, FileText, Home, Package, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Nav = () => {
@@ -27,6 +27,11 @@ const Nav = () => {
 			to: "/budgets",
 			label: "Presupuestos",
 			icon: <FileText size={16} />,
+		},
+		{
+			to: "/checks",
+			label: "Cheques",
+			icon: <Banknote size={16} />,
 		},
 	];
 	return (

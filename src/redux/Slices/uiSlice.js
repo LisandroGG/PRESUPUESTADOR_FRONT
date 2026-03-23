@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice = createSlice({
 	name: "ui",
-	initialState: { homeLoading: true },
+	initialState: { homeLoading: false },
 	reducers: {
 		setHomeLoading: (state, action) => {
 			state.homeLoading = action.payload;
