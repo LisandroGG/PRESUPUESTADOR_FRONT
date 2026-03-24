@@ -6,9 +6,10 @@ import TableList from "@components/Common/TableList.jsx";
 import useCrudDispatch from "@hooks/useCrudDispatch.js";
 import usePagination from "@hooks/usePagination.js";
 import { getAllChecks, updateCheckDetail } from "@redux/Slices/paymentSlice";
-import { Banknote } from "lucide-react";
+import { Banknote, Eye } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import CheckSearchModal from "./CheckSearchModal.jsx";
 import CheckUpdateModal from "./CheckUpdateModal.jsx";
 
@@ -104,8 +105,13 @@ const ChecksList = () => {
 					})
 				}
 			>
-				<Banknote size={16} />
+				<Banknote size={18} />
 			</Button>
+			<div className="text-neutral-400 hover:text-neutral-500">
+				<Link to={`/budgets/${payments.budgetId}`}>
+					<Eye size={18} />
+				</Link>
+			</div>
 		</>
 	);
 

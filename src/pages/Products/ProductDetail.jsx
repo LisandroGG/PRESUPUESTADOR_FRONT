@@ -14,12 +14,13 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductMaterialsFormModal from "./ProductMaterialsFormModal";
 
 const ProductDetail = () => {
 	const { id } = useParams();
 	const productId = parseInt(id, 10);
+	const navigate = useNavigate();
 
 	const { run } = useCrudDispatch();
 	const product = useSelector((state) => state.products.product);
@@ -150,13 +151,14 @@ const ProductDetail = () => {
 		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full grid">
 			<div className="flex justify-between items-center mb-6">
 				<div className="flex flex-col">
-					<Link
-						to="/products"
-						className="flex items-center hover:text-primary-500"
+					<button
+						type="button"
+						onClick={() => navigate(-1)}
+						className="flex items-center hover:text-primary-500 hover:cursor-pointer"
 					>
 						<ArrowLeft size={20} />
 						Atrás
-					</Link>
+					</button>
 
 					<div className="flex font-bold text-2xl gap-2">
 						<h2>Producto: #{product?.id}</h2>

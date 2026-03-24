@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AddPaymentModal from "./AddPaymentModal.jsx";
 import ChangeStatusModal from "./ChangeStatusModal.jsx";
 import ProductsFormModal from "./ProductsFormModal";
@@ -29,6 +29,7 @@ import ProductsFormModal from "./ProductsFormModal";
 const BudgetDetail = () => {
 	const { id } = useParams();
 	const budgetId = parseInt(id, 10);
+	const navigate = useNavigate();
 
 	const { run } = useCrudDispatch();
 	const budget = useSelector((state) => state.budgets.budget);
@@ -183,13 +184,14 @@ const BudgetDetail = () => {
 		<section className="bg-white rounded-xl border border-neutral-200 shadow-md p-6 min-h-full grid">
 			<div className="flex justify-between items-center mb-6">
 				<div>
-					<Link
-						to="/budgets"
-						className="flex items-center hover:text-primary-500"
+					<button
+						type="button"
+						onClick={() => navigate(-1)}
+						className="flex items-center hover:text-primary-500 hover:cursor-pointer"
 					>
 						<ArrowLeft size={20} />
 						Atrás
-					</Link>
+					</button>
 
 					<div className="flex font-bold text-2xl gap-2">
 						<h2>Presupuesto: #{budget?.id}</h2>
