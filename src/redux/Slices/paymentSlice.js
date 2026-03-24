@@ -130,7 +130,6 @@ export const paymentsSlice = createSlice({
 			})
 			.addCase(createPayment.fulfilled, (state, action) => {
 				state.loading = false;
-				state.payments.push(action.payload.payment);
 				state.message = action.payload.message;
 			})
 			.addCase(createPayment.rejected, (state, action) => {
