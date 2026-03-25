@@ -64,12 +64,12 @@ const MaterialsList = () => {
 		{
 			key: "id",
 			label: "Identificador",
-			width: "w-[15%]",
+			width: "w-[10%]",
 		},
 		{
 			key: "name",
 			label: "Nombre",
-			width: "w-[30%]",
+			width: "w-[20%]",
 		},
 		{
 			key: "provider",
@@ -80,7 +80,19 @@ const MaterialsList = () => {
 			key: "cost",
 			label: "Costo",
 			width: "w-[15%]",
-			render: (material) => `$ ${Number(material.cost).toFixed(2)}`,
+			render: (material) => `$${Number(material.cost).toFixed(2)}`,
+		},
+		{
+			key: "tax",
+			label: "Impuestos",
+			width: "w-[10%]",
+			render: (material) => `% ${Number(material.tax).toFixed(2)}`,
+		},
+		{
+			key: "totalCost",
+			label: "Total",
+			width: "w-[25%]",
+			render: (material) => `$${Number(material.totalCost).toFixed(2)}`,
 		},
 	];
 

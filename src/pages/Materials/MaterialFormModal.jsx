@@ -13,6 +13,7 @@ const MaterialFormModal = ({
 	const [name, setName] = useState("");
 	const [provider, setProvider] = useState("");
 	const [cost, setCost] = useState("");
+	const [tax, setTax] = useState("");
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
@@ -20,6 +21,7 @@ const MaterialFormModal = ({
 			setName(initialData?.name || "");
 			setProvider(initialData?.provider || "");
 			setCost(initialData?.cost || "");
+			setTax(initialData?.tax ?? "");
 			setError(null);
 		}
 	}, [initialData, open]);
@@ -31,14 +33,15 @@ const MaterialFormModal = ({
 		return (
 			name !== (initialData?.name || "") ||
 			provider !== (initialData?.provider || "") ||
-			cost !== (initialData?.cost || "")
+			cost !== (initialData?.cost || "") ||
+			tax !== (initialData?.tax || "")
 		);
-	}, [mode, name, provider, cost, initialData]);
+	}, [mode, name, provider, cost, tax, initialData]);
 
 	const isDisabled = mode === "create" ? !isValid : !isValid || !hasChanges;
 
 	const handleSubmit = () => {
-		const validateError = validateMaterial(name, provider, cost);
+		const validateError = validateMaterial(name, provider, cost, tax);
 		if (validateError) {
 			setError(validateError);
 			return;
@@ -48,6 +51,7 @@ const MaterialFormModal = ({
 			name: name.trim(),
 			provider: provider.trim(),
 			cost: Number(cost),
+			tax: parseFloat(String(tax).replace(",", ".")) || 0,
 		});
 	};
 
@@ -76,6 +80,12 @@ const MaterialFormModal = ({
 				placeholder="Costo"
 				value={cost}
 				onChange={(e) => setCost(e.target.value)}
+			/>
+			<Input
+				type="number"
+				placeholder="Impuestos %"
+				value={tax}
+				onChange={(e) => setTax(e.target.value)}
 			/>
 		</Modal>
 	);

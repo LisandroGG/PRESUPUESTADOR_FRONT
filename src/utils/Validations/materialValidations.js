@@ -24,10 +24,25 @@ const validateMaterialCost = (cost) => {
 	}
 };
 
-export const validateMaterial = (name, provider, cost) => {
+const validateMaterialTax = (tax) => {
+	if (tax === "" || tax === null || tax === undefined) {
+		return "El porcentaje es obligatorio.";
+	}
+	const value = parseFloat(tax);
+	if (Number.isNaN(value) || value < 0) {
+		return "El porcentaje debe ser numérico y mayor a 0.";
+	}
+
+	if (value < 0 || value > 100) {
+		return "El porcentaje debe estar entre 0 y 100.";
+	}
+};
+
+export const validateMaterial = (name, provider, cost, tax) => {
 	return (
 		validateMaterialName(name) ||
 		validateMaterialProvider(provider) ||
-		validateMaterialCost(cost)
+		validateMaterialCost(cost) ||
+		validateMaterialTax(tax)
 	);
 };
