@@ -1,5 +1,6 @@
 import Button from "@components/Common/Button.jsx";
 import ErrorMessage from "@components/Common/ErrorMessage.jsx";
+import { useEffect } from "react";
 
 const Modal = ({
 	title,
@@ -11,6 +12,21 @@ const Modal = ({
 	disabled,
 	error,
 }) => {
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			if (e.key === "Enter" && !disabled && e.target.tagName !== "TEXTAREA") {
+				e.preventDefault();
+				onConfirm();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [onConfirm, disabled]);
+
 	return (
 		<div className="fixed inset-0 z-50 grid place-content-center">
 			<button
