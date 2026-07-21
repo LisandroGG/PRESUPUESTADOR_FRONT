@@ -1,18 +1,18 @@
-const productNameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
-const productDescriptionRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
+const productNameRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]+$/u;
+const productDescriptionRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]+$/u;
 const productMaterialQuantityRegex = /^\d+$/;
 
 export const validateProductName = (name) => {
 	if (!name?.trim()) return "El nombre es obligatorio";
 	if (!productNameRegex.test(name.trim())) {
-		return "El nombre solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
+		return "El nombre contiene caracteres no válidos.";
 	}
 };
 
 const validateProductDescription = (description) => {
 	if (!description?.trim()) return "La descripción es obligatoria";
 	if (!productDescriptionRegex.test(description.trim())) {
-		return "La descripción solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
+		return "La descripción contiene caracteres no válidos.";
 	}
 };
 

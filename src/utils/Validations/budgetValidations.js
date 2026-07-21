@@ -1,10 +1,10 @@
-const budgetDescriptionRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
+const budgetDescriptionRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]+$/u;
 const budgetProductQuantityRegex = /^\d+$/;
 
 const validateBudgetDescription = (description) => {
 	if (!description?.trim()) return "La descripción es obligatoria";
 	if (!budgetDescriptionRegex.test(description.trim())) {
-		return "La descripción solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
+		return "La descripción contiene caracteres no válidos.";
 	}
 };
 

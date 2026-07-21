@@ -1,10 +1,10 @@
-const materialNameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,_-]+$/;
+const materialNameRegex = /^[\p{L}\p{N}\p{P}\p{S}\s]+$/u;
 const materialProviderRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
 
 export const validateMaterialName = (name) => {
 	if (!name?.trim()) return "El nombre es obligatorio";
 	if (!materialNameRegex.test(name.trim())) {
-		return "El nombre solo puede contener letras, números, espacios y los caracteres especiales: . , _ -";
+		return "El nombre contiene caracteres no válidos.";
 	}
 };
 
