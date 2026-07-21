@@ -24,9 +24,6 @@ const validateProductMaterialId = (materialId) => {
 const validateProductMaterialQuantity = (quantity) => {
 	if (quantity === null || quantity === undefined || quantity === "")
 		return "La cantidad es obligatoria";
-	if (!productMaterialQuantityRegex.test(quantity)) {
-		return "La cantidad debe ser un número entero mayor a 0";
-	}
 
 	const value = Number(quantity);
 	if (value <= 0) {

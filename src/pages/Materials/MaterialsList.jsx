@@ -81,19 +81,7 @@ const MaterialsList = () => {
 			label: "Costo",
 			width: "w-[15%]",
 			render: (material) => `$${Number(material.cost).toFixed(2)}`,
-		},
-		{
-			key: "tax",
-			label: "Impuestos",
-			width: "w-[10%]",
-			render: (material) => `% ${Number(material.tax).toFixed(2)}`,
-		},
-		{
-			key: "totalCost",
-			label: "Total",
-			width: "w-[25%]",
-			render: (material) => `$${Number(material.totalCost).toFixed(2)}`,
-		},
+		}
 	];
 
 	const renderActions = (material) => (

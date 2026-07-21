@@ -6,12 +6,16 @@ import { useEffect, useMemo, useState } from "react";
 const ClientFormModal = ({ open, mode, initialData, onCancel, onConfirm }) => {
 	const [name, setName] = useState("");
 	const [cuit, setCuit] = useState("");
+	const [city, setCity] = useState("");
+	const [province, setProvince] = useState("");
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		if (open) {
 			setName(initialData?.name || "");
 			setCuit(initialData?.cuit || "");
+			setCity(initialData?.city || "");
+			setProvince(initialData?.province || "");
 			setError(null);
 		}
 	}, [initialData, open]);
@@ -38,6 +42,8 @@ const ClientFormModal = ({ open, mode, initialData, onCancel, onConfirm }) => {
 		onConfirm({
 			name: name.trim(),
 			cuit: cuit.trim(),
+			city: city.trim(),
+			province: province.trim(),
 		});
 	};
 
@@ -62,6 +68,18 @@ const ClientFormModal = ({ open, mode, initialData, onCancel, onConfirm }) => {
 				placeholder="CUIT"
 				value={cuit}
 				onChange={(e) => setCuit(e.target.value)}
+			/>
+			<Input
+				type="text"
+				placeholder="Ciudad"
+				value={city}
+				onChange={(e) => setCity(e.target.value)}
+			/>
+			<Input
+				type="text"
+				placeholder="Provincia"
+				value={province}
+				onChange={(e) => setProvince(e.target.value)}
 			/>
 		</Modal>
 	);
