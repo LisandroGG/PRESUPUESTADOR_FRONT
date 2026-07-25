@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductMaterialsFormModal from "./ProductMaterialsFormModal";
+import { formatCurrency } from "@utils/formatCurrency.js";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -258,8 +259,13 @@ const ProductDetail = () => {
 											>
 												NOMBRE
 											</th>
-											<th className="px-6 py-3 text-left">PROVEEDOR</th>
+											{!isEditing && (
+											<th className="px-6 py-3 text-left">COSTO</th>
+											)}
 											<th className="px-6 py-3 text-center">CANTIDAD</th>
+											{!isEditing && (
+											<th className="px-6 py-3 text-center">COSTO TOTAL</th>
+											)}
 											{isEditing && (
 												<th className="px-6 py-3 text-center">ACCIONES</th>
 											)}
@@ -287,12 +293,19 @@ const ProductDetail = () => {
 														materials.find((m) => m.id === material.materialId)
 															?.name}
 												</td>
+												{!isEditing && (
 												<td className="px-6 py-3">
-													{material.material?.provider || "-"}
+													${formatCurrency(Number(material.material?.cost || 0))}
 												</td>
+												)}
 												<td className="px-6 py-3 text-center">
 													{Number(material.quantity)}
 												</td>
+												{!isEditing && (
+												<td className="px-6 py-3 text-center">
+													${formatCurrency(Number(material.material?.cost || 0) * Number(material.quantity))}
+												</td>
+												)}
 												{isEditing && (
 													<td className="px-6 py-3 text-center">
 														{isEditing && (
@@ -333,7 +346,7 @@ const ProductDetail = () => {
 									Costo Total de Materiales:
 								</span>
 								<span className="font-semibold">
-									${materialsCost.toFixed(2)}
+									${formatCurrency(materialsCost)}
 								</span>
 							</div>
 
@@ -349,14 +362,14 @@ const ProductDetail = () => {
 									/>
 								) : (
 									<span className="font-semibold">
-										${productionCost.toFixed(2)}
+										${formatCurrency(productionCost)}
 									</span>
 								)}
 							</div>
 
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Costo Total:</span>
-								<span className="font-semibold">${totalCost.toFixed(2)}</span>
+								<span className="font-semibold">${formatCurrency(totalCost)}</span>
 							</div>
 						</div>
 
@@ -366,7 +379,7 @@ const ProductDetail = () => {
 									Precio de venta
 								</span>
 								<span className="font-bold text-3xl text-primary-600">
-									${totalCost.toFixed(2)}
+									${formatCurrency(totalCost)}
 								</span>
 							</div>
 						</div>

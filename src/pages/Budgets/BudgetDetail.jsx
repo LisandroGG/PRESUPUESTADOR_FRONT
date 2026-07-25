@@ -25,6 +25,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import AddPaymentModal from "./AddPaymentModal.jsx";
 import ChangeStatusModal from "./ChangeStatusModal.jsx";
 import ProductsFormModal from "./ProductsFormModal";
+import { formatCurrency } from "@utils/formatCurrency.js";
 
 const BudgetDetail = () => {
 	const { id } = useParams();
@@ -422,21 +423,21 @@ const BudgetDetail = () => {
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Total</span>
 								<span className="font-semibold">
-									${Number(budget?.totals?.total || 0).toFixed(2)}
+									${formatCurrency(budget?.totals?.total || 0)}
 								</span>
 							</div>
 
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Pagado</span>
 								<span className="text-green-500 font-semibold">
-									${Number(budget?.totals?.paid || 0).toFixed(2)}
+									${formatCurrency(budget?.totals?.paid || 0)}
 								</span>
 							</div>
 
 							<div className="flex justify-between">
 								<span className="text-neutral-500">Restante</span>
 								<span className="text-red-500 font-semibold">
-									${Number(budget?.totals?.remaining || 0).toFixed(2)}
+									${formatCurrency(budget?.totals?.remaining || 0)}
 								</span>
 							</div>
 						</div>
@@ -462,7 +463,7 @@ const BudgetDetail = () => {
 										>
 											<td className="px-6 py-3">{payment.method}</td>
 											<td className="px-6 py-3 text-center">
-												${Number(payment.amount).toFixed(2)}
+												${formatCurrency(payment.amount)}
 											</td>
 											<td className="px-6 py-3 text-center">
 												{payment.date.split("-").reverse().join("/")}

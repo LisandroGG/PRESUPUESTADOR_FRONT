@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialFormModal from "./MaterialFormModal.jsx";
 import MaterialSearchModal from "./MaterialSearchModal.jsx";
+import { formatCurrency } from "@utils/formatCurrency.js";
 
 const MaterialsList = () => {
 	const { materials } = useSelector((state) => state.materials);
@@ -80,7 +81,7 @@ const MaterialsList = () => {
 			key: "cost",
 			label: "Costo",
 			width: "w-[15%]",
-			render: (material) => `$${Number(material.cost).toFixed(2)}`,
+			render: (material) => `$${formatCurrency(Number(material.cost))}`,
 		}
 	];
 

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckSearchModal from "./CheckSearchModal.jsx";
 import CheckUpdateModal from "./CheckUpdateModal.jsx";
+import { formatCurrency } from "@utils/formatCurrency.js";
 
 const ChecksList = () => {
 	const { checks } = useSelector((state) => state.payments);
@@ -60,7 +61,7 @@ const ChecksList = () => {
 			key: "amount",
 			label: "Monto",
 			width: "w-[20%]",
-			render: (payments) => `$${Number(payments.amount).toFixed(2)}`,
+			render: (payments) => `$${formatCurrency(payments.amount)}`,
 		},
 		{
 			key: "date",
